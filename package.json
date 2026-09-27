@@ -1,0 +1,33 @@
+{
+    "name": "club-recap",
+    "version": "0.1.0",
+    "private": true,
+    "description": "Weekly Strava recap infographics for running clubs. White-label ready.",
+    "type": "module",
+    "workspaces": [
+        "packages/*",
+        "apps/worker"
+    ],
+    "scripts": {
+        "test": "vitest run",
+        "typecheck": "tsc -p tsconfig.json --noEmit",
+        "sample": "node --experimental-strip-types scripts/generate-sample.ts",
+        "dev:web": "npx --yes serve apps/web -l 5173",
+        "dev:worker": "npm run dev --workspace apps/worker",
+        "db:migrate:local": "npm run db:migrate:local --workspace apps/worker",
+        "db:migrate:remote": "npm run db:migrate:remote --workspace apps/worker",
+        "deploy:worker": "npm run deploy --workspace apps/worker",
+        "mock:strava": "node --experimental-strip-types scripts/mock-strava.ts",
+        "webhook": "node scripts/strava-webhook.mjs",
+        "secret": "node scripts/make-secret.mjs"
+    },
+    "devDependencies": {
+        "@cloudflare/workers-types": "^4.20250801.0",
+        "@types/node": "^22.20.4",
+        "typescript": "^5.6.0",
+        "vitest": "^3.2.0"
+    },
+    "engines": {
+        "node": ">=22.6"
+    }
+}

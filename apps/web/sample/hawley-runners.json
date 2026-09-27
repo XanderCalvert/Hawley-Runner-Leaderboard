@@ -1,0 +1,198 @@
+{
+    "version": 1,
+    "club": {
+        "slug": "hawley-runners",
+        "name": "Hawley Runners",
+        "locale": "en-GB",
+        "branding": {
+            "background": "#0d1b2a",
+            "surface": "#15283c",
+            "text": "#f4f1ea",
+            "muted": "#9fb0c2",
+            "primary": "#ff6b35",
+            "accent": "#ffd166",
+            "logo": null,
+            "hashtag": "#HawleyRunners",
+            "footer": "Join the leaderboard: link in the group"
+        }
+    },
+    "week": {
+        "start": "2026-09-21",
+        "end": "2026-09-27",
+        "label": "21–27 Sept 2026",
+        "year": 2026
+    },
+    "generatedAt": "2026-09-27T14:14:59.721Z",
+    "group": {
+        "week": {
+            "runners": 24,
+            "runs": 75,
+            "distanceM": 639780,
+            "movingTimeS": 211674,
+            "elevationM": 7108
+        },
+        "previousWeek": {
+            "runners": 30,
+            "runs": 85,
+            "distanceM": 805060,
+            "movingTimeS": 268635,
+            "elevationM": 9392
+        },
+        "ytd": {
+            "runners": 30,
+            "runs": 2947,
+            "distanceM": 25674600,
+            "movingTimeS": 8493675,
+            "elevationM": 308853,
+            "goalKm": 30000
+        }
+    },
+    "awards": [
+        {
+            "id": "fastest-5k",
+            "label": "Fastest 5K",
+            "metric": "best5k",
+            "entries": [
+                {
+                    "rank": 1,
+                    "athleteId": 1013,
+                    "name": "Ravi B.",
+                    "value": 1237,
+                    "display": "20:37"
+                },
+                {
+                    "rank": 2,
+                    "athleteId": 1019,
+                    "name": "Alex P.",
+                    "value": 1283,
+                    "display": "21:23"
+                },
+                {
+                    "rank": 3,
+                    "athleteId": 1026,
+                    "name": "Ellie S.",
+                    "value": 1286,
+                    "display": "21:26"
+                }
+            ],
+            "moreTied": 0
+        },
+        {
+            "id": "longest-run",
+            "label": "Longest run",
+            "metric": "longestRun",
+            "entries": [
+                {
+                    "rank": 1,
+                    "athleteId": 1027,
+                    "name": "Kieran H.",
+                    "value": 27120,
+                    "display": "27.1 km"
+                },
+                {
+                    "rank": 2,
+                    "athleteId": 1025,
+                    "name": "Josh M.",
+                    "value": 25040,
+                    "display": "25.0 km"
+                },
+                {
+                    "rank": 3,
+                    "athleteId": 1008,
+                    "name": "Hannah F.",
+                    "value": 19240,
+                    "display": "19.2 km"
+                }
+            ],
+            "moreTied": 0
+        },
+        {
+            "id": "most-climbing",
+            "label": "Most climbing",
+            "metric": "elevationTotal",
+            "entries": [
+                {
+                    "rank": 1,
+                    "athleteId": 1008,
+                    "name": "Hannah F.",
+                    "value": 1228,
+                    "display": "1,228 m"
+                },
+                {
+                    "rank": 2,
+                    "athleteId": 1020,
+                    "name": "Zoe Y.",
+                    "value": 787,
+                    "display": "787 m"
+                },
+                {
+                    "rank": 3,
+                    "athleteId": 1023,
+                    "name": "Matt C.",
+                    "value": 497,
+                    "display": "497 m"
+                }
+            ],
+            "moreTied": 0
+        },
+        {
+            "id": "most-distance",
+            "label": "Most distance",
+            "metric": "distanceTotal",
+            "entries": [
+                {
+                    "rank": 1,
+                    "athleteId": 1002,
+                    "name": "Priya R.",
+                    "value": 59080,
+                    "display": "59.1 km"
+                },
+                {
+                    "rank": 2,
+                    "athleteId": 1013,
+                    "name": "Ravi B.",
+                    "value": 48410,
+                    "display": "48.4 km"
+                },
+                {
+                    "rank": 3,
+                    "athleteId": 1024,
+                    "name": "Beth B.",
+                    "value": 46740,
+                    "display": "46.7 km"
+                }
+            ],
+            "moreTied": 0
+        },
+        {
+            "id": "most-runs",
+            "label": "Most runs",
+            "metric": "runCount",
+            "entries": [
+                {
+                    "rank": 1,
+                    "athleteId": 1002,
+                    "name": "Priya R.",
+                    "value": 6,
+                    "display": "6 runs"
+                },
+                {
+                    "rank": 1,
+                    "athleteId": 1013,
+                    "name": "Ravi B.",
+                    "value": 6,
+                    "display": "6 runs"
+                },
+                {
+                    "rank": 3,
+                    "athleteId": 1024,
+                    "name": "Beth B.",
+                    "value": 5,
+                    "display": "5 runs"
+                }
+            ],
+            "moreTied": 4
+        }
+    ],
+    "milestones": []
+}

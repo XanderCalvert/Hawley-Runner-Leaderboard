@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title>Strava connection</title>
+    <link rel="stylesheet" href="assets/css/fonts.css">
+    <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+    <main class="page">
+        <p class="eyebrow" data-club-name>Your club</p>
+        <h1 id="title">Hmm</h1>
+        <div class="notice" id="message">Something unexpected happened.</div>
+        <div class="actions" id="actions"></div>
+    </main>
+
+    <script type="module">
+        import { applyBrand, clubSlug, connectUrl, fetchClub } from './assets/js/api.js';
+
+        const status = new URLSearchParams(location.search).get('status');
+        const back = `index.html?club=${clubSlug}`;
+        const recap = `recap.html?club=${clubSlug}`;
+        const retry = connectUrl('join') ?? back;
+
+        const outcomes = {
+            connected: {
+                title: "You're in",
+                tone: 'good',
+                message: "Your Strava is connected. Runs from this year are loading now, and you'll appear on the next weekly recap.",
+                actions: [[recap, 'See the latest recap']],
+            },
+            'not-member': {
+                title: 'Join the club on Strava first',
+                tone: 'bad',
+                message: "We couldn't find you in the club's Strava group. Join it on Strava, then connect again. Nothing has been saved.",
+                actions: [[retry, 'Try again'], [back, 'Back']],
+            },
+            'missing-scope': {
+                title: 'We need to see your runs',
+                tone: 'bad',
+                message: 'The recap needs permission to view your activities. Please connect again and leave "View data about your activities" ticked. Nothing has been saved.',
+                actions: [[retry, 'Connect again'], [back, 'Back']],
+            },
+            cancelled: {
+                title: 'No problem',
+                tone: '',
+                message: "You didn't connect, so nothing has been shared. You can join whenever you like.",
+                actions: [[back, 'Back']],
+            },
+            left: {
+                title: "You've been removed",
+                tone: 'good',
+                message: "Everything we held about you has been deleted and Strava access has been revoked. You're welcome back any time.",
+                actions: [[back, 'Back']],
+            },
+        };
+
+        const outcome = outcomes[status];
+        if (outcome) {
+            document.getElementById('title').textContent = outcome.title;
+            const message = document.getElementById('message');
+            message.textContent = outcome.message;
+            if (outcome.tone) {
+                message.classList.add(`notice--${outcome.tone}`);
+            }
+            const actions = document.getElementById('actions');
+            outcome.actions.forEach(([href, label], i) => {
+                const link = document.createElement('a');
+                link.href = href;
+                link.textContent = label;
+                link.className = i === 0 ? 'button' : 'button button--ghost';
+                actions.append(link);
+            });
+        }
+
+        fetchClub().then(applyBrand).catch(() => {});
+    </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title>Weekly recap</title>
+    <link rel="stylesheet" href="assets/css/fonts.css">
+    <link rel="stylesheet" href="assets/css/site.css">
+    <link rel="stylesheet" href="assets/css/card.css">
+    <style>
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: end;
+            margin-bottom: 24px;
+        }
+
+        .toolbar .spacer {
+            flex: 1;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 320px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .preview {
+            container-type: inline-size;
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: var(--surface-2);
+        }
+
+        /* Scale the 1080px card to whatever width the preview has; export ignores this wrapper. */
+        .preview__scaler {
+            width: 1080px;
+            transform-origin: top left;
+        }
+
+        .caption {
+            width: 100%;
+            min-height: 280px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            font: 400 15px/1.5 var(--font-body);
+            resize: vertical;
+        }
+
+        .status {
+            min-height: 1.5em;
+        }
+
+        @media (max-width: 900px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page page--wide">
+        <p class="eyebrow" data-club-name>Your club</p>
+        <h1>Weekly recap</h1>
+        <p class="small" id="mode"></p>
+
+        <div class="toolbar">
+            <button class="button button--ghost" id="prev" type="button" aria-label="Previous week">← Previous</button>
+            <div class="field">
+                <label for="week">Week containing</label>
+                <input class="input" type="date" id="week">
+            </div>
+            <button class="button button--ghost" id="next" type="button" aria-label="Next week">Next →</button>
+            <div class="spacer"></div>
+            <button class="button" id="download" type="button">Download PNG</button>
+        </div>
+
+        <p class="status small" id="status" role="status"></p>
+
+        <div class="layout">
+            <div class="preview" id="preview">
+                <div class="preview__scaler" id="scaler">
+                    <article class="recap-card" id="card" aria-live="polite"></article>
+                </div>
+            </div>
+            <aside class="panel">
+                <h2>Post caption</h2>
+                <p class="small">Edit if you like, then copy it into the Facebook or Strava post.</p>
+                <textarea class="caption" id="caption" aria-label="Post caption"></textarea>
+                <div class="actions" style="margin-top: 12px">
+                    <button class="button button--ghost" id="copy" type="button">Copy caption</button>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <script src="assets/js/vendor/html-to-image.js"></script>
+    <script type="module" src="assets/js/recap.js"></script>
+</body>
+</html>

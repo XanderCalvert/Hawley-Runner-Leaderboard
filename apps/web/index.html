@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Join the weekly recap</title>
+    <meta name="description" content="Connect your Strava to appear on the club's weekly recap.">
+    <link rel="stylesheet" href="assets/css/fonts.css">
+    <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+    <main class="page">
+        <p class="eyebrow" data-club-name>Your club</p>
+        <h1>Get on the weekly recap</h1>
+        <p class="lede">
+            Every Monday we post a round-up of the club's week: fastest 5K, longest run, most climbing and
+            our totals for the year. Connect your Strava once and your runs are included automatically.
+        </p>
+
+        <div class="actions" style="margin-bottom: 32px">
+            <a class="button button--strava" id="connect" href="#">Connect with Strava</a>
+            <a class="button button--ghost" href="recap.html" id="recap-link">See this week's recap</a>
+        </div>
+        <p class="small" id="setup-note" hidden>
+            The Strava connection isn't switched on yet. Set <code>apiBase</code> in <code>assets/js/config.js</code>.
+        </p>
+
+        <section class="panel">
+            <h2>What's shared</h2>
+            <ul class="list">
+                <li>Your <strong>first name and surname initial</strong> (e.g. "Sarah K.") next to any award you win.</li>
+                <li>Distance, time and climbing from your runs, added into the club's weekly and yearly totals.</li>
+                <li>Your fastest 5K split from runs that week, if it makes the top three.</li>
+            </ul>
+        </section>
+
+        <section class="panel">
+            <h2>What isn't</h2>
+            <ul class="list">
+                <li>No maps, routes, start locations, heart rate, photos or activity titles are stored or shown.</li>
+                <li>Runs you've set to "Only you" on Strava are never seen.</li>
+                <li>Only runs count. Rides, walks and everything else are ignored.</li>
+            </ul>
+        </section>
+
+        <section class="panel">
+            <h2>The small print</h2>
+            <ul class="list">
+                <li>You need to be a member of the club's Strava group. We check this when you connect and weekly after that.</li>
+                <li>
+                    You can leave any time. <a href="#" id="leave">Remove my data</a>, or revoke access under
+                    Strava → Settings → My Apps. Either way, everything we hold about you is deleted straight away.
+                </li>
+                <li>Club admins can hide anyone from the recap on request.</li>
+            </ul>
+        </section>
+
+        <footer class="site-footer">Data from Strava. Not affiliated with or endorsed by Strava.</footer>
+    </main>
+
+    <script type="module">
+        import { applyBrand, clubSlug, connectUrl, fetchClub } from './assets/js/api.js';
+
+        const join = connectUrl('join');
+        const leave = connectUrl('leave');
+        const connect = document.getElementById('connect');
+        document.getElementById('recap-link').href = `recap.html?club=${clubSlug}`;
+
+        if (join) {
+            connect.href = join;
+            document.getElementById('leave').href = leave;
+        } else {
+            connect.setAttribute('aria-disabled', 'true');
+            connect.style.opacity = '0.5';
+            connect.style.pointerEvents = 'none';
+            document.getElementById('setup-note').hidden = false;
+        }
+
+        fetchClub().then(applyBrand).catch(() => {});
+    </script>
+</body>
+</html>

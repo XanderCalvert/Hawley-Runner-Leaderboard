@@ -1,0 +1,37 @@
+{
+    "$schema": "../../node_modules/wrangler/config-schema.json",
+    "name": "club-recap",
+    "main": "src/index.ts",
+    "compatibility_date": "2025-09-01",
+    "observability": { "enabled": true },
+
+    // Hourly: sync a small batch of athletes to catch anything the webhook missed.
+    "triggers": { "crons": ["17 * * * *"] },
+
+    "d1_databases": [
+        {
+            "binding": "DB",
+            // Replace with the id printed by: npx wrangler d1 create club-recap
+            "database_id": "00000000-0000-0000-0000-000000000000",
+            "database_name": "club-recap",
+            "migrations_dir": "migrations"
+        }
+    ],
+
+    "vars": {
+        // Your Strava API application's Client ID (public).
+        "STRAVA_CLIENT_ID": "0",
+        // Where the static site lives (GitHub Pages). No trailing slash.
+        "WEB_BASE_URL": "https://YOUR-GITHUB-USERNAME.github.io/club-recap",
+        // Comma-separated origins allowed to call /api and /admin from a browser.
+        "ALLOWED_ORIGINS": "https://YOUR-GITHUB-USERNAME.github.io,http://localhost:5173"
+    }
+
+    // Secrets (never in this file). Set each with: npx wrangler secret put NAME
+    //   STRAVA_CLIENT_SECRET   from strava.com/settings/api
+    //   STRAVA_VERIFY_TOKEN    any random string; reused when creating the webhook subscription
+    //   APP_SECRET             32+ random bytes, base64 (signs OAuth state, encrypts tokens)
+    //   ADMIN_TOKEN            long random string for the admin page
+    // Optional var once the webhook exists:
+    //   STRAVA_SUBSCRIPTION_ID
+}

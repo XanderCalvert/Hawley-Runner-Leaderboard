@@ -1,0 +1,7 @@
+# Copy to .dev.vars for `wrangler dev`. Never commit .dev.vars.
+STRAVA_CLIENT_SECRET=replace-me
+STRAVA_VERIFY_TOKEN=replace-me
+APP_SECRET=replace-with-output-of-node-scripts/make-secret.mjs
+ADMIN_TOKEN=replace-with-output-of-node-scripts/make-secret.mjs
+# Uncomment to run against the fake Strava (npm run mock:strava)
+# STRAVA_BASE_URL=http://localhost:8788

@@ -1,0 +1,37 @@
+/* Self-hosted so the PNG export can embed them (Barlow, SIL Open Font License, see fonts/OFL-LICENSE.txt). */
+@font-face {
+    font-family: 'Barlow Condensed';
+    font-weight: 600;
+    font-display: swap;
+    src: url('../fonts/barlow-condensed-latin-600-normal.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Barlow Condensed';
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/barlow-condensed-latin-700-normal.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Barlow Condensed';
+    font-weight: 800;
+    font-display: swap;
+    src: url('../fonts/barlow-condensed-latin-800-normal.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Barlow';
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/barlow-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Barlow';
+    font-weight: 500;
+    font-display: swap;
+    src: url('../fonts/barlow-latin-500-normal.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Barlow';
+    font-weight: 600;
+    font-display: swap;
+    src: url('../fonts/barlow-latin-600-normal.woff2') format('woff2');
+}

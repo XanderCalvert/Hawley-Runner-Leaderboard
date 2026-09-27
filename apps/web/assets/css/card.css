@@ -1,0 +1,333 @@
+/*
+ * The weekly recap infographic. Rendered at its real export size (1080 × 1350, a 4:5 portrait
+ * that suits Facebook, Instagram and Strava posts) and scaled down for preview by a wrapper.
+ * Colours come from the club's branding config via the --c-* custom properties.
+ */
+.recap-card {
+    --c-bg: #0d1b2a;
+    --c-surface: #15283c;
+    --c-text: #f4f1ea;
+    --c-muted: #9fb0c2;
+    --c-primary: #ff6b35;
+    --c-accent: #ffd166;
+
+    position: relative;
+    width: 1080px;
+    height: 1350px;
+    padding: 56px 60px 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    overflow: hidden;
+    background: var(--c-bg);
+    color: var(--c-text);
+    font-family: 'Barlow', sans-serif;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Slanted colour band behind the header. */
+.recap-card::before {
+    content: '';
+    position: absolute;
+    top: -120px;
+    right: -160px;
+    width: 640px;
+    height: 420px;
+    background: var(--c-primary);
+    opacity: 0.16;
+    transform: rotate(-14deg);
+    pointer-events: none;
+}
+
+.rc-head {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+}
+
+.rc-club {
+    margin: 0 0 6px;
+    font: 700 30px/1 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-accent);
+}
+
+.rc-title {
+    margin: 0;
+    font: 800 116px/0.86 'Barlow Condensed', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+}
+
+.rc-title span {
+    color: var(--c-primary);
+}
+
+.rc-week {
+    margin: 14px 0 0;
+    font: 600 34px/1 'Barlow Condensed', sans-serif;
+    color: var(--c-muted);
+    letter-spacing: 0.02em;
+}
+
+.rc-weekno {
+    position: relative;
+    text-align: right;
+    font: 800 190px/0.8 'Barlow Condensed', sans-serif;
+    color: var(--c-text);
+    opacity: 0.9;
+}
+
+.rc-weekno small {
+    display: block;
+    margin-bottom: 10px;
+    font: 700 26px/1 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-accent);
+    opacity: 1;
+}
+
+.rc-logo {
+    max-width: 180px;
+    max-height: 180px;
+    object-fit: contain;
+}
+
+/* Group totals: four stat tiles. */
+.rc-stats {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.rc-stat {
+    background: var(--c-surface);
+    border-radius: 20px;
+    padding: 20px 24px 18px;
+}
+
+.rc-stat__value {
+    display: block;
+    font: 800 64px/1 'Barlow Condensed', sans-serif;
+    white-space: nowrap;
+}
+
+.rc-stat__value small {
+    font-size: 30px;
+    font-weight: 700;
+    margin-left: 4px;
+    color: var(--c-muted);
+}
+
+.rc-stat__label {
+    display: block;
+    margin-top: 6px;
+    font: 600 18px/1.2 'Barlow', sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+}
+
+.rc-stat__delta {
+    display: block;
+    margin-top: 4px;
+    font: 500 17px/1.2 'Barlow', sans-serif;
+    color: var(--c-muted);
+}
+
+/* Awards: 2 × 3 grid, with the YTD panel in the last slot. */
+.rc-grid {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 1fr;
+    gap: 16px;
+}
+
+.rc-award,
+.rc-ytd {
+    background: var(--c-surface);
+    border-radius: 20px;
+    padding: 22px 26px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.rc-award__label,
+.rc-ytd__label {
+    margin: 0 0 10px;
+    font: 700 24px/1 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-accent);
+}
+
+.rc-podium {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+}
+
+.rc-podium li {
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    align-items: baseline;
+    gap: 12px;
+    font: 600 26px/1.15 'Barlow Condensed', sans-serif;
+}
+
+.rc-rank {
+    color: var(--c-muted);
+    font-weight: 700;
+}
+
+.rc-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rc-value {
+    font-weight: 700;
+    color: var(--c-muted);
+}
+
+/* The winner line is the hero of each award. */
+.rc-podium li.is-first {
+    grid-template-columns: 40px 1fr auto;
+    align-items: center;
+    font-size: 40px;
+    font-weight: 700;
+    padding-bottom: 6px;
+    margin-bottom: 2px;
+    border-bottom: 2px solid color-mix(in srgb, var(--c-text) 12%, transparent);
+}
+
+.rc-podium li.is-first .rc-rank {
+    display: inline-grid;
+    place-items: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 4px;
+    border-radius: 18px;
+    background: var(--c-primary);
+    color: var(--c-bg);
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.rc-podium li.is-first .rc-value {
+    color: var(--c-text);
+    font-weight: 800;
+}
+
+.rc-more,
+.rc-empty {
+    margin-top: auto;
+    padding-top: 6px;
+    font: 500 18px/1.2 'Barlow', sans-serif;
+    color: var(--c-muted);
+}
+
+.rc-empty {
+    margin-top: 4px;
+}
+
+.rc-ytd {
+    background: var(--c-primary);
+    color: var(--c-bg);
+}
+
+.rc-ytd .rc-ytd__label {
+    color: var(--c-bg);
+    opacity: 0.8;
+}
+
+.rc-ytd__distance {
+    font: 800 68px/0.95 'Barlow Condensed', sans-serif;
+}
+
+.rc-ytd__distance small {
+    font-size: 36px;
+    margin-left: 6px;
+}
+
+.rc-ytd__meta {
+    margin-top: 6px;
+    font: 600 21px/1.2 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.02em;
+}
+
+.rc-goal {
+    margin-top: auto;
+    padding-top: 12px;
+}
+
+.rc-goal__track {
+    height: 14px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--c-bg) 22%, transparent);
+    overflow: hidden;
+}
+
+.rc-goal__fill {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--c-bg);
+}
+
+.rc-goal__label {
+    margin-top: 8px;
+    font: 600 18px/1.2 'Barlow', sans-serif;
+}
+
+.rc-milestones {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    padding: 14px 24px;
+    border: 2px solid color-mix(in srgb, var(--c-accent) 60%, transparent);
+    border-radius: 16px;
+    font: 600 24px/1.2 'Barlow Condensed', sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rc-milestones strong {
+    color: var(--c-accent);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.rc-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+    font: 500 19px/1.2 'Barlow', sans-serif;
+    color: var(--c-muted);
+}
+
+.rc-foot__tag {
+    font: 700 24px/1 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.06em;
+    color: var(--c-text);
+}
+
+.rc-foot__powered {
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}

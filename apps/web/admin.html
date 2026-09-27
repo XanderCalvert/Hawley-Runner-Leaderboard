@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title>Recap admin</title>
+    <link rel="stylesheet" href="assets/css/fonts.css">
+    <link rel="stylesheet" href="assets/css/site.css">
+    <style>
+        .login {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .login .field {
+            flex: 1;
+            min-width: 240px;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+
+        th,
+        td {
+            padding: 10px 8px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        th {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+        }
+
+        th.num,
+        td.num {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            background: var(--surface-2);
+        }
+
+        .pill--active {
+            color: var(--good);
+        }
+
+        .pill--excluded,
+        .pill--left {
+            color: var(--bad);
+        }
+
+        .row-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .row-actions .button {
+            min-height: 36px;
+            padding: 0 14px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <main class="page page--wide">
+        <p class="eyebrow" data-club-name>Your club</p>
+        <h1>Recap admin</h1>
+
+        <section class="panel">
+            <form class="login" id="login">
+                <div class="field">
+                    <label for="token">Admin token</label>
+                    <input class="input" id="token" type="password" autocomplete="current-password" required>
+                </div>
+                <button class="button" type="submit">Load members</button>
+            </form>
+            <p class="small" style="margin-bottom: 0">Only kept in this browser tab. Set it on the Worker with <code>wrangler secret put ADMIN_TOKEN</code>.</p>
+        </section>
+
+        <p class="small" id="status" role="status"></p>
+
+        <section class="panel" id="members-panel" hidden>
+            <div class="actions" style="justify-content: space-between; margin-bottom: 12px">
+                <h2 style="margin: 0">Connected runners</h2>
+                <input class="input" id="filter" type="search" placeholder="Filter by name" aria-label="Filter by name">
+            </div>
+            <p class="small">
+                <strong>Hidden</strong> runners stay connected but never appear on the recap (the blacklist).
+                <strong>Left</strong> means they're no longer in the Strava group.
+            </p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Runner</th>
+                            <th>Status</th>
+                            <th class="num">Runs this year</th>
+                            <th>Joined</th>
+                            <th>Last synced</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="rows"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="assets/js/admin.js"></script>
+</body>
+</html>
