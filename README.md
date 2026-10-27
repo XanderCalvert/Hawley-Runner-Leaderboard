@@ -40,28 +40,30 @@ It costs nothing to run: GitHub Pages, Cloudflare's free Workers tier and the fr
 
 - **Opt-in only:** nobody appears unless they connected via the club's link.
 - **Club members only:** membership of the club's Strava group is checked on connect and re-checked weekly. Leavers drop off automatically.
-- **Admin blacklist:** hide anyone from the recap without disconnecting them (`admin.html`). A hide survives the runner reconnecting.
-- **What counts:** only `Run` and `TrailRun` by default (configurable). Manual entries, flagged activities, runs under 1 km and anything faster than 2:30/km (usually a bike ride saved as a run) are ignored.
+- **Admin hide list:** hide anyone from the recap (`admin.html`). It is keyed by club and Strava ID, so it survives the runner disconnecting and reconnecting.
+- **What counts:** `rules.sportTypes` (Hawley: `Run`, `TrailRun`, `VirtualRun`, matched on Strava's `sport_type`). An award can narrow that with its own `sportTypes`: Fastest 5K and Longest run leave out `VirtualRun`. Manual entries, flagged activities, runs under 1 km and anything faster than 2:30/km (usually a bike ride saved as a run) are ignored.
 - **Fastest 5K** uses Strava's best-effort split from GPS runs, so a quick 5K inside a 10K counts.
 - **Ties** share a place (`=1`). If more people tie than fit on the podium, the card says "+N more tied".
 - **Weeks** run Monday to Sunday on the runner's local date.
 
 ### Privacy by design
 
-- Stored per run: sport type, local start time, distance, moving time, climbing, flags and best 5K/10K. No titles, maps, locations, heart rate or photos.
+- Stored per run: sport type, local start time, distance, moving time, climbing, the manual/treadmill/flagged flags the rules need, and the best 5K. No titles, maps, locations, heart rate or photos.
+- Stored per runner: Strava ID, first name, surname *initial*, encrypted tokens.
+- Only the hide list (club + Strava ID) outlives a disconnect.
 - Strava tokens are AES-GCM encrypted at rest.
 - Only "First L." ever leaves the Worker publicly.
-- If a runner revokes access in Strava, or uses "Remove my data" on the join page, everything about them is deleted immediately (via Strava's deauthorisation webhook).
+- If a runner revokes access in Strava (Strava's deauthorisation webhook), uses "Remove my data" on the join page (we revoke their token with `POST /oauth/revoke`), or leaves the club's Strava group (checked weekly), everything about them is deleted. Only a successful "not in this club" answer from Strava counts as leaving: an error or rate limit never does.
 
 ---
 
 ## Try it locally (no Strava needed)
 
-Requires Node 22.6 or newer.
+Requires Node 22.13 or newer.
 
 ```bash
 npm install
-npm test                 # stats engine tests
+npm test                 # stats engine and Worker tests
 npm run sample           # writes apps/web/sample/hawley-runners.json from fake runners
 npm run dev:web          # http://localhost:5173/recap.html
 ```
@@ -72,7 +74,7 @@ With `apiBase` empty in `apps/web/assets/js/config.js`, the site runs on the sam
 
 ```bash
 cp apps/worker/.dev.vars.example apps/worker/.dev.vars
-# add STRAVA_BASE_URL=http://localhost:8788 to .dev.vars
+# uncomment the two STRAVA_*_BASE lines in .dev.vars to point at the fake Strava
 npm run db:migrate:local
 npm run mock:strava      # terminal 1: fake Strava on :8788
 npm run dev:worker       # terminal 2: Worker on :8787
@@ -178,56 +180,7 @@ Names are still shown as "First L.". The parser lives in `apps/web/assets/js/lea
 
 ## Going live
 
-### 1. Strava API application
-
-1. Go to [strava.com/settings/api](https://www.strava.com/settings/api) and create an app.
-   - *Authorization Callback Domain*: your Worker's domain, e.g. `club-recap.<your-subdomain>.workers.dev`.
-2. Find your club's numeric ID:
-   ```bash
-   STRAVA_TOKEN=<"Your Access Token" from that page> node scripts/find-club-id.mjs
-   ```
-   Put it in `config/clubs/hawley-runners.json` as `stravaClubId`.
-3. **Athlete capacity:** a new Strava app can only connect its owner (you). To let club members connect, submit the app for review through Strava's developer programme. Explain the opt-in, members-only, data-minimised design above. It's free but takes a little while, so do it early.
-4. Before submitting, swap the plain "Connect with Strava" button in `index.html` for Strava's official button artwork, and add the "Powered by Strava" logo, per [Strava's brand guidelines](https://developers.strava.com/guidelines/). Also read the current [API Agreement](https://www.strava.com/legal/api), especially the parts on showing one athlete's data to others.
-
-### 2. Cloudflare Worker and database
-
-```bash
-cd apps/worker
-npx wrangler login
-npx wrangler d1 create club-recap          # copy the database_id into wrangler.jsonc
-npx wrangler d1 migrations apply club-recap --remote
-
-node ../../scripts/make-secret.mjs          # run 3 times for the three random values below
-npx wrangler secret put STRAVA_CLIENT_SECRET
-npx wrangler secret put STRAVA_VERIFY_TOKEN
-npx wrangler secret put APP_SECRET
-npx wrangler secret put ADMIN_TOKEN
-```
-
-Edit `wrangler.jsonc` vars:
-
-- `STRAVA_CLIENT_ID`
-- `WEB_BASE_URL`, e.g. `https://<you>.github.io/club-recap`
-- `ALLOWED_ORIGINS`, e.g. `https://<you>.github.io`
-
-Then run `npx wrangler deploy`.
-
-### 3. Strava webhook (new and deleted runs arrive within seconds)
-
-```bash
-STRAVA_CLIENT_ID=... STRAVA_CLIENT_SECRET=... STRAVA_VERIFY_TOKEN=... \
-    npm run webhook -- create https://club-recap.<your-subdomain>.workers.dev/webhook
-```
-
-Put the returned `id` into `wrangler.jsonc` as `STRAVA_SUBSCRIPTION_ID` and redeploy. This makes the Worker ignore anything not from your subscription. The hourly sync still catches anything a webhook misses.
-
-### 4. GitHub Pages
-
-1. Create a GitHub repo and push this folder.
-2. Set `apiBase` in `apps/web/assets/js/config.js` to your Worker URL.
-3. In the repo, go to **Settings → Pages → Source: GitHub Actions**. The `pages.yml` workflow publishes `apps/web` on every push to `main`.
-4. Share `https://<you>.github.io/club-recap/?club=hawley-runners` in the Facebook and Strava groups as the join link.
+Follow [SETUP.md](SETUP.md): a step-by-step checklist from creating the Strava app to the first end-to-end test. Notes for Strava's review of the app are in [docs/strava-review-notes.md](docs/strava-review-notes.md).
 
 ### Weekly routine
 
@@ -246,7 +199,7 @@ Late uploads are included automatically if you regenerate later.
 1. Copy `config/clubs/hawley-runners.json` to `config/clubs/<new-slug>.json` and change:
    - `slug`, `name` and `stravaClubId`
    - `branding` colours, `logo`, `hashtag` and `footer`
-   - `awards` (any of `best5k`, `best10k`, `longestRun`, `distanceTotal`, `elevationTotal`, `runCount`, `movingTimeTotal`)
+   - `awards` (any of `best5k`, `longestRun`, `distanceTotal`, `elevationTotal`, `runCount`, `movingTimeTotal`; each can set `sportTypes` to count only some run types)
    - `ytdGoalKm` and `rules`
 2. Register it in `config/clubs/index.ts`.
 3. Deploy the Worker. Their join link is `…/?club=<new-slug>` and their recap is `…/recap.html?club=<new-slug>`.
@@ -272,4 +225,4 @@ Ideas for later:
 | Outbound calls per Worker run | capped at 45 in code | 50 |
 | D1 storage | a few MB a year | 5 GB |
 
-If Strava ever returns "rate limited", the Worker pauses syncing for 15 minutes and resumes by itself.
+The Worker reads Strava's `X-RateLimit-Limit` / `X-RateLimit-Usage` headers. The hourly sync stops its batch at 80% of either window and pauses until that window resets; a 429 pauses it for 15 minutes. Both resume by themselves.

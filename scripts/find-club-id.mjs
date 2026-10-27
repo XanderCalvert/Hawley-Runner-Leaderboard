@@ -9,7 +9,8 @@ if (!token) {
     process.exit(1);
 }
 
-const response = await fetch('https://www.strava.com/api/v3/athlete/clubs?per_page=200', {
+const apiBase = process.env.STRAVA_API_BASE ?? 'https://www.strava.com/api/v3';
+const response = await fetch(`${apiBase}/athlete/clubs?per_page=200`, {
     headers: { Authorization: `Bearer ${token}` },
 });
 if (!response.ok) {

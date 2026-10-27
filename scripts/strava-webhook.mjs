@@ -9,7 +9,8 @@
  * The Worker must already be deployed with the same STRAVA_VERIFY_TOKEN, because Strava calls it
  * to validate the subscription before confirming.
  */
-const API = 'https://www.strava.com/api/v3/push_subscriptions';
+// Same override the Worker uses: https://api-v3.strava.com is available from 4 Jan 2027, required by 1 Jun 2027.
+const API = `${process.env.STRAVA_API_BASE ?? 'https://www.strava.com/api/v3'}/push_subscriptions`;
 const { STRAVA_CLIENT_ID: clientId, STRAVA_CLIENT_SECRET: clientSecret, STRAVA_VERIFY_TOKEN: verifyToken } = process.env;
 const [command, arg] = process.argv.slice(2);
 
