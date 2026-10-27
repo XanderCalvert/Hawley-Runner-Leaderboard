@@ -2,7 +2,7 @@ import { todayIn } from '@club-recap/core';
 import { getClub } from '../../../../config/clubs/index.ts';
 import { safeEqual } from '../crypto.ts';
 import { Repository } from '../db.ts';
-import type { MembershipStatus } from '../db.ts';
+import type { MemberStatus } from '../db.ts';
 import type { Env } from '../env.ts';
 import { error, json } from '../http.ts';
 import { backfillAthlete, isBackingOff } from '../sync.ts';
@@ -21,20 +21,22 @@ export async function listMembers(env: Env, slug: string): Promise<Response> {
     }
     const yearStart = `${todayIn(club.timezone).slice(0, 4)}-01-01`;
     const repo = new Repository(env);
-    return json({ members: await repo.listMembers(slug, yearStart) });
+    const members = await repo.listMembers(slug, yearStart);
+    // Strava IDs and profile links are for admins only; the public summary never includes them.
+    return json({ members: members.map((m) => ({ ...m, profileUrl: `https://www.strava.com/athletes/${m.athleteId}` })) });
 }
 
-/** PUT /admin/clubs/:slug/members/:athleteId  body: { "status": "active" | "excluded" } */
+/** PUT /admin/clubs/:slug/members/:athleteId  body: { "status": "active" | "hidden" } */
 export async function updateMember(request: Request, env: Env, slug: string, athleteId: number): Promise<Response> {
     if (!getClub(slug)) {
         return error(404, 'Unknown club');
     }
-    const body = (await request.json().catch(() => ({}))) as { status?: MembershipStatus };
-    if (body.status !== 'active' && body.status !== 'excluded') {
-        return error(400, 'status must be "active" or "excluded"');
+    const body = (await request.json().catch(() => ({}))) as { status?: MemberStatus };
+    if (body.status !== 'active' && body.status !== 'hidden') {
+        return error(400, 'status must be "active" or "hidden"');
     }
-    const updated = await new Repository(env).setStatus(slug, athleteId, body.status);
-    return updated ? json({ ok: true }) : error(404, 'Member not found');
+    await new Repository(env).setHidden(slug, athleteId, body.status === 'hidden');
+    return json({ ok: true });
 }
 
 /** POST /admin/athletes/:athleteId/resync — re-pulls the athlete's whole year. */

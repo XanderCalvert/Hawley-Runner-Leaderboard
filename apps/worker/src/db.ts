@@ -5,12 +5,12 @@ import type { Env } from './env.ts';
 import { TokenRevokedError } from './strava.ts';
 import type { StravaAthlete, StravaClient, TokenResponse } from './strava.ts';
 
-export type MembershipStatus = 'active' | 'excluded' | 'left';
+export type MemberStatus = 'active' | 'hidden';
 
 interface AthleteRow {
     id: number;
     firstname: string | null;
-    lastname: string | null;
+    lastname_initial: string | null;
     access_token: string;
     refresh_token: string;
     expires_at: number;
@@ -29,7 +29,6 @@ interface ActivityRow {
     trainer: number;
     flagged: number;
     best_5k_s: number | null;
-    best_10k_s: number | null;
 }
 
 export class Repository {
@@ -41,6 +40,7 @@ export class Repository {
 
     /* ---------- Athletes & tokens ---------- */
 
+    /** Stores the first name and surname initial only; the full surname is never kept. */
     async saveAthlete(athlete: StravaAthlete, tokens: TokenResponse, scope: string): Promise<void> {
         const [access, refresh] = await Promise.all([
             encrypt(this.env.APP_SECRET, tokens.access_token),
@@ -48,17 +48,25 @@ export class Repository {
         ]);
         await this.db
             .prepare(
-                `INSERT INTO athletes (id, firstname, lastname, access_token, refresh_token, expires_at, scope)
+                `INSERT INTO athletes (id, firstname, lastname_initial, access_token, refresh_token, expires_at, scope)
                  VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)
                  ON CONFLICT (id) DO UPDATE SET
                     firstname = excluded.firstname,
-                    lastname = excluded.lastname,
+                    lastname_initial = excluded.lastname_initial,
                     access_token = excluded.access_token,
                     refresh_token = excluded.refresh_token,
                     expires_at = excluded.expires_at,
                     scope = excluded.scope`,
             )
-            .bind(athlete.id, athlete.firstname ?? null, athlete.lastname ?? null, access, refresh, tokens.expires_at, scope)
+            .bind(
+                athlete.id,
+                athlete.firstname ?? null,
+                (athlete.lastname ?? '').trim().charAt(0).toUpperCase() || null,
+                access,
+                refresh,
+                tokens.expires_at,
+                scope,
+            )
             .run();
     }
 
@@ -101,7 +109,13 @@ export class Repository {
         return refreshed.access_token;
     }
 
-    /** Removes everything we hold about an athlete. */
+    /** The stored refresh token, for revoking it at Strava. Revoking either token of a pair revokes both. */
+    async refreshToken(athleteId: number): Promise<string | null> {
+        const row = await this.getAthleteRow(athleteId);
+        return row ? decrypt(this.env.APP_SECRET, row.refresh_token) : null;
+    }
+
+    /** Removes everything we hold about an athlete. The hide list is kept on purpose: it holds no personal data. */
     async deleteAthlete(athleteId: number): Promise<void> {
         await this.db.batch([
             this.db.prepare('DELETE FROM activities WHERE athlete_id = ?1').bind(athleteId),
@@ -114,12 +128,12 @@ export class Repository {
         await this.db.prepare("UPDATE athletes SET last_synced_at = datetime('now') WHERE id = ?1").bind(athleteId).run();
     }
 
-    /** Athletes with at least one active membership, least recently synced first. */
+    /** Athletes in at least one club, least recently synced first. */
     async athletesDueForSync(limit: number, olderThanHours: number): Promise<number[]> {
         const { results } = await this.db
             .prepare(
                 `SELECT DISTINCT a.id, a.last_synced_at FROM athletes a
-                 JOIN memberships m ON m.athlete_id = a.id AND m.status = 'active'
+                 JOIN memberships m ON m.athlete_id = a.id
                  WHERE a.last_synced_at IS NULL OR a.last_synced_at < datetime('now', ?1)
                  ORDER BY a.last_synced_at IS NOT NULL, a.last_synced_at
                  LIMIT ?2`,
@@ -131,89 +145,96 @@ export class Repository {
 
     /* ---------- Memberships ---------- */
 
-    /** Opts an athlete in to a club. An admin exclusion always survives a reconnect. */
+    /** Opts an athlete in to a club. Hiding is separate (see setHidden), so a reconnect never un-hides anyone. */
     async joinClub(clubSlug: string, athleteId: number): Promise<void> {
         await this.db
             .prepare(
                 `INSERT INTO memberships (club_slug, athlete_id) VALUES (?1, ?2)
-                 ON CONFLICT (club_slug, athlete_id) DO UPDATE SET
-                    status = CASE WHEN status = 'excluded' THEN 'excluded' ELSE 'active' END,
-                    verified_at = datetime('now')`,
+                 ON CONFLICT (club_slug, athlete_id) DO UPDATE SET verified_at = datetime('now')`,
             )
             .bind(clubSlug, athleteId)
             .run();
     }
 
-    async setStatus(clubSlug: string, athleteId: number, status: MembershipStatus): Promise<boolean> {
-        const result = await this.db
-            .prepare('UPDATE memberships SET status = ?3 WHERE club_slug = ?1 AND athlete_id = ?2')
-            .bind(clubSlug, athleteId, status)
-            .run();
-        return result.meta.changes > 0;
+    /** Removes one club's membership and returns how many clubs the athlete is still in. */
+    async leaveClub(clubSlug: string, athleteId: number): Promise<number> {
+        await this.db.prepare('DELETE FROM memberships WHERE club_slug = ?1 AND athlete_id = ?2').bind(clubSlug, athleteId).run();
+        const row = await this.db
+            .prepare('SELECT COUNT(*) AS remaining FROM memberships WHERE athlete_id = ?1')
+            .bind(athleteId)
+            .first<{ remaining: number }>();
+        return row?.remaining ?? 0;
     }
 
-    async markVerified(clubSlug: string, athleteId: number, stillMember: boolean): Promise<void> {
+    async setHidden(clubSlug: string, athleteId: number, hidden: boolean): Promise<void> {
+        await (hidden
+            ? this.db.prepare('INSERT OR IGNORE INTO hidden (club_slug, athlete_id) VALUES (?1, ?2)').bind(clubSlug, athleteId)
+            : this.db.prepare('DELETE FROM hidden WHERE club_slug = ?1 AND athlete_id = ?2').bind(clubSlug, athleteId)
+        ).run();
+    }
+
+    async markVerified(clubSlug: string, athleteId: number): Promise<void> {
         await this.db
-            .prepare(
-                `UPDATE memberships SET verified_at = datetime('now'),
-                    status = CASE
-                        WHEN status = 'excluded' THEN 'excluded'
-                        WHEN ?3 = 1 THEN 'active'
-                        ELSE 'left'
-                    END
-                 WHERE club_slug = ?1 AND athlete_id = ?2`,
-            )
-            .bind(clubSlug, athleteId, stillMember ? 1 : 0)
+            .prepare("UPDATE memberships SET verified_at = datetime('now') WHERE club_slug = ?1 AND athlete_id = ?2")
+            .bind(clubSlug, athleteId)
             .run();
     }
 
     async membershipsDueForVerification(athleteId: number, olderThanDays: number): Promise<string[]> {
         const { results } = await this.db
-            .prepare(
-                `SELECT club_slug FROM memberships
-                 WHERE athlete_id = ?1 AND status != 'excluded' AND verified_at < datetime('now', ?2)`,
-            )
+            .prepare("SELECT club_slug FROM memberships WHERE athlete_id = ?1 AND verified_at < datetime('now', ?2)")
             .bind(athleteId, `-${olderThanDays} days`)
             .all<{ club_slug: string }>();
         return results.map((r) => r.club_slug);
     }
 
+    /** Opted-in club members who have not been hidden by an admin. */
     async activeAthletes(clubSlug: string): Promise<AthleteRecord[]> {
         const { results } = await this.db
             .prepare(
-                `SELECT a.id, a.firstname, a.lastname FROM athletes a
+                `SELECT a.id, a.firstname, a.lastname_initial FROM athletes a
                  JOIN memberships m ON m.athlete_id = a.id
-                 WHERE m.club_slug = ?1 AND m.status = 'active'`,
+                 WHERE m.club_slug = ?1
+                    AND NOT EXISTS (SELECT 1 FROM hidden h WHERE h.club_slug = m.club_slug AND h.athlete_id = a.id)`,
             )
             .bind(clubSlug)
-            .all<{ id: number; firstname: string | null; lastname: string | null }>();
-        return results.map((r) => ({ id: r.id, displayName: displayName(r.firstname, r.lastname) }));
+            .all<{ id: number; firstname: string | null; lastname_initial: string | null }>();
+        return results.map((r) => ({ id: r.id, displayName: displayName(r.firstname, r.lastname_initial) }));
     }
 
+    /** Admin only. Includes hidden runners who have since disconnected (no name left, just the ID). */
     async listMembers(clubSlug: string, yearStart: string) {
         const { results } = await this.db
             .prepare(
-                `SELECT a.id, a.firstname, a.lastname, m.status, m.joined_at, m.verified_at, a.last_synced_at,
+                `SELECT m.athlete_id AS id, a.firstname AS firstname, a.lastname_initial AS initial, 1 AS connected,
+                    EXISTS (SELECT 1 FROM hidden h WHERE h.club_slug = m.club_slug AND h.athlete_id = m.athlete_id) AS hidden,
+                    m.joined_at AS joined_at, m.verified_at AS verified_at, a.last_synced_at AS last_synced_at,
                     (SELECT COUNT(*) FROM activities x WHERE x.athlete_id = a.id AND x.start_date_local >= ?2) AS runs_this_year
                  FROM memberships m JOIN athletes a ON a.id = m.athlete_id
                  WHERE m.club_slug = ?1
-                 ORDER BY a.firstname COLLATE NOCASE, a.lastname COLLATE NOCASE`,
+                 UNION ALL
+                 SELECT h.athlete_id, NULL, NULL, 0, 1, NULL, NULL, NULL, 0
+                 FROM hidden h
+                 WHERE h.club_slug = ?1 AND h.athlete_id NOT IN (SELECT athlete_id FROM memberships WHERE club_slug = ?1)
+                 ORDER BY firstname COLLATE NOCASE, initial COLLATE NOCASE, id`,
             )
             .bind(clubSlug, yearStart)
             .all<{
                 id: number;
                 firstname: string | null;
-                lastname: string | null;
-                status: MembershipStatus;
-                joined_at: string;
-                verified_at: string;
+                initial: string | null;
+                connected: number;
+                hidden: number;
+                joined_at: string | null;
+                verified_at: string | null;
                 last_synced_at: string | null;
                 runs_this_year: number;
             }>();
         return results.map((r) => ({
             athleteId: r.id,
-            name: displayName(r.firstname, r.lastname),
-            status: r.status,
+            name: r.connected ? displayName(r.firstname, r.initial) : null,
+            connected: r.connected === 1,
+            status: (r.hidden ? 'hidden' : 'active') satisfies MemberStatus,
             joinedAt: r.joined_at,
             verifiedAt: r.verified_at,
             lastSyncedAt: r.last_synced_at,
@@ -231,9 +252,9 @@ export class Repository {
         await this.db
             .prepare(
                 `INSERT INTO activities (id, athlete_id, sport_type, start_date_local, distance_m, moving_time_s,
-                    elevation_gain_m, manual, trainer, flagged, best_5k_s, best_10k_s, detail_fetched_at, updated_at)
-                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12,
-                    CASE WHEN ?13 = 1 THEN datetime('now') END, datetime('now'))
+                    elevation_gain_m, manual, trainer, flagged, best_5k_s, detail_fetched_at, updated_at)
+                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11,
+                    CASE WHEN ?12 = 1 THEN datetime('now') END, datetime('now'))
                  ON CONFLICT (id) DO UPDATE SET
                     sport_type = excluded.sport_type,
                     start_date_local = excluded.start_date_local,
@@ -243,9 +264,8 @@ export class Repository {
                     manual = excluded.manual,
                     trainer = excluded.trainer,
                     flagged = excluded.flagged,
-                    best_5k_s = CASE WHEN ?13 = 1 THEN excluded.best_5k_s ELSE activities.best_5k_s END,
-                    best_10k_s = CASE WHEN ?13 = 1 THEN excluded.best_10k_s ELSE activities.best_10k_s END,
-                    detail_fetched_at = CASE WHEN ?13 = 1 THEN datetime('now') ELSE activities.detail_fetched_at END,
+                    best_5k_s = CASE WHEN ?12 = 1 THEN excluded.best_5k_s ELSE activities.best_5k_s END,
+                    detail_fetched_at = CASE WHEN ?12 = 1 THEN datetime('now') ELSE activities.detail_fetched_at END,
                     updated_at = datetime('now')`,
             )
             .bind(
@@ -260,7 +280,6 @@ export class Repository {
                 record.trainer ? 1 : 0,
                 record.flagged ? 1 : 0,
                 record.best5kS,
-                record.best10kS,
                 fromDetail ? 1 : 0,
             )
             .run();
@@ -288,8 +307,9 @@ export class Repository {
         const { results } = await this.db
             .prepare(
                 `SELECT x.* FROM activities x
-                 JOIN memberships m ON m.athlete_id = x.athlete_id AND m.club_slug = ?1 AND m.status = 'active'
-                 WHERE x.start_date_local >= ?2 AND x.start_date_local < ?3`,
+                 JOIN memberships m ON m.athlete_id = x.athlete_id AND m.club_slug = ?1
+                 WHERE x.start_date_local >= ?2 AND x.start_date_local < ?3
+                    AND NOT EXISTS (SELECT 1 FROM hidden h WHERE h.club_slug = m.club_slug AND h.athlete_id = x.athlete_id)`,
             )
             .bind(clubSlug, from, to)
             .all<ActivityRow>();
@@ -305,7 +325,6 @@ export class Repository {
             trainer: r.trainer === 1,
             flagged: r.flagged === 1,
             best5kS: r.best_5k_s,
-            best10kS: r.best_10k_s,
         }));
     }
 

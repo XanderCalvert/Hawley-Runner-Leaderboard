@@ -102,7 +102,9 @@ export async function syncAthlete(env: Env, client: StravaClient, athleteId: num
         for (const slug of dueSlugs) {
             const club = getClub(slug);
             if (club) {
-                await repo.markVerified(slug, athleteId, clubIds.has(club.stravaClubId));
+                if (clubIds.has(club.stravaClubId)) {
+                    await repo.markVerified(slug, athleteId);
+                }
             }
         }
     }

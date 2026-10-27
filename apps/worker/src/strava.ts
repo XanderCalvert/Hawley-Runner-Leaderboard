@@ -178,7 +178,6 @@ export function toRecord(activity: StravaActivity): ActivityRecord {
         trainer: activity.trainer ?? false,
         flagged: activity.flagged ?? false,
         best5kS: bestEffort(activity, 5000),
-        best10kS: bestEffort(activity, 10000),
     };
 }
 
