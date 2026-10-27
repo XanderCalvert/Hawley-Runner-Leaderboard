@@ -24,9 +24,9 @@
         // Strava API base. https://api-v3.strava.com is available from 4 Jan 2027 and required by 1 Jun 2027.
         "STRAVA_API_BASE": "https://www.strava.com/api/v3",
         // Where the static site lives (GitHub Pages). No trailing slash.
-        "WEB_BASE_URL": "https://YOUR-GITHUB-USERNAME.github.io/club-recap",
+        "WEB_BASE_URL": "https://xandercalvert.github.io/Hawley-Runner-Leaderboard",
         // Comma-separated origins allowed to call /api and /admin from a browser.
-        "ALLOWED_ORIGINS": "https://YOUR-GITHUB-USERNAME.github.io,http://localhost:5173"
+        "ALLOWED_ORIGINS": "https://xandercalvert.github.io,http://localhost:5173"
     }
 
     // Secrets (never in this file). Set each with: npx wrangler secret put NAME
