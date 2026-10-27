@@ -51,6 +51,8 @@ export interface ClubConfig {
     slug: string;
     name: string;
     stravaClubId: number;
+    /** Public club page, used in captions. */
+    stravaUrl?: string;
     timezone: string;
     locale: string;
     rules: ClubRules;
@@ -116,6 +118,7 @@ export interface WeeklySummary {
     club: {
         slug: string;
         name: string;
+        stravaUrl?: string;
         locale: string;
         branding: ClubBranding;
     };

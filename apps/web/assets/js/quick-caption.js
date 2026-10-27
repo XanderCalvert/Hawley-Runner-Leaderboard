@@ -30,11 +30,11 @@ export function buildCaption(summary) {
     for (const section of sections) {
         lines.push(...section, '');
     }
-    const more = leaders(summary.extras.awards);
+    const more = leaders(summary.extras?.awards ?? []);
     if (more.length) {
         lines.push(...more, '');
     }
-    if (summary.extras.newFaces?.length) {
+    if (summary.extras?.newFaces?.length) {
         lines.push(`Good to see ${summary.extras.newFaces.length} of you on the board who weren't there last week.`);
     }
     const join = summary.club.stravaUrl

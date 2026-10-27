@@ -1,5 +1,6 @@
 import { applyBrand, clubSlug, fetchSummary, isSample } from './api.js';
 import { applyCardTheme, renderCard } from './card.js';
+import { buildCaption } from './quick-caption.js';
 
 const card = document.getElementById('card');
 const scaler = document.getElementById('scaler');
@@ -27,31 +28,6 @@ function fitPreview() {
     const scale = preview.clientWidth / 1080;
     scaler.style.transform = `scale(${scale})`;
     preview.style.height = `${1350 * scale}px`;
-}
-
-function buildCaption(summary) {
-    const locale = summary.club.locale || 'en-GB';
-    const km = (m) => (m / 1000).toLocaleString(locale, { maximumFractionDigits: 1 });
-    const lines = [
-        `${summary.club.name} weekly recap: ${summary.week.label}`,
-        '',
-        `${summary.group.week.runners} of us ran ${km(summary.group.week.distanceM)} km over ${summary.group.week.runs} runs and climbed ${Math.round(summary.group.week.elevationM).toLocaleString(locale)} m.`,
-        '',
-    ];
-    for (const award of summary.awards) {
-        const winners = award.entries.filter((e) => e.rank === 1);
-        if (winners.length) {
-            lines.push(`${award.label}: ${winners.map((w) => w.name).join(' & ')} (${winners[0].display})`);
-        }
-    }
-    if (summary.milestones.length) {
-        lines.push('', `Milestones: ${summary.milestones.map((m) => `${m.name} passed ${m.km} km this year`).join(', ')}. Well done!`);
-    }
-    lines.push('', `${summary.week.year} so far: ${km(summary.group.ytd.distanceM)} km together.`);
-    if (summary.club.branding.hashtag) {
-        lines.push('', summary.club.branding.hashtag);
-    }
-    return lines.join('\n');
 }
 
 async function load(weekStart) {

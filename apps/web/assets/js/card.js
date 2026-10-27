@@ -195,8 +195,8 @@ export function renderCard(summary) {
         ${
             summary.spotlight
                 ? renderSplit(summary, locale)
-                : `<div class="rc-grid">
-            ${summary.awards.slice(0, summary.group.ytd ? 5 : 6).map(renderAward).join('')}
+                : `<div class="rc-grid${summary.group.ytd && summary.awards.length > 5 ? ' rc-grid--dense' : ''}">
+            ${summary.awards.slice(0, 6).map(renderAward).join('')}
             ${summary.group.ytd ? renderYtd(summary, locale) : ''}
         </div>`
         }
