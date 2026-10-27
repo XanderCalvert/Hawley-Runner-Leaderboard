@@ -8,7 +8,7 @@ const rows = document.getElementById('rows');
 const filter = document.getElementById('filter');
 
 const STORAGE_KEY = 'club-recap-admin-token';
-const STATUS_LABELS = { active: 'Showing', excluded: 'Hidden', left: 'Left' };
+const STATUS_LABELS = { active: 'Showing', hidden: 'Hidden' };
 
 let api = null;
 let members = [];
@@ -49,10 +49,20 @@ function render() {
     const query = filter.value.trim().toLowerCase();
     rows.replaceChildren(
         ...members
-            .filter((m) => m.name.toLowerCase().includes(query))
+            .filter((m) => `${m.name ?? ''} ${m.athleteId}`.toLowerCase().includes(query))
             .map((member) => {
                 const tr = document.createElement('tr');
-                tr.append(cell(member.name));
+                tr.append(cell(member.name ?? 'Disconnected'));
+
+                // Admin only: the ID tells two "Matt C."s apart, and the link opens their Strava profile.
+                const idTd = document.createElement('td');
+                const link = document.createElement('a');
+                link.href = member.profileUrl;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                link.textContent = String(member.athleteId);
+                idTd.append(link);
+                tr.append(idTd);
 
                 const statusTd = document.createElement('td');
                 const pill = document.createElement('span');
@@ -72,14 +82,17 @@ function render() {
                 const toggle = document.createElement('button');
                 toggle.type = 'button';
                 toggle.className = 'button button--ghost';
-                toggle.textContent = member.status === 'excluded' ? 'Show on recap' : 'Hide from recap';
-                toggle.addEventListener('click', () => setStatus(member, member.status === 'excluded' ? 'active' : 'excluded'));
+                toggle.textContent = member.status === 'hidden' ? 'Show on recap' : 'Hide from recap';
+                toggle.addEventListener('click', () => setStatus(member, member.status === 'hidden' ? 'active' : 'hidden'));
                 const resync = document.createElement('button');
                 resync.type = 'button';
                 resync.className = 'button button--ghost';
                 resync.textContent = 'Resync';
                 resync.addEventListener('click', () => resyncMember(member));
-                actions.append(toggle, resync);
+                actions.append(toggle);
+                if (member.connected) {
+                    actions.append(resync);
+                }
                 tr.append(actionsTd);
 
                 return tr;
@@ -94,7 +107,7 @@ async function loadMembers() {
         members = list;
         panel.hidden = false;
         const showing = members.filter((m) => m.status === 'active').length;
-        statusEl.textContent = `${members.length} connected, ${showing} showing on the recap. ${info.activities} runs stored.${info.backingOff ? ' Strava rate limit hit: syncing paused briefly.' : ''}`;
+        statusEl.textContent = `${members.filter((m) => m.connected).length} connected, ${showing} showing on the recap. ${info.activities} runs stored.${info.backingOff ? ' Strava rate limit hit: syncing paused briefly.' : ''}`;
         render();
     } catch (error) {
         panel.hidden = true;
@@ -106,7 +119,7 @@ async function setStatus(member, status) {
     try {
         await api.setStatus(member.athleteId, status);
         member.status = status;
-        statusEl.textContent = `${member.name} is now ${status === 'excluded' ? 'hidden from' : 'showing on'} the recap.`;
+        statusEl.textContent = `${member.name ?? member.athleteId} is now ${status === 'hidden' ? 'hidden from' : 'showing on'} the recap.`;
         render();
     } catch (error) {
         statusEl.textContent = `Update failed: ${error.message}`;
@@ -116,7 +129,7 @@ async function setStatus(member, status) {
 async function resyncMember(member) {
     try {
         await api.resync(member.athleteId);
-        statusEl.textContent = `Resync started for ${member.name}. It can take a minute.`;
+        statusEl.textContent = `Resync started for ${member.name ?? member.athleteId}. It can take a minute.`;
     } catch (error) {
         statusEl.textContent = `Resync failed: ${error.message}`;
     }

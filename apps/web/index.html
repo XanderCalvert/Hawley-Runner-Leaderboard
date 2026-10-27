@@ -18,7 +18,9 @@
         </p>
 
         <div class="actions" style="margin-bottom: 32px">
-            <a class="button button--strava" id="connect" href="#">Connect with Strava</a>
+            <a class="strava-connect" id="connect" href="#" aria-label="Connect with Strava">
+                <img src="assets/img/strava/btn_strava_connectwith_orange.svg" alt="Connect with Strava" height="48">
+            </a>
             <a class="button button--ghost" href="recap.html" id="recap-link">See this week's recap</a>
         </div>
         <p class="small" id="setup-note" hidden>
@@ -39,7 +41,7 @@
             <ul class="list">
                 <li>No maps, routes, start locations, heart rate, photos or activity titles are stored or shown.</li>
                 <li>Runs you've set to "Only you" on Strava are never seen.</li>
-                <li>Only runs count. Rides, walks and everything else are ignored.</li>
+                <li>Only runs count (road, trail and treadmill or virtual). Rides, walks and everything else are ignored.</li>
             </ul>
         </section>
 
@@ -50,12 +52,16 @@
                 <li>
                     You can leave any time. <a href="#" id="leave">Remove my data</a>, or revoke access under
                     Strava → Settings → My Apps. Either way, everything we hold about you is deleted straight away.
+                    The one exception: if a club admin has hidden you, we keep your Strava ID and club name on a hide list so you stay hidden if you reconnect.
                 </li>
                 <li>Club admins can hide anyone from the recap on request.</li>
             </ul>
         </section>
 
-        <footer class="site-footer">Data from Strava. Not affiliated with or endorsed by Strava.</footer>
+        <footer class="site-footer">
+            <img class="powered-by-strava" src="assets/img/strava/api_logo_pwrdBy_strava_horiz_gray.svg" alt="Powered by Strava" height="28">
+            <p>Data from Strava. Not affiliated with or endorsed by Strava.</p>
+        </footer>
     </main>
 
     <script type="module">

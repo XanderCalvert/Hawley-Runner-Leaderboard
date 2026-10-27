@@ -64,8 +64,7 @@
             color: var(--good);
         }
 
-        .pill--excluded,
-        .pill--left {
+        .pill--hidden {
             color: var(--bad);
         }
 
@@ -102,17 +101,19 @@
         <section class="panel" id="members-panel" hidden>
             <div class="actions" style="justify-content: space-between; margin-bottom: 12px">
                 <h2 style="margin: 0">Connected runners</h2>
-                <input class="input" id="filter" type="search" placeholder="Filter by name" aria-label="Filter by name">
+                <input class="input" id="filter" type="search" placeholder="Filter by name or ID" aria-label="Filter by name or ID">
             </div>
             <p class="small">
-                <strong>Hidden</strong> runners stay connected but never appear on the recap (the blacklist).
-                <strong>Left</strong> means they're no longer in the Strava group.
+                <strong>Hidden</strong> runners never appear on the recap. The hide list is the one thing kept after
+                someone disconnects, so it still applies if they reconnect; a hidden runner who has disconnected shows
+                here as "Disconnected". Runners who leave the club's Strava group are deleted automatically.
             </p>
             <div class="table-wrap">
                 <table>
                     <thead>
                         <tr>
                             <th>Runner</th>
+                            <th>Strava ID</th>
                             <th>Status</th>
                             <th class="num">Runs this year</th>
                             <th>Joined</th>

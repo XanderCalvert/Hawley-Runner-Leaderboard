@@ -43,6 +43,18 @@
                 message: 'The recap needs permission to view your activities. Please connect again and leave "View data about your activities" ticked. Nothing has been saved.',
                 actions: [[retry, 'Connect again'], [back, 'Back']],
             },
+            full: {
+                title: 'The leaderboard is full for now',
+                tone: 'bad',
+                message: "We've asked Strava for more places. Nothing has been saved, so please try again another time.",
+                actions: [[back, 'Back']],
+            },
+            error: {
+                title: 'Something went wrong',
+                tone: 'bad',
+                message: "We couldn't finish connecting to Strava. Nothing has been saved, so it's safe to try again.",
+                actions: [[retry, 'Try again'], [back, 'Back']],
+            },
             cancelled: {
                 title: 'No problem',
                 tone: '',

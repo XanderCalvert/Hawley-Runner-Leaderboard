@@ -165,6 +165,23 @@ select:focus-visible {
     color: #ffffff;
 }
 
+/* Official Strava artwork: don't recolour, crop or restyle it (see assets/img/strava/README.md). */
+.strava-connect {
+    display: inline-block;
+    line-height: 0;
+    min-height: 48px;
+}
+
+.strava-connect:focus-visible {
+    outline: 3px solid var(--brand);
+    outline-offset: 2px;
+}
+
+.powered-by-strava {
+    display: block;
+    margin-bottom: 8px;
+}
+
 .button--ghost {
     background: transparent;
     color: var(--text);
