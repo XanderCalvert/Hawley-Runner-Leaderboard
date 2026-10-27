@@ -28,7 +28,6 @@ export function formatMetres(metres: number): string {
 export function formatMetric(metric: AwardMetric, value: number): string {
     switch (metric) {
         case 'best5k':
-        case 'best10k':
             return formatClock(value);
         case 'longestRun':
         case 'distanceTotal':

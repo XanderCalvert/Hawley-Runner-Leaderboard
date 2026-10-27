@@ -1,6 +1,5 @@
 export type AwardMetric =
     | 'best5k'
-    | 'best10k'
     | 'longestRun'
     | 'distanceTotal'
     | 'elevationTotal'
@@ -12,6 +11,8 @@ export interface AwardConfig {
     label: string;
     metric: AwardMetric;
     top: number;
+    /** Only runs of these sport_type values count towards this award (default: every type the club counts). */
+    sportTypes?: string[];
 }
 
 export interface ClubRules {
@@ -74,7 +75,6 @@ export interface ActivityRecord {
     flagged: boolean;
     /** Best 5K effort within the activity, in seconds (from the detailed activity). */
     best5kS: number | null;
-    best10kS: number | null;
 }
 
 export interface AthleteRecord {
@@ -92,7 +92,6 @@ export interface Totals {
 
 export interface AwardEntry {
     rank: number;
-    athleteId: number;
     name: string;
     value: number;
     display: string;
@@ -108,7 +107,6 @@ export interface AwardResult {
 }
 
 export interface Milestone {
-    athleteId: number;
     name: string;
     km: number;
 }

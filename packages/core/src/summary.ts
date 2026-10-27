@@ -25,7 +25,7 @@ export interface BuildSummaryInput {
 }
 
 /** Lower is better for these; higher is better for everything else. */
-const ASCENDING_METRICS: ReadonlySet<AwardMetric> = new Set(['best5k', 'best10k']);
+const ASCENDING_METRICS: ReadonlySet<AwardMetric> = new Set(['best5k']);
 
 export function isEligible(activity: ActivityRecord, rules: ClubRules): boolean {
     if (!rules.sportTypes.includes(activity.sportType)) {
@@ -76,12 +76,10 @@ function totalsFor(activities: ActivityRecord[]): Totals {
 
 function metricValue(metric: AwardMetric, runs: ActivityRecord[], rules: ClubRules): number | null {
     switch (metric) {
-        case 'best5k':
-        case 'best10k': {
-            const km = metric === 'best5k' ? 5 : 10;
+        case 'best5k': {
             let best: number | null = null;
             for (const run of runs) {
-                const effort = trustedEffort(run, metric === 'best5k' ? run.best5kS : run.best10kS, km, rules);
+                const effort = trustedEffort(run, run.best5kS, 5, rules);
                 if (effort !== null && (best === null || effort < best)) {
                     best = effort;
                 }
@@ -110,7 +108,8 @@ function buildAward(
     const ascending = ASCENDING_METRICS.has(award.metric);
     const scored: Array<{ athleteId: number; value: number; distance: number }> = [];
 
-    for (const [athleteId, runs] of runsByAthlete) {
+    for (const [athleteId, allRuns] of runsByAthlete) {
+        const runs = award.sportTypes ? allRuns.filter((r) => award.sportTypes?.includes(r.sportType)) : allRuns;
         const value = metricValue(award.metric, runs, rules);
         if (value === null || value <= 0) {
             continue;
@@ -150,7 +149,6 @@ function buildAward(
         }
         entries.push({
             rank,
-            athleteId: row.athleteId,
             name: names.get(row.athleteId) ?? 'Runner',
             value: row.value,
             display: formatMetric(award.metric, row.value),
@@ -173,7 +171,7 @@ function buildMilestones(
         const crossed = steps.filter((step) => beforeKm < step && afterKm >= step);
         const highest = crossed.at(-1);
         if (highest !== undefined) {
-            milestones.push({ athleteId, name: names.get(athleteId) ?? 'Runner', km: highest });
+            milestones.push({ name: names.get(athleteId) ?? 'Runner', km: highest });
         }
     }
     return milestones.sort((a, b) => b.km - a.km || a.name.localeCompare(b.name));

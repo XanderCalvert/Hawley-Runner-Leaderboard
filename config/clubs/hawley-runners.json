@@ -8,7 +8,8 @@
     "rules": {
         "sportTypes": [
             "Run",
-            "TrailRun"
+            "TrailRun",
+            "VirtualRun"
         ],
         "includeTreadmill": true,
         "includeManual": false,
@@ -20,13 +21,15 @@
             "id": "fastest-5k",
             "label": "Fastest 5K",
             "metric": "best5k",
-            "top": 3
+            "top": 3,
+            "sportTypes": ["Run", "TrailRun"]
         },
         {
             "id": "longest-run",
             "label": "Longest run",
             "metric": "longestRun",
-            "top": 3
+            "top": 3,
+            "sportTypes": ["Run", "TrailRun"]
         },
         {
             "id": "most-climbing",
@@ -44,6 +47,12 @@
             "id": "most-runs",
             "label": "Most runs",
             "metric": "runCount",
+            "top": 3
+        },
+        {
+            "id": "time-on-feet",
+            "label": "Most time on feet",
+            "metric": "movingTimeTotal",
             "top": 3
         }
     ],

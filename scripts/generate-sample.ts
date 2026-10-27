@@ -34,7 +34,6 @@ const activities: ActivityRecord[] = fakeActivities(athletes, `${Number(year) - 
     trainer: a.trainer,
     flagged: a.flagged,
     best5kS: a.best_efforts.find((e) => e.distance === 5000)?.elapsed_time ?? null,
-    best10kS: a.best_efforts.find((e) => e.distance === 10000)?.elapsed_time ?? null,
 }));
 
 const summary = buildWeeklySummary({

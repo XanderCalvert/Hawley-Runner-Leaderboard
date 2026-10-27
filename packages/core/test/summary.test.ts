@@ -27,7 +27,6 @@ function run(athleteId: number, date: string, km: number, minutes: number, extra
         trainer: false,
         flagged: false,
         best5kS: km >= 5 ? Math.round((minutes * 60 * 5) / km) : null,
-        best10kS: null,
         ...extra,
     };
 }
@@ -110,7 +109,7 @@ describe('buildWeeklySummary', () => {
 
     it('includes YTD from 1 January and flags milestones', () => {
         expect(summary.group.ytd.runs).toBe(7);
-        expect(summary.milestones).toEqual([{ athleteId: 1, name: 'Sarah K.', km: 500 }]);
+        expect(summary.milestones).toEqual([{ name: 'Sarah K.', km: 500 }]);
     });
 
     it('shares podium places on a tie', () => {
@@ -147,5 +146,89 @@ describe('displayName', () => {
         expect(displayName('Sarah', 'Kent')).toBe('Sarah K.');
         expect(displayName('Sarah', '')).toBe('Sarah');
         expect(displayName(null, null)).toBe('Runner');
+    });
+});
+
+describe('per-award sport types', () => {
+    const virtual = run(1, '2026-09-22', 30, 180, { sportType: 'VirtualRun', trainer: true, best5kS: 1000 });
+    const outdoor = run(2, '2026-09-22', 10, 60);
+    const summary = buildWeeklySummary({ club, athletes, activities: [virtual, outdoor], weekStart: '2026-09-21' });
+    const award = (id: string) => summary.awards.find((a) => a.id === id);
+
+    it('counts virtual runs for totals and distance awards', () => {
+        expect(summary.group.week.runs).toBe(2);
+        expect(award('most-distance')?.entries[0]?.name).toBe('Sarah K.');
+        expect(award('time-on-feet')?.entries[0]?.name).toBe('Sarah K.');
+    });
+
+    it('keeps virtual runs out of Longest run and Fastest 5K', () => {
+        expect(award('longest-run')?.entries.map((e) => e.name)).toEqual(['Tom B.']);
+        expect(award('fastest-5k')?.entries.map((e) => e.name)).toEqual(['Tom B.']);
+    });
+
+    it('does not let an award filter leak into other awards', () => {
+        const noFilter = { ...club, awards: club.awards.map((a) => ({ ...a, sportTypes: undefined })) };
+        const open = buildWeeklySummary({ club: noFilter, athletes, activities: [virtual, outdoor], weekStart: '2026-09-21' });
+        expect(open.awards.find((a) => a.id === 'longest-run')?.entries[0]?.name).toBe('Sarah K.');
+    });
+});
+
+describe('sport_type filtering', () => {
+    it('uses sport_type, so a legacy "Run" type on a ride is not enough', () => {
+        expect(isEligible(run(1, '2026-09-22', 5, 25, { sportType: 'Ride' }), club.rules)).toBe(false);
+        expect(isEligible(run(1, '2026-09-22', 5, 25, { sportType: 'TrailRun' }), club.rules)).toBe(true);
+        expect(isEligible(run(1, '2026-09-22', 5, 25, { sportType: 'VirtualRun', trainer: true }), club.rules)).toBe(true);
+        expect(isEligible(run(1, '2026-09-22', 5, 25, { sportType: 'Walk' }), club.rules)).toBe(false);
+    });
+});
+
+describe('week boundaries across the UK clock changes', () => {
+    const lastWeek = (iso: string) => lastCompletedWeekStart('Europe/London', new Date(iso));
+
+    it('rolls over at local midnight when the clocks go forward (29 Mar 2026)', () => {
+        expect(lastWeek('2026-03-29T22:30:00Z')).toBe('2026-03-16'); // Sunday 22:30 GMT, week still running
+        expect(lastWeek('2026-03-29T23:30:00Z')).toBe('2026-03-23'); // Monday 00:30 BST: UTC would still say Sunday
+    });
+
+    it('rolls over at local midnight when the clocks go back (25 Oct 2026)', () => {
+        expect(lastWeek('2026-10-25T23:30:00Z')).toBe('2026-10-12'); // Sunday 23:30 GMT, week still running
+        expect(lastWeek('2026-10-26T00:30:00Z')).toBe('2026-10-19'); // Monday 00:30 GMT
+        expect(lastWeek('2026-10-18T22:30:00Z')).toBe('2026-10-05'); // Sunday 23:30 BST, a week earlier
+        expect(lastWeek('2026-10-18T23:30:00Z')).toBe('2026-10-12'); // Monday 00:30 BST
+    });
+
+    it('buckets runs by local wall-clock date either side of Sunday midnight', () => {
+        const build = (week: string) =>
+            buildWeeklySummary({
+                club,
+                athletes,
+                activities: [
+                    run(1, '2026-03-29', 5, 25, { startDateLocal: '2026-03-29T23:55:00' }),
+                    run(2, '2026-03-30', 5, 25, { startDateLocal: '2026-03-30T00:05:00' }),
+                ],
+                weekStart: week,
+            });
+        expect(build('2026-03-23').group.week.runners).toBe(1);
+        expect(build('2026-03-30').group.week.runners).toBe(1);
+    });
+});
+
+describe('tie ranking', () => {
+    it('gives everyone tied for first rank 1, then counts the rest as "more tied"', () => {
+        const five = [1, 2, 3, 4, 5].map((id) => ({ id, displayName: `Runner ${id}` }));
+        const tied = buildWeeklySummary({
+            club,
+            athletes: five,
+            activities: five.map((a) => run(a.id, '2026-09-22', 5, 25)),
+            weekStart: '2026-09-21',
+        });
+        const fastest = tied.awards.find((a) => a.id === 'fastest-5k');
+        expect(fastest?.entries.map((e) => e.rank)).toEqual([1, 1, 1]);
+        expect(fastest?.moreTied).toBe(2);
+    });
+
+    it('does not expose Strava athlete IDs in the public summary', () => {
+        const summary = buildWeeklySummary({ club, athletes, activities: [run(1, '2026-09-22', 5, 25)], weekStart: '2026-09-21' });
+        expect(JSON.stringify(summary)).not.toContain('athleteId');
     });
 });
