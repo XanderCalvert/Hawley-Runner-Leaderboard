@@ -1,6 +1,7 @@
 import { addDays, todayIn } from '@club-recap/core';
 import { getClub } from '../../../config/clubs/index.ts';
 import { Repository } from './db.ts';
+import { disconnectAthlete } from './disconnect.ts';
 import type { Env } from './env.ts';
 import {
     BudgetExhaustedError,
@@ -9,6 +10,7 @@ import {
     STORED_SPORT_TYPES,
     StravaClient,
     hasBestEfforts,
+    nextWindowReset,
     toRecord,
 } from './strava.ts';
 import type { StravaActivity } from './strava.ts';
@@ -33,6 +35,11 @@ export async function isBackingOff(repo: Repository): Promise<boolean> {
 
 async function backOff(repo: Repository, minutes = 15): Promise<void> {
     await repo.setState(BACKOFF_KEY, new Date(Date.now() + minutes * 60_000).toISOString());
+}
+
+/** Pauses until Strava resets the window we are close to running out of. */
+async function backOffUntilReset(repo: Repository, window: 'short' | 'daily'): Promise<void> {
+    await repo.setState(BACKOFF_KEY, nextWindowReset(window).toISOString());
 }
 
 function isStorable(activity: StravaActivity): boolean {
@@ -67,11 +74,43 @@ interface SyncOptions {
     maxPages: number;
 }
 
-/** Pulls an athlete's recent activities, fills in best efforts and re-checks club membership. */
+/**
+ * Weekly check that the runner is still in each club's Strava group. Returns false if they were removed entirely.
+ * A leaver is only ever identified by a successful /athlete/clubs response that lacks the club: any failure,
+ * including a rate limit, throws out of client.clubs() before we get here.
+ */
+export async function verifyMemberships(repo: Repository, client: StravaClient, token: string, athleteId: number): Promise<boolean> {
+    const dueSlugs = await repo.membershipsDueForVerification(athleteId, 7);
+    if (!dueSlugs.length) {
+        return true;
+    }
+    const clubIds = new Set((await client.clubs(token)).map((c) => c.id));
+    let remaining = -1;
+    for (const slug of dueSlugs) {
+        const club = getClub(slug);
+        if (club && clubIds.has(club.stravaClubId)) {
+            await repo.markVerified(slug, athleteId);
+        } else if (club) {
+            remaining = await repo.leaveClub(slug, athleteId);
+        }
+    }
+    if (remaining === 0) {
+        await disconnectAthlete(repo, client, athleteId);
+        return false;
+    }
+    return true;
+}
+
+/** Pulls an athlete's recent activities and fills in best efforts, after re-checking club membership. */
 export async function syncAthlete(env: Env, client: StravaClient, athleteId: number, options: SyncOptions): Promise<void> {
     const repo = new Repository(env);
     const token = await repo.accessToken(athleteId, client);
     if (!token) {
+        return;
+    }
+
+    // Check club membership before pulling any data, so someone who has left never has more stored.
+    if (!(await verifyMemberships(repo, client, token, athleteId))) {
         return;
     }
 
@@ -93,20 +132,6 @@ export async function syncAthlete(env: Env, client: StravaClient, athleteId: num
             break;
         }
         await fetchAndStore(repo, client, token, id);
-    }
-
-    // Weekly check that they are still in each club's Strava group.
-    const dueSlugs = await repo.membershipsDueForVerification(athleteId, 7);
-    if (dueSlugs.length && client.remaining > 1) {
-        const clubIds = new Set((await client.clubs(token)).map((c) => c.id));
-        for (const slug of dueSlugs) {
-            const club = getClub(slug);
-            if (club) {
-                if (clubIds.has(club.stravaClubId)) {
-                    await repo.markVerified(slug, athleteId);
-                }
-            }
-        }
     }
 
     await repo.markSynced(athleteId);
@@ -193,6 +218,13 @@ export async function runScheduledSync(env: Env): Promise<void> {
         if (client.remaining < 5) {
             break;
         }
+        // Stop the batch early when close to either Strava window, and stay quiet until it resets.
+        const near = client.nearRateLimit();
+        if (near) {
+            console.log(`Stopping scheduled sync: close to the Strava ${near} rate limit`);
+            await backOffUntilReset(repo, near);
+            return;
+        }
         try {
             await syncAthlete(env, client, athleteId, {
                 afterEpoch: now - 4 * DAY_S,
@@ -212,5 +244,11 @@ export async function runScheduledSync(env: Env): Promise<void> {
             // Don't let one broken athlete block the queue.
             await repo.markSynced(athleteId);
         }
+    }
+
+    // The last athlete may have taken us over the line.
+    const near = client.nearRateLimit();
+    if (near) {
+        await backOffUntilReset(repo, near);
     }
 }

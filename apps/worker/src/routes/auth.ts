@@ -1,9 +1,11 @@
 import { getClub } from '../../../../config/clubs/index.ts';
 import { signState, verifyState } from '../crypto.ts';
 import { Repository } from '../db.ts';
+import { disconnectAthlete } from '../disconnect.ts';
 import type { Env } from '../env.ts';
 import { error, redirect } from '../http.ts';
-import { StravaClient } from '../strava.ts';
+import { AthleteLimitError, StravaClient, isAthleteLimit } from '../strava.ts';
+import type { TokenResponse } from '../strava.ts';
 import { backfillAthlete } from '../sync.ts';
 
 type Intent = 'join' | 'leave';
@@ -34,6 +36,14 @@ export async function startAuth(request: Request, env: Env): Promise<Response> {
     return redirect(client.authoriseUrl(`${url.origin}/auth/callback`, state));
 }
 
+/** Revokes a token we have decided not to keep, unless the runner is already connected (it would cut that off). */
+async function dropNewGrant(repo: Repository, client: StravaClient, athleteId: number, tokens: TokenResponse): Promise<void> {
+    if (await repo.isConnected(athleteId)) {
+        return;
+    }
+    await client.revoke(tokens.access_token, 'access_token').catch((e) => console.error('Revoke failed', athleteId, e));
+}
+
 /** GET /auth/callback — Strava sends the runner back here after they approve (or cancel). */
 export async function authCallback(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
@@ -44,38 +54,53 @@ export async function authCallback(request: Request, env: Env, ctx: ExecutionCon
     }
 
     const code = url.searchParams.get('code');
-    if (url.searchParams.get('error') || !code) {
-        return redirect(resultUrl(env, club.slug, 'cancelled'));
+    const authError = url.searchParams.get('error');
+    if (authError || !code) {
+        return redirect(resultUrl(env, club.slug, authError && isAthleteLimit(400, authError) ? 'full' : 'cancelled'));
     }
 
     const scope = url.searchParams.get('scope') ?? '';
     const client = new StravaClient(env);
     const repo = new Repository(env);
-    const tokens = await client.exchangeCode(code);
+
+    let tokens: TokenResponse;
+    try {
+        tokens = await client.exchangeCode(code);
+    } catch (e) {
+        if (e instanceof AthleteLimitError) {
+            return redirect(resultUrl(env, club.slug, 'full'));
+        }
+        console.error('Token exchange failed', e);
+        return redirect(resultUrl(env, club.slug, 'error'));
+    }
     const athlete = tokens.athlete;
     if (!athlete) {
-        return error(502, 'Strava did not return an athlete.');
+        return redirect(resultUrl(env, club.slug, 'error'));
     }
 
     if (state.intent === 'leave') {
-        await repo.deleteAthlete(athlete.id);
-        await client.deauthorise(tokens.access_token);
+        await disconnectAthlete(repo, client, athlete.id, [{ token: tokens.access_token, hint: 'access_token' }]);
         return redirect(resultUrl(env, club.slug, 'left'));
     }
 
     // We need activity:read to see their runs. Without it there is nothing to show.
-    if (!scope.split(',').includes('activity:read') && !scope.split(',').includes('activity:read_all')) {
-        await client.deauthorise(tokens.access_token);
+    if (!scope.split(',').includes('activity:read')) {
+        await dropNewGrant(repo, client, athlete.id, tokens);
         return redirect(resultUrl(env, club.slug, 'missing-scope'));
     }
 
     // Requirement: must be a member of the club's Strava group.
-    const clubs = await client.clubs(tokens.access_token);
+    let clubs;
+    try {
+        clubs = await client.clubs(tokens.access_token);
+    } catch (e) {
+        // Couldn't check, so don't guess: keep nothing and ask them to try again.
+        console.error('Club check failed', e);
+        await dropNewGrant(repo, client, athlete.id, tokens);
+        return redirect(resultUrl(env, club.slug, 'error'));
+    }
     if (!clubs.some((c) => c.id === club.stravaClubId)) {
-        // Only deauthorise if they are not already connected through another club.
-        if (!(await repo.isConnected(athlete.id))) {
-            await client.deauthorise(tokens.access_token);
-        }
+        await dropNewGrant(repo, client, athlete.id, tokens);
         return redirect(resultUrl(env, club.slug, 'not-member'));
     }
 

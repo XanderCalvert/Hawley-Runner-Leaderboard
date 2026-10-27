@@ -1,6 +1,9 @@
 /**
- * A tiny fake Strava for local development: OAuth, club list, activities and activity detail.
- * Run with `node scripts/mock-strava.ts`, then set STRAVA_BASE_URL=http://localhost:8788 in apps/worker/.dev.vars.
+ * A tiny fake Strava for local development: OAuth (token, revoke), club list, activities and activity detail.
+ * Run with `node scripts/mock-strava.ts`, then set these in apps/worker/.dev.vars:
+ *   STRAVA_OAUTH_BASE=http://localhost:8788
+ *   STRAVA_API_BASE=http://localhost:8788/api/v3
+ * MOCK_ATHLETE_LIMIT=3 makes new athletes beyond the third fail the token exchange, like Strava's capacity limit.
  * Each visit to /oauth/authorize signs in as the next fake runner. Every 10th runner is not a club member.
  */
 import { createServer } from 'node:http';
@@ -8,6 +11,9 @@ import { fakeActivities, fakeAthletes } from './lib/fake-runners.ts';
 
 const PORT = Number(process.env.MOCK_PORT ?? 8788);
 const CLUB_ID = Number(process.env.MOCK_CLUB_ID ?? 0);
+const ATHLETE_LIMIT = Number(process.env.MOCK_ATHLETE_LIMIT ?? Infinity);
+const connected = new Set<number>();
+const revoked = new Set<number>(); // athlete IDs whose access was revoked
 const athletes = fakeAthletes(30);
 const today = new Date().toISOString().slice(0, 10);
 const activities = fakeActivities(athletes, '2025-12-20', today);
@@ -19,7 +25,7 @@ function athleteFromToken(header: string | undefined) {
 }
 
 function send(res: import('node:http').ServerResponse, status: number, body: unknown) {
-    res.writeHead(status, { 'Content-Type': 'application/json' });
+    res.writeHead(status, { 'Content-Type': 'application/json', 'X-RateLimit-Limit': '100,1000', 'X-RateLimit-Usage': '1,1' });
     res.end(JSON.stringify(body));
 }
 
@@ -28,7 +34,11 @@ async function readBody(req: import('node:http').IncomingMessage): Promise<Recor
     for await (const chunk of req) {
         raw += chunk;
     }
-    return raw ? JSON.parse(raw) : {};
+    if (!raw) {
+        return {};
+    }
+    // Strava accepts JSON or form-encoded bodies on the token endpoint; revoke is form-encoded.
+    return req.headers['content-type']?.includes('json') ? JSON.parse(raw) : Object.fromEntries(new URLSearchParams(raw));
 }
 
 function tokens(athleteId: number) {
@@ -61,15 +71,37 @@ createServer(async (req, res) => {
         if (!athlete) {
             return send(res, 400, { message: 'Bad Request' });
         }
+        if (body.grant_type === 'refresh_token' && revoked.has(athlete.id)) {
+            return send(res, 400, { message: 'Bad Request' });
+        }
+        if (body.grant_type === 'authorization_code' && !connected.has(athlete.id) && connected.size >= ATHLETE_LIMIT) {
+            return send(res, 403, { message: 'Limit of connected athletes exceeded' });
+        }
+        connected.add(athlete.id);
+        revoked.delete(athlete.id);
         return send(res, 200, { ...tokens(athlete.id), athlete });
     }
 
-    if (path === '/oauth/deauthorize') {
-        return send(res, 200, {});
+    // POST /oauth/revoke: HTTP Basic client auth, form body `token` (+ optional `token_type_hint`).
+    // 200 with an empty body whether or not the token existed; 400 missing token; 401 bad auth.
+    if (path === '/oauth/revoke' && req.method === 'POST') {
+        const body = await readBody(req);
+        if (!/^Basic .+/.test(req.headers.authorization ?? '')) {
+            return send(res, 401, { message: 'Authorization Error' });
+        }
+        if (!body.token) {
+            return send(res, 400, { message: 'Bad Request' });
+        }
+        // Revoking either token of a pair revokes both: tokens are keyed by athlete.
+        const id = Number(body.token.split('-')[1]);
+        connected.delete(id);
+        revoked.add(id);
+        res.writeHead(200);
+        return res.end();
     }
 
     const athlete = athleteFromToken(req.headers.authorization);
-    if (!athlete) {
+    if (!athlete || revoked.has(athlete.id)) {
         return send(res, 401, { message: 'Authorization Error' });
     }
 
