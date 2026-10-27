@@ -83,6 +83,99 @@ Each visit to `http://localhost:8787/auth/start?club=hawley-runners` signs in as
 
 ---
 
+## Quick recap (MVP, no Strava sign-ups)
+
+Before any runners have connected, the quick recap makes the cards from the club leaderboard every member can already see on Strava. It's a paste page plus a small Python script, with no AI or accounts involved.
+
+### One-off setup (Windows)
+
+1. Install Python 3.10+ from [python.org](https://www.python.org/downloads/) (tick "Add python.exe to PATH").
+2. In a terminal in this folder, run these two commands **one at a time** (press Enter after each):
+   ```bash
+   py -m pip install -r scripts/requirements.txt
+   py -m playwright install chromium
+   ```
+   (If `py` isn't found, use `python` instead.)
+
+### Every week
+
+1. Double-click **`Weekly recap.bat`** (next to this folder). It opens the paste page in your browser. Leave the black window open.
+2. On the club's Strava page, select the leaderboard **including its heading** ("Last Week's Leaderboard" on Monday, or "This Week's Leaderboard" late on Sunday) and copy it. The heading tells the page which week it is.
+3. Paste. Check the preview, the week and the hide list, then click **Save and build PNGs**.
+4. Open `recaps/<week>/`: two PNGs, `caption.txt` and `caption.md`, ready to post.
+
+Saving the same week again (for example Sunday afternoon, then Monday with late runs) overwrites it.
+
+### The archive
+
+```
+recaps/                      (next to this repo, so runners' names never end up on GitHub)
+    settings.json            hide list, groups (e.g. women), min km for pace/hill awards, places per award
+    2026-09-21/
+        leaderboard.csv      everyone on the board, exactly as Strava showed it
+        hawley-runners-recap-2026-09-21.png
+        hawley-runners-more-2026-09-21.png
+        caption.txt
+        caption.md
+```
+
+The CSV columns are `week_start, rank, name, distance_km, runs, longest_km, avg_pace_per_km, elevation_m`. Hidden runners stay in the CSV and are only left off the cards, so un-hiding someone and rebuilding just works.
+
+### Women's leaders (and other groups)
+
+Strava's leaderboard doesn't say who is who, so nothing is guessed. Under **Settings** on the paste page there's a **Women list** with a tick box for everyone on this week's board: tick the runners to include. The list is kept in `recaps/settings.json` (never on GitHub) and carries over, so each week it's only new faces. Anyone on the list who didn't run that week shows at the bottom, still ticked.
+
+It's still two images. The first card shows **Men's leaders** and **Women's leaders** side by side: most distance, longest run and most climbing, top 7 each, drawn from the same leaderboard. There is no men's list: everyone not ticked counts as a man, so tick new women each week. "Most time on feet" moves to the second card, whose awards follow the places setting (top 5 by default). The caption gets matching "Men's leaders" and "Women's leaders" blocks. With nobody ticked, or nobody on the list running that week, the first card falls back to the six overall awards.
+
+Other groups can be added to `settings.json`. The first one with runners that week gets the panel:
+
+```json
+"groups": [
+    { "id": "women", "label": "Women", "title": "Women's leaders", "members": ["Full Name", "…"] }
+]
+```
+
+### Script commands
+
+```bash
+python scripts/recap.py serve                 # what the .bat runs
+python scripts/recap.py build                 # rebuild the latest week
+python scripts/recap.py build --week 2026-09-21
+python scripts/recap.py build --all           # e.g. after changing the design or the hide list
+python scripts/recap.py add file.csv ...      # file CSVs downloaded from the page into week folders, then build
+python scripts/recap.py --archive D:/elsewhere build   # use a different archive folder
+```
+
+When building, the script checks the data and warns about duplicates, 0 km entries, impossible paces (a ride saved as a run) and a longest run bigger than the total.
+
+The paste page also works without the script (for example on GitHub Pages): **Save CSV** downloads the file instead, the PNGs can be downloaded from the browser, and `recap.py add` files the CSV later.
+
+The cards are drawn by `apps/web/render.html` using the same code as the page preview, so what you see before saving is what gets built.
+
+What changes from the full version, because the leaderboard only has weekly totals per runner:
+
+| Full version | Quick recap |
+|---|---|
+| Fastest 5K (true best-effort split) | Quickest average pace, with a minimum weekly distance (10 km by default) |
+| Year-to-date panel and milestones | Not shown; the sixth tile is **Most time on feet** (distance × average pace) |
+| Week-on-week change | From the archive, once the week before has been saved |
+| Opt-in via Strava | Everyone on the club leaderboard, minus the hide list |
+
+Awards show a top 5 by default (a compact layout; switch to top 3 on the page).
+
+The second card, **More from the week**, adds what else the leaderboard supports:
+
+- **Longest average run** (distance ÷ runs, 2+ runs)
+- **Hill seeker** (metres climbed per km, same minimum distance as the pace award)
+- **Quickest pace (5–10 km)**, so runners below the main pace award's minimum get a chance
+- **Biggest step up** in distance on the week before (only when the week before is known)
+- **Club distance**: a line chart of the club's total km for this week and up to four weeks before (only weeks saved in the archive are plotted; it's left out until one earlier week exists)
+- **Everyone who ran**: a roll call, with anyone not on the week before's board highlighted
+
+Names are still shown as "First L.". The parser lives in `apps/web/assets/js/leaderboard.js` and handles km or miles, the doubled names Strava copies from avatars, emoji and `--` for no climbing.
+
+---
+
 ## Going live
 
 ### 1. Strava API application

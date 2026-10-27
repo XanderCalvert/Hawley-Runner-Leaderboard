@@ -34,7 +34,14 @@ export interface ClubBranding {
     muted: string;
     primary: string;
     accent: string;
+    /** Emblem shown top right of the card (the week number then moves onto the date line). */
     logo: string | null;
+    /** Light-on-dark wordmark image used instead of the club name text. */
+    wordmark?: string | null;
+    /** Colour of the slanted band behind the header (defaults to primary). */
+    band?: string | null;
+    /** Opacity of that band, 0–1 (default 0.16). */
+    bandOpacity?: number;
     hashtag: string | null;
     footer: string | null;
 }

@@ -5,13 +5,16 @@
         "name": "Hawley Runners",
         "locale": "en-GB",
         "branding": {
-            "background": "#0d1b2a",
-            "surface": "#15283c",
-            "text": "#f4f1ea",
-            "muted": "#9fb0c2",
-            "primary": "#ff6b35",
-            "accent": "#ffd166",
-            "logo": null,
+            "background": "#0e1830",
+            "surface": "#1a2a4f",
+            "text": "#f6f5f0",
+            "muted": "#aab3c5",
+            "primary": "#fc4c02",
+            "accent": "#fed403",
+            "logo": "assets/img/hawley-runners-emblem.png",
+            "wordmark": "assets/img/hawley-runners-wordmark-white.png",
+            "band": "#2b447d",
+            "bandOpacity": 0.55,
             "hashtag": "#HawleyRunners",
             "footer": "Join the leaderboard: link in the group"
         }

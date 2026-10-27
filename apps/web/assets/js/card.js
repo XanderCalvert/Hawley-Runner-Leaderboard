@@ -3,7 +3,7 @@
  * Pure string templating: no framework, and every value from the API is escaped.
  */
 
-const escapeHtml = (value) =>
+export const escapeHtml = (value) =>
     String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
 const safeColour = (value, fallback) => (/^#[0-9a-f]{3,8}$/i.test(value ?? '') ? value : fallback);
@@ -32,14 +32,14 @@ function delta(current, previous) {
 }
 
 /** ISO week number, e.g. 2026-09-21 → 39. */
-function isoWeek(date) {
+export function isoWeek(date) {
     const d = new Date(`${date}T00:00:00Z`);
     d.setUTCDate(d.getUTCDate() + 3 - ((d.getUTCDay() + 6) % 7));
     const firstThursday = new Date(Date.UTC(d.getUTCFullYear(), 0, 4));
     return 1 + Math.round(((d - firstThursday) / 86_400_000 - 3 + ((firstThursday.getUTCDay() + 6) % 7)) / 7);
 }
 
-function renderAward(award) {
+export function renderAward(award) {
     const [first, ...rest] = award.entries;
     if (!first) {
         return `
@@ -65,6 +65,19 @@ function renderAward(award) {
             </ol>
             ${more}
         </section>`;
+}
+
+/** First card, quick recap: Men's and Women's leaders side by side, each a stack of top-3 podiums. */
+function renderSplit(summary, locale) {
+    const panel = (p) => `
+        <section class="rc-panel">
+            <div class="rc-panel__head">
+                <h3 class="rc-award__label">${escapeHtml(p.title)}</h3>
+                <span class="rc-panel__count">${number(p.runners, locale)} ran · ${km(p.distanceM, locale, 1)} km</span>
+            </div>
+            ${p.awards.map(renderAward).join('')}
+        </section>`;
+    return `<div class="rc-split">${[summary.rest, summary.spotlight].filter(Boolean).map(panel).join('')}</div>`;
 }
 
 function renderYtd(summary, locale) {
@@ -99,7 +112,11 @@ export function applyCardTheme(card, branding = {}) {
         '--c-muted': branding.muted,
         '--c-primary': branding.primary,
         '--c-accent': branding.accent,
+        '--c-band': branding.band,
     };
+    if (typeof branding.bandOpacity === 'number') {
+        card.style.setProperty('--c-band-opacity', String(Math.min(1, Math.max(0, branding.bandOpacity))));
+    }
     for (const [prop, value] of Object.entries(map)) {
         if (value) {
             card.style.setProperty(prop, safeColour(value, ''));
@@ -107,11 +124,38 @@ export function applyCardTheme(card, branding = {}) {
     }
 }
 
+/**
+ * Card header, shared by both cards. With a logo, the logo takes the top-right corner and the week
+ * number moves onto the date line; with a wordmark, it replaces the club name text.
+ */
+export function renderHeader(summary, titleHtml, titleClass = '') {
+    const branding = summary.club.branding ?? {};
+    const weekNo = isoWeek(summary.week.start);
+    const club = branding.wordmark
+        ? `<p class="rc-club rc-club--wordmark"><img src="${escapeHtml(branding.wordmark)}" alt="${escapeHtml(summary.club.name)}"></p>`
+        : `<p class="rc-club">${escapeHtml(summary.club.name)}</p>`;
+    const side = branding.logo
+        ? `<img class="rc-logo" src="${escapeHtml(branding.logo)}" alt="">`
+        : `<div class="rc-weekno ${titleClass ? 'rc-weekno--small' : ''}" aria-label="Week ${weekNo}"><small>Week</small>${weekNo}</div>`;
+    const audience = summary.audience ? `<span class="rc-week__group">${escapeHtml(summary.audience.label)}</span>` : '';
+    const week = branding.logo
+        ? `${escapeHtml(summary.week.label)}<span class="rc-week__no">Week ${weekNo}</span>${audience}`
+        : `${escapeHtml(summary.week.label)}${audience}`;
+    return `
+        <header class="rc-head${branding.logo ? ' rc-head--logo' : ''}">
+            <div>
+                ${club}
+                <h2 class="rc-title ${titleClass}">${titleHtml}</h2>
+                <p class="rc-week">${week}</p>
+            </div>
+            ${side}
+        </header>`;
+}
+
 export function renderCard(summary) {
     const locale = summary.club.locale || 'en-GB';
     const { week, previousWeek } = summary.group;
     const branding = summary.club.branding ?? {};
-    const logo = branding.logo ? `<img class="rc-logo" src="${escapeHtml(branding.logo)}" alt="">` : '';
 
     const milestones = summary.milestones?.length
         ? `<div class="rc-milestones"><strong>Milestones</strong>
@@ -123,14 +167,7 @@ export function renderCard(summary) {
         : '';
 
     return `
-        <header class="rc-head">
-            <div>
-                <p class="rc-club">${escapeHtml(summary.club.name)}</p>
-                <h2 class="rc-title">Weekly<br><span>Recap</span></h2>
-                <p class="rc-week">${escapeHtml(summary.week.label)}</p>
-            </div>
-            ${logo || `<div class="rc-weekno" aria-label="Week ${isoWeek(summary.week.start)}"><small>Week</small>${isoWeek(summary.week.start)}</div>`}
-        </header>
+        ${renderHeader(summary, 'Weekly<br><span>Recap</span>')}
 
         <div class="rc-stats">
             <div class="rc-stat">
@@ -155,10 +192,14 @@ export function renderCard(summary) {
             </div>
         </div>
 
-        <div class="rc-grid">
-            ${summary.awards.slice(0, 5).map(renderAward).join('')}
-            ${renderYtd(summary, locale)}
-        </div>
+        ${
+            summary.spotlight
+                ? renderSplit(summary, locale)
+                : `<div class="rc-grid">
+            ${summary.awards.slice(0, summary.group.ytd ? 5 : 6).map(renderAward).join('')}
+            ${summary.group.ytd ? renderYtd(summary, locale) : ''}
+        </div>`
+        }
 
         ${milestones}
 

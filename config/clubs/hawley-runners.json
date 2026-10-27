@@ -1,33 +1,75 @@
 {
     "slug": "hawley-runners",
     "name": "Hawley Runners",
+    "stravaUrl": "https://www.strava.com/clubs/HawleyRunners",
     "stravaClubId": 0,
     "timezone": "Europe/London",
     "locale": "en-GB",
     "rules": {
-        "sportTypes": ["Run", "TrailRun"],
+        "sportTypes": [
+            "Run",
+            "TrailRun"
+        ],
         "includeTreadmill": true,
         "includeManual": false,
         "minDistanceM": 1000,
         "minPaceSecondsPerKm": 150
     },
     "awards": [
-        { "id": "fastest-5k", "label": "Fastest 5K", "metric": "best5k", "top": 3 },
-        { "id": "longest-run", "label": "Longest run", "metric": "longestRun", "top": 3 },
-        { "id": "most-climbing", "label": "Most climbing", "metric": "elevationTotal", "top": 3 },
-        { "id": "most-distance", "label": "Most distance", "metric": "distanceTotal", "top": 3 },
-        { "id": "most-runs", "label": "Most runs", "metric": "runCount", "top": 3 }
+        {
+            "id": "fastest-5k",
+            "label": "Fastest 5K",
+            "metric": "best5k",
+            "top": 3
+        },
+        {
+            "id": "longest-run",
+            "label": "Longest run",
+            "metric": "longestRun",
+            "top": 3
+        },
+        {
+            "id": "most-climbing",
+            "label": "Most climbing",
+            "metric": "elevationTotal",
+            "top": 3
+        },
+        {
+            "id": "most-distance",
+            "label": "Most distance",
+            "metric": "distanceTotal",
+            "top": 3
+        },
+        {
+            "id": "most-runs",
+            "label": "Most runs",
+            "metric": "runCount",
+            "top": 3
+        }
     ],
     "ytdGoalKm": 30000,
-    "milestonesKm": [100, 250, 500, 750, 1000, 1500, 2000, 2500, 3000],
+    "milestonesKm": [
+        100,
+        250,
+        500,
+        750,
+        1000,
+        1500,
+        2000,
+        2500,
+        3000
+    ],
     "branding": {
-        "background": "#0d1b2a",
-        "surface": "#15283c",
-        "text": "#f4f1ea",
-        "muted": "#9fb0c2",
-        "primary": "#ff6b35",
-        "accent": "#ffd166",
-        "logo": null,
+        "background": "#0e1830",
+        "surface": "#1a2a4f",
+        "text": "#f6f5f0",
+        "muted": "#aab3c5",
+        "primary": "#fc4c02",
+        "accent": "#fed403",
+        "logo": "assets/img/hawley-runners-emblem.png",
+        "wordmark": "assets/img/hawley-runners-wordmark-white.png",
+        "band": "#2b447d",
+        "bandOpacity": 0.55,
         "hashtag": "#HawleyRunners",
         "footer": "Join the leaderboard: link in the group"
     }

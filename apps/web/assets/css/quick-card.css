@@ -1,0 +1,307 @@
+/*
+ * Quick recap additions to card.css: a compact variant that fits top-5 podiums,
+ * and the "More from the week" card.
+ */
+
+/* Compact: smaller header and tighter rows so six top-5 awards fit on one card. */
+.recap-card.is-compact {
+    gap: 22px;
+    padding-top: 48px;
+}
+
+.recap-card.is-compact .rc-title {
+    font-size: 96px;
+}
+
+.recap-card.is-compact .rc-weekno {
+    font-size: 160px;
+}
+
+.recap-card.is-compact .rc-logo {
+    max-height: 210px;
+}
+
+.recap-card.is-compact .rc-week {
+    margin-top: 10px;
+    font-size: 30px;
+}
+
+.recap-card.is-compact .rc-stat {
+    padding: 16px 22px 14px;
+}
+
+.recap-card.is-compact .rc-stat__value {
+    font-size: 56px;
+}
+
+.recap-card.is-compact .rc-grid {
+    gap: 14px;
+}
+
+.recap-card.is-compact .rc-award {
+    padding: 16px 24px 14px;
+}
+
+.recap-card.is-compact .rc-award__label {
+    margin-bottom: 6px;
+    font-size: 22px;
+}
+
+.recap-card.is-compact .rc-podium {
+    gap: 3px;
+}
+
+.recap-card.is-compact .rc-podium li {
+    font-size: 23px;
+    line-height: 1.12;
+}
+
+.recap-card.is-compact .rc-podium li.is-first {
+    font-size: 34px;
+    padding-bottom: 4px;
+    margin-bottom: 3px;
+}
+
+.recap-card.is-compact .rc-podium li.is-first .rc-rank {
+    min-width: 32px;
+    height: 32px;
+    font-size: 21px;
+}
+
+.recap-card.is-compact .rc-more {
+    padding-top: 2px;
+    font-size: 16px;
+}
+
+/* Second card. */
+.rc-title--small {
+    font-size: 88px;
+}
+
+.rc-weekno--small {
+    font-size: 150px;
+}
+
+.rc-grid--extras {
+    flex: 0 0 auto;
+    grid-auto-rows: auto;
+}
+
+/* Keeps the tiles' rows even; the "=" on the rank already shows a tie. */
+.rc-grid--extras .rc-more {
+    display: none;
+}
+
+.rc-span {
+    grid-column: 1 / -1;
+}
+
+.rc-names {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 22px;
+    font: 600 24px/1.2 'Barlow Condensed', sans-serif;
+}
+
+.rc-roll {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    padding: 20px 26px;
+    border-radius: 20px;
+    border: 2px solid color-mix(in srgb, var(--c-accent) 55%, transparent);
+}
+
+.rc-roll .rc-names {
+    color: var(--c-text);
+}
+
+.rc-roll.is-small .rc-names {
+    gap: 4px 16px;
+    font-size: 21px;
+}
+
+.rc-roll.is-tiny .rc-names {
+    gap: 2px 12px;
+    font-size: 17px;
+}
+
+.rc-roll__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+}
+
+.rc-roll__key {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font: 500 17px/1 'Barlow', sans-serif;
+    color: var(--c-muted);
+}
+
+.rc-roll__key i,
+.rc-names .is-new::before {
+    content: '';
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--c-accent);
+}
+
+.rc-names .is-new {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--c-accent);
+}
+
+/* Club distance line chart. */
+.rc-trend {
+    display: block;
+    width: 100%;
+    height: auto;
+    flex: 1;
+    min-height: 0;
+    margin-top: 2px;
+    overflow: visible;
+}
+
+.rc-trend__line {
+    fill: none;
+    stroke: var(--c-primary);
+    stroke-width: 4;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.rc-trend__dot {
+    fill: var(--c-surface);
+    stroke: var(--c-primary);
+    stroke-width: 4;
+}
+
+.rc-trend__dot.is-current {
+    fill: var(--c-accent);
+    stroke: var(--c-primary);
+}
+
+.rc-trend text {
+    text-anchor: middle;
+    font-family: 'Barlow Condensed', sans-serif;
+}
+
+.rc-trend__val {
+    font-size: 22px;
+    font-weight: 700;
+    fill: var(--c-muted);
+}
+
+.rc-trend__week {
+    font-size: 18px;
+    font-weight: 600;
+    fill: var(--c-muted);
+}
+
+.rc-trend text.is-current {
+    fill: var(--c-text);
+    font-weight: 800;
+}
+
+.rc-roll.is-micro .rc-names {
+    gap: 1px 10px;
+    font-size: 15px;
+}
+
+/* First card: Men's and Women's leaders as two columns, each a stack of top-3 podiums. */
+.rc-split {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 14px;
+}
+
+.rc-panel {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 24px 10px;
+    border-radius: 20px;
+    background: var(--c-surface);
+    box-shadow: inset 0 0 0 2px var(--c-accent);
+}
+
+.rc-panel__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding-bottom: 6px;
+}
+
+.rc-panel__head .rc-award__label {
+    margin: 0;
+    font-size: 28px;
+}
+
+.rc-panel__count {
+    font: 500 17px/1 'Barlow', sans-serif;
+    color: var(--c-muted);
+    white-space: nowrap;
+}
+
+.recap-card .rc-panel .rc-award {
+    flex: 1;
+    justify-content: center;
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    border-top: 2px solid color-mix(in srgb, var(--c-text) 10%, var(--c-surface));
+}
+
+.recap-card .rc-panel .rc-award__label {
+    margin: 0 0 3px;
+    font: 600 16px/1.1 'Barlow', sans-serif;
+    letter-spacing: 0.06em;
+    color: var(--c-muted);
+}
+
+.recap-card .rc-panel .rc-podium {
+    gap: 1px;
+}
+
+.recap-card .rc-panel .rc-podium li {
+    grid-template-columns: 34px 1fr auto;
+    gap: 8px;
+    font-size: 21px;
+    line-height: 1.12;
+}
+
+.recap-card .rc-panel .rc-podium li.is-first {
+    grid-template-columns: 34px 1fr auto;
+    font-size: 32px;
+    padding-bottom: 2px;
+    margin-bottom: 1px;
+    border-bottom: 0;
+}
+
+.recap-card .rc-panel .rc-podium li.is-first .rc-rank {
+    min-width: 30px;
+    height: 30px;
+    font-size: 19px;
+}
+
+.recap-card .rc-panel .rc-empty {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+/* Keeps the two columns' rows lined up; the "=" on the rank already shows a tie. */
+.recap-card .rc-panel .rc-more {
+    display: none;
+}

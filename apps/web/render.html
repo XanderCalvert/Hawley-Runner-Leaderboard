@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <title>Recap render</title>
+    <!-- Used by scripts/recap.py to draw the cards headlessly. Not meant to be opened by hand. -->
+    <link rel="stylesheet" href="assets/css/fonts.css">
+    <link rel="stylesheet" href="assets/css/card.css">
+    <link rel="stylesheet" href="assets/css/quick-card.css">
+    <style>
+        /* site.css normally sets this; the card's 1080 × 1350 depends on it. */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #000;
+        }
+
+        .recap-card {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <article class="recap-card" id="card"></article>
+    <article class="recap-card" id="card2"></article>
+    <script type="module" src="assets/js/render.js"></script>
+</body>
+</html>
