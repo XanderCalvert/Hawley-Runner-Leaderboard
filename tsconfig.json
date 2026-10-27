@@ -14,5 +14,5 @@
         "verbatimModuleSyntax": true,
         "skipLibCheck": true
     },
-    "include": ["packages/*/src", "packages/*/test", "apps/worker/src", "config", "scripts/*.ts"]
+    "include": ["packages/*/src", "packages/*/test", "apps/worker/src", "apps/worker/test", "config", "scripts/*.ts"]
 }
