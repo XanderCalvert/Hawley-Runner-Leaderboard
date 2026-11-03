@@ -4,7 +4,7 @@
  */
 export const config = {
     // Your deployed Worker, no trailing slash, e.g. 'https://club-recap.your-subdomain.workers.dev'
-    apiBase: '',
+    apiBase: 'https://club-recap.hawleyrunners.workers.dev',
     // Club shown when a page is opened without ?club=
     defaultClub: 'hawley-runners',
 };
