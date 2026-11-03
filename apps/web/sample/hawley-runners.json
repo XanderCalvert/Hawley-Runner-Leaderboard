@@ -4,6 +4,7 @@
         "slug": "hawley-runners",
         "name": "Hawley Runners",
         "stravaUrl": "https://www.strava.com/clubs/HawleyRunners",
+        "joinUrl": "https://xandercalvert.github.io/Hawley-Runner-Leaderboard/?club=hawley-runners",
         "locale": "en-GB",
         "branding": {
             "background": "#0e1830",
@@ -26,7 +27,7 @@
         "label": "26 Oct – 1 Nov 2026",
         "year": 2026
     },
-    "generatedAt": "2026-11-03T21:29:41.126Z",
+    "generatedAt": "2026-11-03T21:34:33.900Z",
     "group": {
         "week": {
             "runners": 29,

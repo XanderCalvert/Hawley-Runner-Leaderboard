@@ -222,6 +222,7 @@ export function buildWeeklySummary(input: BuildSummaryInput): WeeklySummary {
             slug: club.slug,
             name: club.name,
             stravaUrl: club.stravaUrl,
+            joinUrl: club.joinUrl,
             locale: club.locale,
             branding: club.branding,
         },

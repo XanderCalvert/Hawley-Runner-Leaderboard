@@ -61,6 +61,8 @@ export interface ClubConfig {
     stravaClubId: number;
     /** Public club page, used in captions. */
     stravaUrl?: string;
+    /** Where runners connect their Strava to the leaderboard (the site's connect page). Linked in the post caption. */
+    joinUrl?: string;
     /** Admin-assignable groups (optional). */
     groups?: ClubGroup[];
     timezone: string;
@@ -133,6 +135,7 @@ export interface WeeklySummary {
         slug: string;
         name: string;
         stravaUrl?: string;
+        joinUrl?: string;
         locale: string;
         branding: ClubBranding;
     };

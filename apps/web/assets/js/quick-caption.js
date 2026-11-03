@@ -40,7 +40,17 @@ export function buildCaption(summary) {
     const join = summary.club.stravaUrl
         ? `Join the ${summary.club.name} club on Strava: ${summary.club.stravaUrl}`
         : `Join the ${summary.club.name} club on Strava.`;
-    lines.push('', `Thanks to all ${week.runners} of you who got out there. Want to be on it? ${join}`);
+    if (summary.club.joinUrl) {
+        // Each link on its own line so Facebook and Strava turn them into tappable links.
+        lines.push(
+            '',
+            `Thanks to all ${week.runners} of you who got out there. Want to be on it?`,
+            join,
+            `Then connect your Strava to the leaderboard: ${summary.club.joinUrl}`,
+        );
+    } else {
+        lines.push('', `Thanks to all ${week.runners} of you who got out there. Want to be on it? ${join}`);
+    }
     if (summary.club.branding?.hashtag) {
         lines.push('', summary.club.branding.hashtag);
     }
