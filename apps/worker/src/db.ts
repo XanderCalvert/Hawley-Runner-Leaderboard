@@ -6,6 +6,7 @@ import { TokenRevokedError } from './strava.ts';
 import type { StravaAthlete, StravaClient, TokenResponse } from './strava.ts';
 
 export type MemberStatus = 'active' | 'hidden';
+export type Approval = 'member' | 'pending' | 'guest';
 
 interface AthleteRow {
     id: number;
@@ -134,7 +135,7 @@ export class Repository {
         const { results } = await this.db
             .prepare(
                 `SELECT DISTINCT a.id, a.last_synced_at FROM athletes a
-                 JOIN memberships m ON m.athlete_id = a.id
+                 JOIN memberships m ON m.athlete_id = a.id AND m.approval != 'pending'
                  WHERE a.last_synced_at IS NULL OR a.last_synced_at < datetime('now', ?1)
                  ORDER BY a.last_synced_at IS NOT NULL, a.last_synced_at
                  LIMIT ?2`,
@@ -146,15 +147,60 @@ export class Repository {
 
     /* ---------- Memberships ---------- */
 
-    /** Opts an athlete in to a club. Hiding is separate (see setHidden), so a reconnect never un-hides anyone. */
-    async joinClub(clubSlug: string, athleteId: number): Promise<void> {
+    /**
+     * Opts an athlete in to a club. Hiding is separate (see setHidden), so a reconnect never un-hides anyone.
+     * A pending request is upgraded if they have since proved membership, but an approved status is never downgraded.
+     */
+    async joinClub(clubSlug: string, athleteId: number, approval: Approval = 'member'): Promise<void> {
         await this.db
             .prepare(
-                `INSERT INTO memberships (club_slug, athlete_id) VALUES (?1, ?2)
-                 ON CONFLICT (club_slug, athlete_id) DO UPDATE SET verified_at = datetime('now')`,
+                `INSERT INTO memberships (club_slug, athlete_id, approval) VALUES (?1, ?2, ?3)
+                 ON CONFLICT (club_slug, athlete_id) DO UPDATE SET
+                    verified_at = datetime('now'),
+                    approval = CASE WHEN memberships.approval = 'pending' THEN excluded.approval ELSE memberships.approval END`,
             )
+            .bind(clubSlug, athleteId, approval)
+            .run();
+    }
+
+    async getApproval(clubSlug: string, athleteId: number): Promise<Approval | null> {
+        const row = await this.db
+            .prepare('SELECT approval FROM memberships WHERE club_slug = ?1 AND athlete_id = ?2')
+            .bind(clubSlug, athleteId)
+            .first<{ approval: Approval }>();
+        return row?.approval ?? null;
+    }
+
+    /** Whether they belong to at least one club as a verified member or approved guest (i.e. we may fetch their runs). */
+    async hasApprovedMembership(athleteId: number): Promise<boolean> {
+        const row = await this.db
+            .prepare("SELECT 1 AS ok FROM memberships WHERE athlete_id = ?1 AND approval != 'pending' LIMIT 1")
+            .bind(athleteId)
+            .first();
+        return row !== null;
+    }
+
+    /** Turns a pending request into a guest. False if there is no pending request. */
+    async approveGuest(clubSlug: string, athleteId: number): Promise<boolean> {
+        const result = await this.db
+            .prepare("UPDATE memberships SET approval = 'guest' WHERE club_slug = ?1 AND athlete_id = ?2 AND approval = 'pending'")
             .bind(clubSlug, athleteId)
             .run();
+        return result.meta.changes > 0;
+    }
+
+    /** Athletes whose only requests are still pending after `days`, oldest first. */
+    async expiredPending(days: number, limit: number): Promise<number[]> {
+        const { results } = await this.db
+            .prepare(
+                `SELECT m.athlete_id AS id FROM memberships m
+                 GROUP BY m.athlete_id
+                 HAVING SUM(m.approval != 'pending') = 0 AND MAX(m.joined_at) < datetime('now', ?1)
+                 ORDER BY MAX(m.joined_at) LIMIT ?2`,
+            )
+            .bind(`-${days} days`, limit)
+            .all<{ id: number }>();
+        return results.map((r) => r.id);
     }
 
     /** Removes one club's membership and returns how many clubs the athlete is still in. */
@@ -181,7 +227,7 @@ export class Repository {
             .prepare(
                 `SELECT m.group_id, a.firstname, a.lastname_initial FROM memberships m
                  JOIN athletes a ON a.id = m.athlete_id
-                 WHERE m.club_slug = ?1 AND m.group_id IS NOT NULL
+                 WHERE m.club_slug = ?1 AND m.group_id IS NOT NULL AND m.approval != 'pending'
                     AND NOT EXISTS (SELECT 1 FROM hidden h WHERE h.club_slug = m.club_slug AND h.athlete_id = a.id)`,
             )
             .bind(clubSlug)
@@ -221,7 +267,7 @@ export class Repository {
             .prepare(
                 `SELECT a.id, a.lifetime_base_m AS base FROM athletes a
                  JOIN memberships m ON m.athlete_id = a.id
-                 WHERE m.club_slug = ?1 AND a.lifetime_base_m IS NOT NULL`,
+                 WHERE m.club_slug = ?1 AND m.approval != 'pending' AND a.lifetime_base_m IS NOT NULL`,
             )
             .bind(clubSlug)
             .all<{ id: number; base: number }>();
@@ -230,7 +276,7 @@ export class Repository {
 
     async memberCount(clubSlug: string): Promise<number> {
         const row = await this.db
-            .prepare('SELECT COUNT(*) AS n FROM memberships WHERE club_slug = ?1')
+            .prepare("SELECT COUNT(*) AS n FROM memberships WHERE club_slug = ?1 AND approval != 'pending'")
             .bind(clubSlug)
             .first<{ n: number }>();
         return row?.n ?? 0;
@@ -252,7 +298,7 @@ export class Repository {
 
     async membershipsDueForVerification(athleteId: number, olderThanDays: number): Promise<string[]> {
         const { results } = await this.db
-            .prepare("SELECT club_slug FROM memberships WHERE athlete_id = ?1 AND verified_at < datetime('now', ?2)")
+            .prepare("SELECT club_slug FROM memberships WHERE athlete_id = ?1 AND approval = 'member' AND verified_at < datetime('now', ?2)")
             .bind(athleteId, `-${olderThanDays} days`)
             .all<{ club_slug: string }>();
         return results.map((r) => r.club_slug);
@@ -264,7 +310,7 @@ export class Repository {
             .prepare(
                 `SELECT a.id, a.firstname, a.lastname_initial FROM athletes a
                  JOIN memberships m ON m.athlete_id = a.id
-                 WHERE m.club_slug = ?1
+                 WHERE m.club_slug = ?1 AND m.approval != 'pending'
                     AND NOT EXISTS (SELECT 1 FROM hidden h WHERE h.club_slug = m.club_slug AND h.athlete_id = a.id)`,
             )
             .bind(clubSlug)
@@ -278,12 +324,12 @@ export class Repository {
             .prepare(
                 `SELECT m.athlete_id AS id, a.firstname AS firstname, a.lastname_initial AS initial, 1 AS connected,
                     EXISTS (SELECT 1 FROM hidden h WHERE h.club_slug = m.club_slug AND h.athlete_id = m.athlete_id) AS hidden,
-                    m.group_id AS group_id, m.joined_at AS joined_at, m.verified_at AS verified_at, a.last_synced_at AS last_synced_at,
+                    m.group_id AS group_id, m.approval AS approval, m.joined_at AS joined_at, m.verified_at AS verified_at, a.last_synced_at AS last_synced_at,
                     (SELECT COUNT(*) FROM activities x WHERE x.athlete_id = a.id AND x.start_date_local >= ?2) AS runs_this_year
                  FROM memberships m JOIN athletes a ON a.id = m.athlete_id
                  WHERE m.club_slug = ?1
                  UNION ALL
-                 SELECT h.athlete_id, NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, 0
+                 SELECT h.athlete_id, NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, NULL, 0
                  FROM hidden h
                  WHERE h.club_slug = ?1 AND h.athlete_id NOT IN (SELECT athlete_id FROM memberships WHERE club_slug = ?1)
                  ORDER BY firstname COLLATE NOCASE, initial COLLATE NOCASE, id`,
@@ -296,6 +342,7 @@ export class Repository {
                 connected: number;
                 hidden: number;
                 group_id: string | null;
+                approval: Approval | null;
                 joined_at: string | null;
                 verified_at: string | null;
                 last_synced_at: string | null;
@@ -307,6 +354,7 @@ export class Repository {
             connected: r.connected === 1,
             status: (r.hidden ? 'hidden' : 'active') satisfies MemberStatus,
             group: r.group_id,
+            approval: r.approval,
             joinedAt: r.joined_at,
             verifiedAt: r.verified_at,
             lastSyncedAt: r.last_synced_at,
@@ -381,7 +429,7 @@ export class Repository {
         const { results } = await this.db
             .prepare(
                 `SELECT x.* FROM activities x
-                 JOIN memberships m ON m.athlete_id = x.athlete_id AND m.club_slug = ?1
+                 JOIN memberships m ON m.athlete_id = x.athlete_id AND m.club_slug = ?1 AND m.approval != 'pending'
                  WHERE x.start_date_local >= ?2 AND x.start_date_local < ?3
                     AND NOT EXISTS (SELECT 1 FROM hidden h WHERE h.club_slug = m.club_slug AND h.athlete_id = x.athlete_id)`,
             )

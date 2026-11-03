@@ -39,7 +39,7 @@ It costs nothing to run: GitHub Pages, Cloudflare's free Workers tier and the fr
 ### Rules that make it fair
 
 - **Opt-in only:** nobody appears unless they connected via the club's link.
-- **Club members only:** membership of the club's Strava group is checked on connect and re-checked weekly. Leavers drop off automatically.
+- **Club members, or approved guests:** membership of the club's Strava group is checked on connect and re-checked weekly; leavers drop off automatically. Outsiders can ask to join and wait, with no data fetched, for an admin to approve them (or are deleted after two weeks).
 - **Admin hide list:** hide anyone from the recap (`admin.html`). It is keyed by club and Strava ID, so it survives the runner disconnecting and reconnecting.
 - **What counts:** `rules.sportTypes` (Hawley: `Run`, `TrailRun`, `VirtualRun`, matched on Strava's `sport_type`). An award can narrow that with its own `sportTypes`: Fastest 5K and Longest run leave out `VirtualRun`. Manual entries, flagged activities, runs under 1 km and anything faster than 2:30/km (usually a bike ride saved as a run) are ignored.
 - **Fastest 5K** uses Strava's best-effort split from GPS runs, so a quick 5K inside a 10K counts.

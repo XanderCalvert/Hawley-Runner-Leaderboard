@@ -1,10 +1,14 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { signState } from '../src/crypto.ts';
 import { authCallback } from '../src/routes/auth.ts';
 import { StravaClient, isAthleteLimit } from '../src/strava.ts';
 import { syncAthlete } from '../src/sync.ts';
 import { CLUB, count, makeEnv, reply, seedAthlete, stubStrava, tokenResponse } from './helpers.ts';
 
+// These cover the default behaviour: someone outside the Strava club is turned away. (approval.test.ts covers the other.)
+beforeEach(() => {
+    CLUB.approveNonMembers = false;
+});
 afterEach(() => vi.unstubAllGlobals());
 
 const options = { afterEpoch: 0, detailSince: '2026-01-01', detailLimit: 0, maxPages: 1 };

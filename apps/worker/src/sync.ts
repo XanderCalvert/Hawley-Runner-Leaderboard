@@ -17,6 +17,8 @@ import type { StravaActivity } from './strava.ts';
 
 const BACKOFF_KEY = 'strava_backoff_until';
 const DAY_S = 86_400;
+/** How long a request to join can wait for approval. */
+export const PENDING_DAYS = 14;
 
 export interface StravaWebhookEvent {
     object_type: 'activity' | 'athlete';
@@ -104,6 +106,10 @@ export async function verifyMemberships(repo: Repository, client: StravaClient, 
 /** Pulls an athlete's recent activities and fills in best efforts, after re-checking club membership. */
 export async function syncAthlete(env: Env, client: StravaClient, athleteId: number, options: SyncOptions): Promise<void> {
     const repo = new Repository(env);
+    // Pending requests have no data fetched until an admin approves them.
+    if (!(await repo.hasApprovedMembership(athleteId))) {
+        return;
+    }
     const token = await repo.accessToken(athleteId, client);
     if (!token) {
         return;
@@ -196,7 +202,7 @@ export async function handleWebhookEvent(env: Env, event: StravaWebhookEvent): P
         return;
     }
 
-    if (!(await repo.isConnected(event.owner_id)) || (await isBackingOff(repo))) {
+    if (!(await repo.hasApprovedMembership(event.owner_id)) || (await isBackingOff(repo))) {
         return;
     }
 
@@ -226,6 +232,10 @@ export async function runScheduledSync(env: Env): Promise<void> {
     }
 
     const client = new StravaClient(env);
+    // Requests nobody approved within two weeks are dropped, and their access revoked.
+    for (const athleteId of await repo.expiredPending(PENDING_DAYS, 3)) {
+        await disconnectAthlete(repo, client, athleteId);
+    }
     const athleteIds = await repo.athletesDueForSync(8, 12);
     const now = Math.floor(Date.now() / 1000);
 

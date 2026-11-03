@@ -43,6 +43,12 @@
                 message: 'The recap needs permission to view your activities. Please connect again and leave "View data about your activities" ticked. Nothing has been saved.',
                 actions: [[retry, 'Connect again'], [back, 'Back']],
             },
+            pending: {
+                title: 'Thanks, waiting for approval',
+                tone: '',
+                message: "You're not in the club's Strava group, so a club admin needs to approve you first. Until then we keep only your name, Strava ID and sign-in token (nothing about your runs, and you're not shown anywhere). If nobody approves you within two weeks it's all deleted automatically. You can also remove yourself any time from the connect page.",
+                actions: [[back, 'Back']],
+            },
             full: {
                 title: 'The leaderboard is full for now',
                 tone: 'bad',

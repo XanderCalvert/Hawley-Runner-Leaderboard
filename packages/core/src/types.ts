@@ -63,6 +63,8 @@ export interface ClubConfig {
     stravaUrl?: string;
     /** Where runners connect their Strava to the leaderboard (the site's connect page). Linked in the post caption. */
     joinUrl?: string;
+    /** Let people who are not in the Strava club ask to join, pending an admin's approval (default: they are turned away). */
+    approveNonMembers?: boolean;
     /** Admin-assignable groups (optional). */
     groups?: ClubGroup[];
     timezone: string;

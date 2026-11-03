@@ -110,8 +110,21 @@ export async function authCallback(request: Request, env: Env, ctx: ExecutionCon
         return redirect(resultUrl(env, club.slug, 'error'));
     }
     if (!clubs.some((c) => c.id === club.stravaClubId)) {
-        await dropNewGrant(repo, client, athlete.id, tokens);
-        return redirect(resultUrl(env, club.slug, 'not-member'));
+        if (!club.approveNonMembers) {
+            await dropNewGrant(repo, client, athlete.id, tokens);
+            return redirect(resultUrl(env, club.slug, 'not-member'));
+        }
+        // Not in the Strava club: keep only their name, ID and token, fetch nothing, and wait for an admin to approve.
+        const firstRequest = (await repo.getApproval(club.slug, athlete.id)) === null;
+        await repo.saveAthlete(athlete, tokens, scope);
+        await repo.joinClub(club.slug, athlete.id, 'pending');
+        if (firstRequest) {
+            const name = displayName(athlete.firstname, athlete.lastname);
+            ctx.waitUntil(
+                notifyOwner(env, `Approval needed: ${name} wants to join ${club.name}`, `${name} isn't in the ${club.name} Strava club but asked to be on the leaderboard. Approve or reject them on the admin page. Requests expire after two weeks.`),
+            );
+        }
+        return redirect(resultUrl(env, club.slug, 'pending'));
     }
 
     const isNew = !(await repo.isConnected(athlete.id));

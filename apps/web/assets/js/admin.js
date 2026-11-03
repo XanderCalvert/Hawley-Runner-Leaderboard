@@ -9,6 +9,7 @@ const filter = document.getElementById('filter');
 
 const STORAGE_KEY = 'club-recap-admin-token';
 const STATUS_LABELS = { active: 'Showing', hidden: 'Hidden' };
+const APPROVAL_LABELS = { pending: 'Pending approval', guest: 'Guest' };
 
 let api = null;
 let members = [];
@@ -67,8 +68,8 @@ function render() {
 
                 const statusTd = document.createElement('td');
                 const pill = document.createElement('span');
-                pill.className = `pill pill--${member.status}`;
-                pill.textContent = STATUS_LABELS[member.status] ?? member.status;
+                pill.className = `pill pill--${member.approval === 'pending' ? 'hidden' : member.status}`;
+                pill.textContent = APPROVAL_LABELS[member.approval] ?? STATUS_LABELS[member.status] ?? member.status;
                 statusTd.append(pill);
                 tr.append(statusTd);
 
@@ -103,9 +104,23 @@ function render() {
                 resync.className = 'button button--ghost';
                 resync.textContent = 'Resync';
                 resync.addEventListener('click', () => resyncMember(member));
+                const button = (label, onClick) => {
+                    const b = document.createElement('button');
+                    b.type = 'button';
+                    b.className = 'button button--ghost';
+                    b.textContent = label;
+                    b.addEventListener('click', onClick);
+                    return b;
+                };
+                if (member.approval === 'pending') {
+                    // Someone outside the Strava club asking to join: nothing about their runs is held or shown until approved.
+                    actions.append(button('Approve', () => approve(member)), button('Reject', () => remove(member, true)));
+                    tr.append(actionsTd);
+                    return tr;
+                }
                 actions.append(toggle);
                 if (member.connected) {
-                    actions.append(resync);
+                    actions.append(resync, button('Check club', () => checkClub(member)), button('Remove', () => remove(member, false)));
                 }
                 tr.append(actionsTd);
 
@@ -121,8 +136,9 @@ async function loadMembers() {
         members = list;
         panel.hidden = false;
         offerToSave(tokenInput.value.trim());
-        const showing = members.filter((m) => m.status === 'active').length;
-        statusEl.textContent = `${members.filter((m) => m.connected).length} connected, ${showing} showing on the recap. ${info.activities} runs stored.${info.backingOff ? ' Strava rate limit hit: syncing paused briefly.' : ''}`;
+        const showing = members.filter((m) => m.status === 'active' && m.approval !== 'pending').length;
+        const waiting = members.filter((m) => m.approval === 'pending').length;
+        statusEl.textContent = `${waiting ? `${waiting} waiting for your approval. ` : ''}${members.filter((m) => m.connected && m.approval !== 'pending').length} connected, ${showing} showing on the recap. ${info.activities} runs stored.${info.backingOff ? ' Strava rate limit hit: syncing paused briefly.' : ''}`;
         render();
     } catch (error) {
         panel.hidden = true;
@@ -149,6 +165,42 @@ async function setGroup(member, group) {
     } catch (error) {
         statusEl.textContent = `Update failed: ${error.message}`;
         render();
+    }
+}
+
+async function approve(member) {
+    try {
+        await api.approve(member.athleteId);
+        statusEl.textContent = `${member.name} is approved as a guest. Their runs are loading.`;
+        await loadMembers();
+    } catch (error) {
+        statusEl.textContent = `Approve failed: ${error.message}`;
+    }
+}
+
+async function remove(member, isRequest) {
+    const what = isRequest ? `Reject ${member.name}'s request` : `Remove ${member.name}`;
+    if (!confirm(`${what}? Everything we hold about them is deleted and their Strava access is revoked. They can ask again.`)) {
+        return;
+    }
+    try {
+        await api.remove(member.athleteId);
+        statusEl.textContent = `${member.name} has been removed.`;
+        await loadMembers();
+    } catch (error) {
+        statusEl.textContent = `Remove failed: ${error.message}`;
+    }
+}
+
+async function checkClub(member) {
+    statusEl.textContent = `Asking Strava about ${member.name}…`;
+    try {
+        const { inClub } = await api.checkClub(member.athleteId);
+        statusEl.textContent = inClub
+            ? `${member.name} IS in the club's Strava group.`
+            : `${member.name} is NOT in the club's Strava group. Use Remove if they shouldn't be here (they can ask again and you can approve them as a guest).`;
+    } catch (error) {
+        statusEl.textContent = `Check failed: ${error.message}`;
     }
 }
 

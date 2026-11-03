@@ -7,7 +7,7 @@ Draft material for the review/capacity submission. Written to be pasted into Str
 Club Recap is a small, free, volunteer-run tool for a UK running club ([club name], about [N] members). Each Monday it produces a one-page "weekly recap" image and caption for the club's social media: the week's fastest 5K, longest run, most climbing, most distance, most runs and most time on feet, plus the club's total distance for the week and the year.
 
 - **Opt-in.** A runner only appears if they click "Connect with Strava" on the club's page and approve.
-- **Club members only.** On connecting, and weekly after, the app calls `GET /athlete/clubs` with the runner's *own* token and only keeps them if they are a member of the club's Strava club. Not a member: nothing is stored and their token is revoked.
+- **Club members, or approved guests.** On connecting, and weekly after, the app calls `GET /athlete/clubs` with the runner's *own* token and treats a runner as a member only if they are in the club's Strava club. Someone outside the club can ask to join: they are held as pending (no data fetched) until a club admin approves them as a guest, or the request expires after 14 days.
 - **Runs only.** It reads `sport_type` of `Run`, `TrailRun` and `VirtualRun`. Everything else is ignored.
 - **No AI.** No Strava data is sent to any AI or machine-learning service. Captions are fixed templates filled with numbers.
 - Hosted on free tiers: a Cloudflare Worker and D1 database, and a GitHub Pages site.
@@ -35,6 +35,8 @@ Per runner: Strava athlete ID, first name, **surname initial only**, access and 
 Per run: activity ID, athlete ID, local start date and time, `sport_type`, distance, moving time, elevation gain, the manual / treadmill / flagged flags (needed to apply the club's rules), the best 5K effort if Strava provides one, and which standard distances (1K, 1 mile, 5K, 10K, half, marathon) Strava ranked as a new personal best on that run.
 
 Per runner, in addition: a lifetime run-distance baseline (Strava's lifetime run total minus the runs we hold), refreshed weekly, used only for lifetime milestones such as "passed 5,000 km".
+
+**People outside the club who ask to join** (an admin must approve them): until approved we hold only their Strava ID, first name, surname initial and encrypted token. No runs are fetched, nothing is shown anywhere, and a request not approved within 14 days is deleted automatically and the token revoked. Approved guests are exempt from the weekly club-membership check.
 
 **Not stored:** titles, descriptions, maps or polylines, start locations, heart rate, photos, kudos, comments, anything about other athletes' activities, private activities.
 

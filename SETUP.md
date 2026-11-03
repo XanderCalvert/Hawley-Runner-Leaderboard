@@ -171,6 +171,15 @@ npm run release
 
 If it lists migrations to apply, answer `y` once.
 
+## People who aren't in the Strava club
+
+With `"approveNonMembers": true` in the club config (Hawley has it on), someone outside the Strava club who connects is held as **pending**: we keep only their name, ID and token, fetch no runs, and show them nowhere. You get an email ("Approval needed: …") if the email notification is set up, and `admin.html` lists them at the top with **Approve** / **Reject**.
+
+- **Approve** makes them a **Guest**: their year loads and they appear on the cards. The weekly Strava-club check never removes a guest.
+- **Reject**, or doing nothing for 14 days, deletes everything and revokes their Strava access.
+- **Check club** (any runner) asks Strava right now whether they are in the club's group and changes nothing. **Remove** deletes a runner and revokes their access; they can ask again.
+- Set `"approveNonMembers": false` to go back to turning outsiders away.
+
 ## Men's / Women's leaders
 
 On `admin.html`, set each runner's **Leaders panel** (Men or Women). Anyone left on Men shows in the Men's leaders, and the Women's panel appears once at least one runner is set to Women. The label lives on the runner's record, so disconnecting deletes it with everything else.

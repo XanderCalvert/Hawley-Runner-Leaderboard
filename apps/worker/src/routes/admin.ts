@@ -5,6 +5,8 @@ import { Repository } from '../db.ts';
 import type { MemberStatus } from '../db.ts';
 import type { Env } from '../env.ts';
 import { error, json } from '../http.ts';
+import { disconnectAthlete } from '../disconnect.ts';
+import { StravaClient } from '../strava.ts';
 import { backfillAthlete, isBackingOff } from '../sync.ts';
 
 export async function isAdmin(request: Request, env: Env): Promise<boolean> {
@@ -52,6 +54,58 @@ export async function updateMember(request: Request, env: Env, slug: string, ath
         return error(404, 'Member not found');
     }
     return json({ ok: true });
+}
+
+/** POST /admin/clubs/:slug/members/:athleteId/approve: lets a pending runner on (as a guest) and loads their year. */
+export async function approveMember(env: Env, ctx: ExecutionContext, slug: string, athleteId: number): Promise<Response> {
+    if (!getClub(slug)) {
+        return error(404, 'Unknown club');
+    }
+    if (!(await new Repository(env).approveGuest(slug, athleteId))) {
+        return error(404, 'No pending request for that runner');
+    }
+    ctx.waitUntil(backfillAthlete(env, athleteId));
+    return json({ ok: true });
+}
+
+/** POST /admin/clubs/:slug/members/:athleteId/remove: takes a runner (or rejects a pending request) off, and revokes their access at Strava. */
+export async function removeMember(env: Env, slug: string, athleteId: number): Promise<Response> {
+    if (!getClub(slug)) {
+        return error(404, 'Unknown club');
+    }
+    const repo = new Repository(env);
+    if ((await repo.getApproval(slug, athleteId)) === null) {
+        return error(404, 'Member not found');
+    }
+    // Only fully disconnect them if this was their only club.
+    if ((await repo.leaveClub(slug, athleteId)) === 0) {
+        await disconnectAthlete(repo, new StravaClient(env), athleteId);
+    }
+    return json({ ok: true });
+}
+
+/**
+ * POST /admin/clubs/:slug/members/:athleteId/check-club: asks Strava, with that runner's own token, whether they are in the
+ * club's Strava group right now. Changes nothing: the admin decides what to do with the answer.
+ */
+export async function checkClub(env: Env, slug: string, athleteId: number): Promise<Response> {
+    const club = getClub(slug);
+    if (!club) {
+        return error(404, 'Unknown club');
+    }
+    const repo = new Repository(env);
+    const client = new StravaClient(env);
+    const token = await repo.accessToken(athleteId, client);
+    if (!token) {
+        return error(404, 'That runner is not connected');
+    }
+    try {
+        const clubs = await client.clubs(token);
+        return json({ inClub: clubs.some((c) => c.id === club.stravaClubId), approval: await repo.getApproval(slug, athleteId) });
+    } catch (e) {
+        console.error('Club check failed', e);
+        return error(502, "Strava didn't answer. Try again in a minute.");
+    }
 }
 
 /** POST /admin/athletes/:athleteId/resync — re-pulls the athlete's whole year. */

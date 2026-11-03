@@ -56,6 +56,9 @@ export function adminApi(token) {
     const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
     return {
         members: () => getJson(`${config.apiBase}/admin/clubs/${clubSlug}/members`, { headers }),
+        approve: (athleteId) => getJson(`${config.apiBase}/admin/clubs/${clubSlug}/members/${athleteId}/approve`, { method: 'POST', headers }),
+        remove: (athleteId) => getJson(`${config.apiBase}/admin/clubs/${clubSlug}/members/${athleteId}/remove`, { method: 'POST', headers }),
+        checkClub: (athleteId) => getJson(`${config.apiBase}/admin/clubs/${clubSlug}/members/${athleteId}/check-club`, { method: 'POST', headers }),
         setGroup: (athleteId, group) =>
             getJson(`${config.apiBase}/admin/clubs/${clubSlug}/members/${athleteId}`, {
                 method: 'PUT',

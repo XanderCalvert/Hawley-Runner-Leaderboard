@@ -4,6 +4,7 @@
     "stravaUrl": "https://www.strava.com/clubs/HawleyRunners",
     "joinUrl": "https://xandercalvert.github.io/Hawley-Runner-Leaderboard/?club=hawley-runners",
     "stravaClubId": 298695,
+    "approveNonMembers": true,
     "groups": [
         { "id": "women", "label": "Women", "title": "Women's leaders" }
     ],
