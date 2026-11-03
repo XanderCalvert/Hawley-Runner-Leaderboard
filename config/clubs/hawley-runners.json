@@ -3,6 +3,9 @@
     "name": "Hawley Runners",
     "stravaUrl": "https://www.strava.com/clubs/HawleyRunners",
     "stravaClubId": 298695,
+    "groups": [
+        { "id": "women", "label": "Women", "title": "Women's leaders" }
+    ],
     "timezone": "Europe/London",
     "locale": "en-GB",
     "rules": {

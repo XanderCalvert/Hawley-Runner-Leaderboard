@@ -1,4 +1,4 @@
-import { addDays, buildWeeklySummary, isValidDate, lastCompletedWeekStart, weekEndOf, weekStartOf } from '@club-recap/core';
+import { addDays, buildWeekRows, buildWeeklySummary, isValidDate, lastCompletedWeekStart, weekEndOf, weekStartOf } from '@club-recap/core';
 import { getClub } from '../../../../config/clubs/index.ts';
 import { Repository } from '../db.ts';
 import type { Env } from '../env.ts';
@@ -30,7 +30,44 @@ export async function clubSummary(request: Request, env: Env, slug: string): Pro
     ]);
 
     const summary = buildWeeklySummary({ club, athletes, activities, weekStart });
-    return json(summary, { headers: { 'Cache-Control': 'public, max-age=300' } });
+    return json(summary, { headers: { 'Cache-Control': 'public, max-age=60' } });
+}
+
+/**
+ * GET /api/clubs/:slug/week-rows?week=YYYY-MM-DD
+ * Public: per-runner weekly totals for the chosen week and the four before it, plus the club's groups.
+ * Names are "First L." only; no IDs. The recap page builds both cards from this with the same code as the quick recap.
+ */
+export async function clubWeekRows(request: Request, env: Env, slug: string): Promise<Response> {
+    const club = getClub(slug);
+    if (!club) {
+        return error(404, 'Unknown club');
+    }
+    const requested = new URL(request.url).searchParams.get('week');
+    if (requested && !isValidDate(requested)) {
+        return error(400, 'week must be a date in YYYY-MM-DD format');
+    }
+    const weekStart = requested ? weekStartOf(requested) : lastCompletedWeekStart(club.timezone);
+
+    const repo = new Repository(env);
+    const [athletes, activities, members] = await Promise.all([
+        repo.activeAthletes(club.slug),
+        repo.clubActivities(club.slug, addDays(weekStart, -28), addDays(weekEndOf(weekStart), 1)),
+        repo.groupMembers(club.slug),
+    ]);
+    const rowsFor = (start: string) => buildWeekRows({ club, athletes, activities, weekStart: start });
+    const history = [4, 3, 2, 1].map((n) => ({ weekStart: addDays(weekStart, -7 * n), rows: rowsFor(addDays(weekStart, -7 * n)) }));
+
+    return json(
+        {
+            weekStart,
+            rows: rowsFor(weekStart),
+            previousRows: history.at(-1)?.rows ?? [],
+            history,
+            groups: (club.groups ?? []).map((g) => ({ ...g, members: members.get(g.id) ?? [] })),
+        },
+        { headers: { 'Cache-Control': 'public, max-age=60' } },
+    );
 }
 
 /** GET /api/clubs/:slug — branding and public details for the connect page. */
@@ -39,5 +76,5 @@ export function clubInfo(slug: string): Response {
     if (!club) {
         return error(404, 'Unknown club');
     }
-    return json({ slug: club.slug, name: club.name, branding: club.branding, stravaClubId: club.stravaClubId });
+    return json({ slug: club.slug, name: club.name, stravaUrl: club.stravaUrl, locale: club.locale, branding: club.branding, stravaClubId: club.stravaClubId });
 }

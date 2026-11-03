@@ -166,6 +166,32 @@ export class Repository {
         return row?.remaining ?? 0;
     }
 
+    async setGroup(clubSlug: string, athleteId: number, groupId: string | null): Promise<boolean> {
+        const result = await this.db
+            .prepare('UPDATE memberships SET group_id = ?3 WHERE club_slug = ?1 AND athlete_id = ?2')
+            .bind(clubSlug, athleteId, groupId)
+            .run();
+        return result.meta.changes > 0;
+    }
+
+    /** Display names per group, for runners who are shown on the recap (not hidden). */
+    async groupMembers(clubSlug: string): Promise<Map<string, string[]>> {
+        const { results } = await this.db
+            .prepare(
+                `SELECT m.group_id, a.firstname, a.lastname_initial FROM memberships m
+                 JOIN athletes a ON a.id = m.athlete_id
+                 WHERE m.club_slug = ?1 AND m.group_id IS NOT NULL
+                    AND NOT EXISTS (SELECT 1 FROM hidden h WHERE h.club_slug = m.club_slug AND h.athlete_id = a.id)`,
+            )
+            .bind(clubSlug)
+            .all<{ group_id: string; firstname: string | null; lastname_initial: string | null }>();
+        const groups = new Map<string, string[]>();
+        for (const row of results) {
+            groups.set(row.group_id, [...(groups.get(row.group_id) ?? []), displayName(row.firstname, row.lastname_initial)]);
+        }
+        return groups;
+    }
+
     async memberCount(clubSlug: string): Promise<number> {
         const row = await this.db
             .prepare('SELECT COUNT(*) AS n FROM memberships WHERE club_slug = ?1')
@@ -216,12 +242,12 @@ export class Repository {
             .prepare(
                 `SELECT m.athlete_id AS id, a.firstname AS firstname, a.lastname_initial AS initial, 1 AS connected,
                     EXISTS (SELECT 1 FROM hidden h WHERE h.club_slug = m.club_slug AND h.athlete_id = m.athlete_id) AS hidden,
-                    m.joined_at AS joined_at, m.verified_at AS verified_at, a.last_synced_at AS last_synced_at,
+                    m.group_id AS group_id, m.joined_at AS joined_at, m.verified_at AS verified_at, a.last_synced_at AS last_synced_at,
                     (SELECT COUNT(*) FROM activities x WHERE x.athlete_id = a.id AND x.start_date_local >= ?2) AS runs_this_year
                  FROM memberships m JOIN athletes a ON a.id = m.athlete_id
                  WHERE m.club_slug = ?1
                  UNION ALL
-                 SELECT h.athlete_id, NULL, NULL, 0, 1, NULL, NULL, NULL, 0
+                 SELECT h.athlete_id, NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, 0
                  FROM hidden h
                  WHERE h.club_slug = ?1 AND h.athlete_id NOT IN (SELECT athlete_id FROM memberships WHERE club_slug = ?1)
                  ORDER BY firstname COLLATE NOCASE, initial COLLATE NOCASE, id`,
@@ -233,6 +259,7 @@ export class Repository {
                 initial: string | null;
                 connected: number;
                 hidden: number;
+                group_id: string | null;
                 joined_at: string | null;
                 verified_at: string | null;
                 last_synced_at: string | null;
@@ -243,6 +270,7 @@ export class Repository {
             name: r.connected ? displayName(r.firstname, r.initial) : null,
             connected: r.connected === 1,
             status: (r.hidden ? 'hidden' : 'active') satisfies MemberStatus,
+            group: r.group_id,
             joinedAt: r.joined_at,
             verifiedAt: r.verified_at,
             lastSyncedAt: r.last_synced_at,

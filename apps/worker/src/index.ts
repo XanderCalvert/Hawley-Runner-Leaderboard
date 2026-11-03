@@ -1,7 +1,7 @@
 import type { Env } from './env.ts';
 import { error, json, preflight, withCors } from './http.ts';
 import { isAdmin, listMembers, resyncAthlete, status, updateMember } from './routes/admin.ts';
-import { clubInfo, clubSummary } from './routes/api.ts';
+import { clubInfo, clubSummary, clubWeekRows } from './routes/api.ts';
 import { authCallback, startAuth } from './routes/auth.ts';
 import { receiveWebhook, verifyWebhook } from './routes/webhook.ts';
 import { runScheduledSync } from './sync.ts';
@@ -34,6 +34,9 @@ async function route(request: Request, env: Env, ctx: ExecutionContext): Promise
     // Public API
     if ((match = pathname.match(/^\/api\/clubs\/([a-z0-9-]+)\/summary$/)) && method === 'GET') {
         return clubSummary(request, env, match[1] as string);
+    }
+    if ((match = pathname.match(/^\/api\/clubs\/([a-z0-9-]+)\/week-rows$/)) && method === 'GET') {
+        return clubWeekRows(request, env, match[1] as string);
     }
     if ((match = pathname.match(/^\/api\/clubs\/([a-z0-9-]+)$/)) && method === 'GET') {
         return clubInfo(match[1] as string);

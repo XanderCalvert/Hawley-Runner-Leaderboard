@@ -47,12 +47,22 @@ export interface ClubBranding {
     footer: string | null;
 }
 
+/** A label an admin can put runners in (e.g. Women), shown as its own leaders panel on the first card. */
+export interface ClubGroup {
+    id: string;
+    label: string;
+    /** Panel heading, e.g. "Women's leaders". */
+    title: string;
+}
+
 export interface ClubConfig {
     slug: string;
     name: string;
     stravaClubId: number;
     /** Public club page, used in captions. */
     stravaUrl?: string;
+    /** Admin-assignable groups (optional). */
+    groups?: ClubGroup[];
     timezone: string;
     locale: string;
     rules: ClubRules;

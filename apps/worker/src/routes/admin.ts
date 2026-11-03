@@ -26,16 +26,31 @@ export async function listMembers(env: Env, slug: string): Promise<Response> {
     return json({ members: members.map((m) => ({ ...m, profileUrl: `https://www.strava.com/athletes/${m.athleteId}` })) });
 }
 
-/** PUT /admin/clubs/:slug/members/:athleteId  body: { "status": "active" | "hidden" } */
+/** PUT /admin/clubs/:slug/members/:athleteId  body: { "status"?: "active" | "hidden", "group"?: a group id from the club config, or null } */
 export async function updateMember(request: Request, env: Env, slug: string, athleteId: number): Promise<Response> {
-    if (!getClub(slug)) {
+    const club = getClub(slug);
+    if (!club) {
         return error(404, 'Unknown club');
     }
-    const body = (await request.json().catch(() => ({}))) as { status?: MemberStatus };
-    if (body.status !== 'active' && body.status !== 'hidden') {
+    const body = (await request.json().catch(() => ({}))) as { status?: MemberStatus; group?: string | null };
+    const repo = new Repository(env);
+    const hasStatus = body.status !== undefined;
+    const hasGroup = body.group !== undefined;
+    if (!hasStatus && !hasGroup) {
+        return error(400, 'Send a status and/or a group');
+    }
+    if (hasStatus && body.status !== 'active' && body.status !== 'hidden') {
         return error(400, 'status must be "active" or "hidden"');
     }
-    await new Repository(env).setHidden(slug, athleteId, body.status === 'hidden');
+    if (hasGroup && body.group !== null && !club.groups?.some((g) => g.id === body.group)) {
+        return error(400, "group must be null or one of the club's group ids");
+    }
+    if (hasStatus) {
+        await repo.setHidden(slug, athleteId, body.status === 'hidden');
+    }
+    if (hasGroup && !(await repo.setGroup(slug, athleteId, body.group as string | null))) {
+        return error(404, 'Member not found');
+    }
     return json({ ok: true });
 }
 
