@@ -163,14 +163,13 @@ Without a domain, emails come from `onboarding@resend.dev`, which Resend only al
 
 ## Updating after code changes
 
-Migrations first (only needed when a new file appears in `apps/worker/migrations/`), then the Worker; pushing to `main` redeploys the site by itself:
+One command from the repo root: applies any new migrations to the live database, then deploys the Worker (and stops before deploying if a migration fails). Pushing to `main` redeploys the site by itself.
 
 ```powershell
-cd apps/worker
-npx wrangler d1 migrations apply club-recap --remote
-cd ../..
-npm run deploy:worker
+npm run release
 ```
+
+If it lists migrations to apply, answer `y` once.
 
 ## Men's / Women's leaders
 

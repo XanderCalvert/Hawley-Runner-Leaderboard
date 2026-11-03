@@ -17,6 +17,7 @@
         "db:migrate:local": "npm run db:migrate:local --workspace apps/worker",
         "db:migrate:remote": "npm run db:migrate:remote --workspace apps/worker",
         "deploy:worker": "npm run deploy --workspace apps/worker",
+        "release": "npm run db:migrate:remote && npm run deploy:worker",
         "mock:strava": "node --experimental-strip-types scripts/mock-strava.ts",
         "webhook": "node scripts/strava-webhook.mjs",
         "secret": "node scripts/make-secret.mjs"
