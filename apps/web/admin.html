@@ -86,14 +86,16 @@
         <h1>Recap admin</h1>
 
         <section class="panel">
-            <form class="login" id="login">
+            <form class="login" id="login" method="post" action="#">
+                <!-- Chrome and password managers only offer to save a username + password pair, so give it one. -->
+                <input type="text" name="username" value="recap-admin" autocomplete="username" hidden>
                 <div class="field">
                     <label for="token">Admin token</label>
-                    <input class="input" id="token" type="password" autocomplete="current-password" required>
+                    <input class="input" id="token" name="password" type="password" autocomplete="current-password" required>
                 </div>
                 <button class="button" type="submit">Load members</button>
             </form>
-            <p class="small" style="margin-bottom: 0">Only kept in this browser tab. Set it on the Worker with <code>wrangler secret put ADMIN_TOKEN</code>.</p>
+            <p class="small" style="margin-bottom: 0">Your browser can remember it in its password manager. Set it on the Worker with <code>wrangler secret put ADMIN_TOKEN</code>.</p>
         </section>
 
         <p class="small" id="status" role="status"></p>

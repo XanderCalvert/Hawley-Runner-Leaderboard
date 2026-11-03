@@ -106,6 +106,7 @@ async function loadMembers() {
         const [{ members: list }, info] = await Promise.all([api.members(), api.status()]);
         members = list;
         panel.hidden = false;
+        offerToSave(tokenInput.value.trim());
         const showing = members.filter((m) => m.status === 'active').length;
         statusEl.textContent = `${members.filter((m) => m.connected).length} connected, ${showing} showing on the recap. ${info.activities} runs stored.${info.backingOff ? ' Strava rate limit hit: syncing paused briefly.' : ''}`;
         render();
@@ -132,6 +133,17 @@ async function resyncMember(member) {
         statusEl.textContent = `Resync started for ${member.name ?? member.athleteId}. It can take a minute.`;
     } catch (error) {
         statusEl.textContent = `Resync failed: ${error.message}`;
+    }
+}
+
+/** Asks Chrome (and other Chromium browsers) to save the token in the password manager, once it is known to work. */
+function offerToSave(token) {
+    try {
+        if (token && window.PasswordCredential) {
+            navigator.credentials.store(new PasswordCredential({ id: 'recap-admin', password: token, name: 'Recap admin' }));
+        }
+    } catch {
+        // Not supported or blocked: the page still works, the browser just won't offer to remember it.
     }
 }
 
