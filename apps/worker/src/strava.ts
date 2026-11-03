@@ -44,7 +44,11 @@ export interface StravaActivity {
     trainer?: boolean;
     flagged?: boolean;
     private?: boolean;
-    best_efforts?: Array<{ name: string; distance: number; elapsed_time: number }>;
+    best_efforts?: Array<{ name: string; distance: number; elapsed_time: number; pr_rank?: number | null }>;
+}
+
+export interface StravaStats {
+    all_run_totals?: { distance?: number };
 }
 
 export class RateLimitedError extends Error {
@@ -246,6 +250,11 @@ export class StravaClient {
         return this.get(accessToken, `/athlete/activities?after=${afterEpoch}&per_page=200&page=${page}`);
     }
 
+    /** Lifetime totals. Only all_run_totals.distance (metres) is used. */
+    stats(accessToken: string, athleteId: number): Promise<StravaStats> {
+        return this.get(accessToken, `/athletes/${athleteId}/stats`);
+    }
+
     activity(accessToken: string, id: number): Promise<StravaActivity> {
         return this.get(accessToken, `/activities/${id}`);
     }
@@ -254,6 +263,28 @@ export class StravaClient {
 function bestEffort(activity: StravaActivity, metres: number): number | null {
     const effort = activity.best_efforts?.find((e) => Math.round(e.distance) === metres);
     return effort ? effort.elapsed_time : null;
+}
+
+/** Distances worth celebrating, with the label shown on the card. Matched within 1% of Strava's effort distance. */
+const PR_DISTANCES: Array<[number, string]> = [
+    [1000, '1K'],
+    [1609.344, '1 mile'],
+    [5000, '5K'],
+    [10000, '10K'],
+    [21097.5, 'Half marathon'],
+    [42195, 'Marathon'],
+];
+
+/** Distances where Strava ranks this run's effort #1 on the athlete's all-time list (a new personal best). */
+export function prEfforts(activity: StravaActivity): string[] {
+    const labels = new Set<string>();
+    for (const effort of activity.best_efforts ?? []) {
+        const match = PR_DISTANCES.find(([metres]) => Math.abs(effort.distance - metres) <= metres * 0.01);
+        if (match && effort.pr_rank === 1) {
+            labels.add(match[1]);
+        }
+    }
+    return PR_DISTANCES.map(([, label]) => label).filter((label) => labels.has(label));
 }
 
 /** Maps a Strava activity to the minimal record we keep. */
@@ -271,6 +302,7 @@ export function toRecord(activity: StravaActivity): ActivityRecord {
         trainer: activity.trainer ?? false,
         flagged: activity.flagged ?? false,
         best5kS: bestEffort(activity, 5000),
+        prEfforts: prEfforts(activity),
     };
 }
 

@@ -69,6 +69,8 @@ export interface ClubConfig {
     awards: AwardConfig[];
     ytdGoalKm: number | null;
     milestonesKm: number[];
+    /** Lifetime distance milestones to celebrate on the achievements card. */
+    lifetimeMilestonesKm?: number[];
     branding: ClubBranding;
 }
 
@@ -87,6 +89,8 @@ export interface ActivityRecord {
     flagged: boolean;
     /** Best 5K effort within the activity, in seconds (from the detailed activity). */
     best5kS: number | null;
+    /** Distances where Strava ranked this run as a new personal best, e.g. ['5K', '10K'] (from the detailed activity). */
+    prEfforts?: string[];
 }
 
 export interface AthleteRecord {

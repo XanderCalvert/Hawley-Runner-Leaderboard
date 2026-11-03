@@ -29,6 +29,7 @@ interface ActivityRow {
     trainer: number;
     flagged: number;
     best_5k_s: number | null;
+    pr_efforts: string | null;
 }
 
 export class Repository {
@@ -192,6 +193,41 @@ export class Repository {
         return groups;
     }
 
+    /* ---------- Lifetime distance ---------- */
+
+    /** Whether the lifetime total is missing or older than `days`. */
+    async lifetimeDue(athleteId: number, days: number): Promise<boolean> {
+        const row = await this.db
+            .prepare("SELECT lifetime_checked_at IS NULL OR lifetime_checked_at < datetime('now', ?2) AS due FROM athletes WHERE id = ?1")
+            .bind(athleteId, `-${days} days`)
+            .first<{ due: number }>();
+        return row?.due === 1;
+    }
+
+    /** Stores Strava's lifetime run total as a baseline: the total minus every run we currently hold for them. */
+    async recordLifetimeTotal(athleteId: number, totalM: number): Promise<void> {
+        await this.db
+            .prepare(
+                `UPDATE athletes SET lifetime_checked_at = datetime('now'),
+                    lifetime_base_m = ?2 - (SELECT COALESCE(SUM(distance_m), 0) FROM activities WHERE athlete_id = ?1)
+                 WHERE id = ?1`,
+            )
+            .bind(athleteId, totalM)
+            .run();
+    }
+
+    async lifetimeBases(clubSlug: string): Promise<Map<number, number>> {
+        const { results } = await this.db
+            .prepare(
+                `SELECT a.id, a.lifetime_base_m AS base FROM athletes a
+                 JOIN memberships m ON m.athlete_id = a.id
+                 WHERE m.club_slug = ?1 AND a.lifetime_base_m IS NOT NULL`,
+            )
+            .bind(clubSlug)
+            .all<{ id: number; base: number }>();
+        return new Map(results.map((r) => [r.id, r.base]));
+    }
+
     async memberCount(clubSlug: string): Promise<number> {
         const row = await this.db
             .prepare('SELECT COUNT(*) AS n FROM memberships WHERE club_slug = ?1')
@@ -288,9 +324,9 @@ export class Repository {
         await this.db
             .prepare(
                 `INSERT INTO activities (id, athlete_id, sport_type, start_date_local, distance_m, moving_time_s,
-                    elevation_gain_m, manual, trainer, flagged, best_5k_s, detail_fetched_at, updated_at)
-                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11,
-                    CASE WHEN ?12 = 1 THEN datetime('now') END, datetime('now'))
+                    elevation_gain_m, manual, trainer, flagged, best_5k_s, pr_efforts, detail_fetched_at, updated_at)
+                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12,
+                    CASE WHEN ?13 = 1 THEN datetime('now') END, datetime('now'))
                  ON CONFLICT (id) DO UPDATE SET
                     sport_type = excluded.sport_type,
                     start_date_local = excluded.start_date_local,
@@ -300,8 +336,9 @@ export class Repository {
                     manual = excluded.manual,
                     trainer = excluded.trainer,
                     flagged = excluded.flagged,
-                    best_5k_s = CASE WHEN ?12 = 1 THEN excluded.best_5k_s ELSE activities.best_5k_s END,
-                    detail_fetched_at = CASE WHEN ?12 = 1 THEN datetime('now') ELSE activities.detail_fetched_at END,
+                    best_5k_s = CASE WHEN ?13 = 1 THEN excluded.best_5k_s ELSE activities.best_5k_s END,
+                    pr_efforts = CASE WHEN ?13 = 1 THEN excluded.pr_efforts ELSE activities.pr_efforts END,
+                    detail_fetched_at = CASE WHEN ?13 = 1 THEN datetime('now') ELSE activities.detail_fetched_at END,
                     updated_at = datetime('now')`,
             )
             .bind(
@@ -316,6 +353,7 @@ export class Repository {
                 record.trainer ? 1 : 0,
                 record.flagged ? 1 : 0,
                 record.best5kS,
+                (record.prEfforts ?? []).join(',') || null,
                 fromDetail ? 1 : 0,
             )
             .run();
@@ -361,6 +399,7 @@ export class Repository {
             trainer: r.trainer === 1,
             flagged: r.flagged === 1,
             best5kS: r.best_5k_s,
+            prEfforts: r.pr_efforts ? r.pr_efforts.split(',') : [],
         }));
     }
 

@@ -1,4 +1,4 @@
-import { addDays, buildWeekRows, buildWeeklySummary, isValidDate, lastCompletedWeekStart, weekEndOf, weekStartOf } from '@club-recap/core';
+import { addDays, buildAchievements, buildWeekRows, buildWeeklySummary, isValidDate, lastCompletedWeekStart, weekEndOf, weekStartOf } from '@club-recap/core';
 import { getClub } from '../../../../config/clubs/index.ts';
 import { Repository } from '../db.ts';
 import type { Env } from '../env.ts';
@@ -50,10 +50,14 @@ export async function clubWeekRows(request: Request, env: Env, slug: string): Pr
     const weekStart = requested ? weekStartOf(requested) : lastCompletedWeekStart(club.timezone);
 
     const repo = new Repository(env);
-    const [athletes, activities, members] = await Promise.all([
+    // From 1 January (streaks and lifetime milestones need the whole year), or four weeks back if that is earlier.
+    // ponytail: reads the year's runs on every request: fine for a club-sized group, cache or precompute weekly if it grows.
+    const from = [`${weekEndOf(weekStart).slice(0, 4)}-01-01`, addDays(weekStart, -28)].sort()[0] as string;
+    const [athletes, activities, members, lifetimeBaseM] = await Promise.all([
         repo.activeAthletes(club.slug),
-        repo.clubActivities(club.slug, addDays(weekStart, -28), addDays(weekEndOf(weekStart), 1)),
+        repo.clubActivities(club.slug, from, addDays(weekEndOf(weekStart), 1)),
         repo.groupMembers(club.slug),
+        repo.lifetimeBases(club.slug),
     ]);
     const rowsFor = (start: string) => buildWeekRows({ club, athletes, activities, weekStart: start });
     const history = [4, 3, 2, 1].map((n) => ({ weekStart: addDays(weekStart, -7 * n), rows: rowsFor(addDays(weekStart, -7 * n)) }));
@@ -65,6 +69,7 @@ export async function clubWeekRows(request: Request, env: Env, slug: string): Pr
             previousRows: history.at(-1)?.rows ?? [],
             history,
             groups: (club.groups ?? []).map((g) => ({ ...g, members: members.get(g.id) ?? [] })),
+            achievements: buildAchievements({ club, athletes, activities, lifetimeBaseM, weekStart }),
         },
         { headers: { 'Cache-Control': 'public, max-age=60' } },
     );

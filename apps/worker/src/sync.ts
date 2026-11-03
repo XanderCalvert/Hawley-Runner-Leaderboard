@@ -134,6 +134,21 @@ export async function syncAthlete(env: Env, client: StravaClient, athleteId: num
         await fetchAndStore(repo, client, token, id);
     }
 
+    // Weekly: Strava's lifetime run total, for the lifetime milestones. Never lets a failure here break the sync.
+    if ((await repo.lifetimeDue(athleteId, 7)) && client.remaining > 1) {
+        try {
+            const total = (await client.stats(token, athleteId)).all_run_totals?.distance;
+            if (typeof total === 'number') {
+                await repo.recordLifetimeTotal(athleteId, total);
+            }
+        } catch (error) {
+            if (error instanceof RateLimitedError || error instanceof BudgetExhaustedError) {
+                throw error;
+            }
+            console.error('Lifetime total failed for athlete', athleteId, error);
+        }
+    }
+
     await repo.markSynced(athleteId);
 }
 
