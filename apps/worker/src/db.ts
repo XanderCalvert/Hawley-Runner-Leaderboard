@@ -166,6 +166,14 @@ export class Repository {
         return row?.remaining ?? 0;
     }
 
+    async memberCount(clubSlug: string): Promise<number> {
+        const row = await this.db
+            .prepare('SELECT COUNT(*) AS n FROM memberships WHERE club_slug = ?1')
+            .bind(clubSlug)
+            .first<{ n: number }>();
+        return row?.n ?? 0;
+    }
+
     async setHidden(clubSlug: string, athleteId: number, hidden: boolean): Promise<void> {
         await (hidden
             ? this.db.prepare('INSERT OR IGNORE INTO hidden (club_slug, athlete_id) VALUES (?1, ?2)').bind(clubSlug, athleteId)

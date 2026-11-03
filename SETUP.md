@@ -146,6 +146,21 @@ Use your own Strava account (the only athlete allowed at capacity 1).
 
 ---
 
+## Optional: an email when someone connects
+
+Off by default. Uses [Resend](https://resend.com) (free: 100 emails a day, no card).
+
+1. [ ] Sign up at resend.com **with the email address you want the alerts sent to**, and create an API key (Sending access is enough).
+2. [ ] Set two secrets from `apps/worker` (paste at each prompt):
+   ```powershell
+   npx wrangler secret put RESEND_API_KEY
+   npx wrangler secret put NOTIFY_EMAIL_TO      # your address, exactly as registered with Resend
+   ```
+   They are secrets (not `vars`) so your address never lands in the public repo. No redeploy needed.
+3. [ ] Connect or reconnect to test. You get "Sarah K. connected to Hawley Runners" with the number connected, and a separate email if someone hits the Strava athlete limit.
+
+Without a domain, emails come from `onboarding@resend.dev`, which Resend only allows to your own account address: exactly what this needs. They may land in spam the first time, so mark one as not spam. The email contains only first name and surname initial, so it is the one place that leaves our systems; the review notes mention it.
+
 ## Day-to-day
 
 - **Weekly:** open `recap.html`, **Download PNG**, **Copy caption**, post.

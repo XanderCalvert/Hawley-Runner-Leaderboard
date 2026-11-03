@@ -42,6 +42,10 @@ Per run: activity ID, athlete ID, local start date and time, `sport_type`, dista
 - A public JSON summary per club, per week: group totals, and for each award the top three as **"First L."** with a value (for example "Sarah K., 19:27"). No IDs, no links to profiles. The same content is rendered into the image the club posts.
 - An admin page (behind a secret token held by the club) shows each connected runner's name as "First L.", their Strava ID and a link to their profile, so two runners with the same initials can be told apart. Not exposed publicly.
 
+## Notifications to the club owner
+
+Optionally, the app emails the club owner (through Resend) when someone connects: first name, surname initial and a count of connected runners, nothing else. No Strava ID, tokens or activity data is sent. It is off unless the owner configures it.
+
 ## Runner control
 
 - "Remove my data" on the connect page: deletes everything and revokes the token at Strava.

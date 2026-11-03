@@ -6,6 +6,10 @@ export interface Env {
     STRAVA_SUBSCRIPTION_ID?: string;
     APP_SECRET: string;
     ADMIN_TOKEN: string;
+    /** Optional owner notifications (see notify.ts). Both secrets, so the address never lands in the repo. */
+    RESEND_API_KEY?: string;
+    NOTIFY_EMAIL_TO?: string;
+    NOTIFY_EMAIL_FROM?: string;
     WEB_BASE_URL: string;
     ALLOWED_ORIGINS: string;
     /** Strava API base. Default https://www.strava.com/api/v3; https://api-v3.strava.com is required from 1 Jun 2027. */

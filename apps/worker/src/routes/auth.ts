@@ -1,9 +1,11 @@
+import { displayName } from '@club-recap/core';
 import { getClub } from '../../../../config/clubs/index.ts';
 import { signState, verifyState } from '../crypto.ts';
 import { Repository } from '../db.ts';
 import { disconnectAthlete } from '../disconnect.ts';
 import type { Env } from '../env.ts';
 import { error, redirect } from '../http.ts';
+import { notifyOwner } from '../notify.ts';
 import { AthleteLimitError, StravaClient, isAthleteLimit } from '../strava.ts';
 import type { TokenResponse } from '../strava.ts';
 import { backfillAthlete } from '../sync.ts';
@@ -44,6 +46,13 @@ async function dropNewGrant(repo: Repository, client: StravaClient, athleteId: n
     await client.revoke(tokens.access_token, 'access_token').catch((e) => console.error('Revoke failed', athleteId, e));
 }
 
+/** Tells the owner who just joined (first name and initial only, as everywhere else) and how many are connected. */
+async function announceConnect(env: Env, repo: Repository, clubName: string, slug: string, first?: string, last?: string): Promise<void> {
+    const name = displayName(first, last);
+    const total = await repo.memberCount(slug);
+    await notifyOwner(env, `${name} connected to ${clubName}`, `${name} just connected their Strava to ${clubName}. ${total} connected now.`);
+}
+
 /** GET /auth/callback — Strava sends the runner back here after they approve (or cancel). */
 export async function authCallback(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
@@ -68,6 +77,7 @@ export async function authCallback(request: Request, env: Env, ctx: ExecutionCon
         tokens = await client.exchangeCode(code);
     } catch (e) {
         if (e instanceof AthleteLimitError) {
+            ctx.waitUntil(notifyOwner(env, 'Strava athlete limit reached', `Someone tried to connect to ${club.name} but the app is at its Strava athlete limit. Time to ask Strava for more places.`));
             return redirect(resultUrl(env, club.slug, 'full'));
         }
         console.error('Token exchange failed', e);
@@ -104,8 +114,12 @@ export async function authCallback(request: Request, env: Env, ctx: ExecutionCon
         return redirect(resultUrl(env, club.slug, 'not-member'));
     }
 
+    const isNew = !(await repo.isConnected(athlete.id));
     await repo.saveAthlete(athlete, tokens, scope);
     await repo.joinClub(club.slug, athlete.id);
+    if (isNew) {
+        ctx.waitUntil(announceConnect(env, repo, club.name, club.slug, athlete.firstname, athlete.lastname));
+    }
     ctx.waitUntil(backfillAthlete(env, athlete.id));
 
     return redirect(resultUrl(env, club.slug, 'connected'));
