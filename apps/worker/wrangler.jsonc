@@ -26,7 +26,9 @@
         // Where the static site lives (GitHub Pages). No trailing slash.
         "WEB_BASE_URL": "https://xandercalvert.github.io/Hawley-Runner-Leaderboard",
         // Comma-separated origins allowed to call /api and /admin from a browser.
-        "ALLOWED_ORIGINS": "https://xandercalvert.github.io,http://localhost:5173"
+        "ALLOWED_ORIGINS": "https://xandercalvert.github.io,http://localhost:5173",
+        // The Strava webhook subscription (one per app). The Worker ignores events from any other.
+        "STRAVA_SUBSCRIPTION_ID": "382736"
     }
 
     // Secrets (never in this file). Set each with: npx wrangler secret put NAME
