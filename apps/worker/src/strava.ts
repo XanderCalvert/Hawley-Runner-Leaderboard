@@ -180,7 +180,8 @@ export class StravaClient {
             if (isAthleteLimit(response.status, text)) {
                 throw new AthleteLimitError();
             }
-            throw new Error(`Strava token request failed: ${response.status}`);
+            // Strava's error body names the bad field (e.g. client_secret) and holds nothing sensitive.
+            throw new Error(`Strava token request failed: ${response.status} ${text.slice(0, 300)}`);
         }
         return response.json();
     }
