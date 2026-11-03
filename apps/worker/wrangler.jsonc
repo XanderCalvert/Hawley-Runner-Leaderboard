@@ -20,7 +20,7 @@
 
     "vars": {
         // Your Strava API application's Client ID (public).
-        "STRAVA_CLIENT_ID": "0",
+        "STRAVA_CLIENT_ID": "131632",
         // Strava API base. https://api-v3.strava.com is available from 4 Jan 2027 and required by 1 Jun 2027.
         "STRAVA_API_BASE": "https://www.strava.com/api/v3",
         // Where the static site lives (GitHub Pages). No trailing slash.

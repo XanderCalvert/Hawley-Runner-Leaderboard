@@ -26,6 +26,17 @@ describe('rate-limit headers', () => {
         }
     });
 
+    it('also watches the separate, lower read limit', async () => {
+        const { env } = makeEnv();
+        const client = new StravaClient(env);
+        stubStrava({
+            'GET /athlete/clubs': () =>
+                reply([], 200, { ...usage('10,100'), 'X-ReadRateLimit-Limit': '100,1000', 'X-ReadRateLimit-Usage': '85,100' }),
+        });
+        await client.clubs('t');
+        expect(client.nearRateLimit()).toBe('short');
+    });
+
     it('works out when each window resets', () => {
         expect(nextWindowReset('short', new Date('2026-09-22T10:07:30Z')).toISOString()).toBe('2026-09-22T10:15:00.000Z');
         expect(nextWindowReset('short', new Date('2026-09-22T10:45:00Z')).toISOString()).toBe('2026-09-22T11:00:00.000Z');

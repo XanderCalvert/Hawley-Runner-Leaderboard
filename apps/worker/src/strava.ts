@@ -17,6 +17,8 @@ export type RateLimitPair = [number, number];
 export interface RateLimitStatus {
     limit: RateLimitPair;
     usage: RateLimitPair;
+    /** Strava also meters reads separately (X-ReadRateLimit-*), at a lower limit. Most of our calls are reads. */
+    read?: { limit: RateLimitPair; usage: RateLimitPair };
 }
 
 export interface StravaAthlete {
@@ -122,11 +124,11 @@ export class StravaClient {
         if (!this.rateLimit) {
             return null;
         }
-        const { limit, usage } = this.rateLimit;
-        if (usage[1] >= limit[1] * fraction) {
+        const meters = [this.rateLimit, this.rateLimit.read].filter((m) => m !== undefined);
+        if (meters.some((m) => m.usage[1] >= m.limit[1] * fraction)) {
             return 'daily';
         }
-        return usage[0] >= limit[0] * fraction ? 'short' : null;
+        return meters.some((m) => m.usage[0] >= m.limit[0] * fraction) ? 'short' : null;
     }
 
     private async send(url: string, init: RequestInit): Promise<Response> {
@@ -137,8 +139,10 @@ export class StravaClient {
         const response = await fetch(url, init);
         const limit = parseRateLimitPair(response.headers.get('X-RateLimit-Limit'));
         const usage = parseRateLimitPair(response.headers.get('X-RateLimit-Usage'));
+        const readLimit = parseRateLimitPair(response.headers.get('X-ReadRateLimit-Limit'));
+        const readUsage = parseRateLimitPair(response.headers.get('X-ReadRateLimit-Usage'));
         if (limit && usage) {
-            this.rateLimit = { limit, usage };
+            this.rateLimit = { limit, usage, ...(readLimit && readUsage ? { read: { limit: readLimit, usage: readUsage } } : {}) };
         }
         if (response.status === 429) {
             throw new RateLimitedError();
