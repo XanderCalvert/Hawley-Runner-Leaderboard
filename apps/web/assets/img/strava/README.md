@@ -1,13 +1,13 @@
-# Strava brand assets (not in the repo yet)
+# Strava brand assets
 
-The pages already point at these files. Until they exist, browsers show the alt text instead.
-Download the official kit from <https://developers.strava.com/guidelines/> and drop the files here, unmodified
-(no recolouring, cropping or restyling):
+Official artwork from Strava's brand kit (<https://developers.strava.com/guidelines/>), used unmodified.
+Don't recolour, crop, restyle or animate it.
 
-| File the pages expect | Used on |
+| File | Used on |
 | --- | --- |
-| `btn_strava_connectwith_orange.svg` | The "Connect with Strava" button on `index.html` |
-| `api_logo_pwrdBy_strava_horiz_gray.svg` | "Powered by Strava" in the footer of `index.html` and `recap.html` |
+| `btn_strava_connect_with_orange.svg` | The "Connect with Strava" button on `index.html` |
+| `api_logo_pwrdBy_strava_horiz_orange.svg` | "Powered by Strava" in the footer of `index.html` (light page) |
+| `api_logo_pwrdBy_strava_horiz_white.svg` | "Powered by Strava" in the footer of `recap.html` (dark page) |
 
-If the kit's file names differ, either rename the files or update the two `src` attributes. Use the
-orange button on light backgrounds; the kit also has a white variant.
+The kit also has white buttons, black and orange logos, and PNG/EPS versions. Swap the file name in the page if you
+change the theme.

@@ -50,7 +50,7 @@ Webhooks can't reach localhost without a tunnel, so Part A relies on the backfil
 
 - [ ] In the app settings, set **Authorization Callback Domain** to your Worker's host, e.g. `club-recap.<your-subdomain>.workers.dev` (no `https://`, no path). You will know the exact host after B4; you can come back and set it then. For now `localhost` is fine.
 - [ ] Capacity: the app starts at 1 athlete and self-upgrades to 10 (follow the upgrade prompt on the app's settings page). Beyond 10 needs Strava's review: see [docs/strava-review-notes.md](docs/strava-review-notes.md). Until then the 11th person sees "The leaderboard is full for now. We've asked Strava for more places."
-- [ ] Download Strava's official assets from <https://developers.strava.com/guidelines/> and drop them into `apps/web/assets/img/strava/` **unmodified**. See the README in that folder for the two file names the pages expect.
+- [x] Strava's official button and "Powered by Strava" logo are already in `apps/web/assets/img/strava/` (unmodified, from the brand kit).
 
 ### B2. Cloudflare: database
 

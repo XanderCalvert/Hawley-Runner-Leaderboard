@@ -72,5 +72,5 @@ We expect about [N] connected athletes (one club, [N] members). The app is built
 - [x] Tokens only in the `Authorization` header; refresh and rotated refresh token handled
 - [x] Rate-limit headers respected, backoff on 429, no tight polling
 - [x] Configurable API base (`api-v3.strava.com` ready)
-- [ ] Official "Connect with Strava" button and "Powered by Strava" logo: placeholders are wired in; assets need downloading from developers.strava.com/guidelines (see `apps/web/assets/img/strava/README.md`)
+- [x] Official "Connect with Strava" button and "Powered by Strava" logo, unmodified from the brand kit
 - [ ] Brand attribution on the generated image (open question 2)
