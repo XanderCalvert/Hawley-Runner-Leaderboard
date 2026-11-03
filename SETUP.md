@@ -161,6 +161,21 @@ Off by default. Uses [Resend](https://resend.com) (free: 100 emails a day, no ca
 
 Without a domain, emails come from `onboarding@resend.dev`, which Resend only allows to your own account address: exactly what this needs. They may land in spam the first time, so mark one as not spam. The email contains only first name and surname initial, so it is the one place that leaves our systems; the review notes mention it.
 
+## Updating after code changes
+
+Migrations first (only needed when a new file appears in `apps/worker/migrations/`), then the Worker; pushing to `main` redeploys the site by itself:
+
+```powershell
+cd apps/worker
+npx wrangler d1 migrations apply club-recap --remote
+cd ../..
+npm run deploy:worker
+```
+
+## Men's / Women's leaders
+
+On `admin.html`, set each runner's **Leaders panel** (Men or Women). Anyone left on Men shows in the Men's leaders, and the Women's panel appears once at least one runner is set to Women. The label lives on the runner's record, so disconnecting deletes it with everything else.
+
 ## Day-to-day
 
 - **Weekly:** open `recap.html`, **Download PNG**, **Copy caption**, post.

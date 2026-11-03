@@ -21,33 +21,33 @@
         }
     },
     "week": {
-        "start": "2026-10-19",
-        "end": "2026-10-25",
-        "label": "19–25 Oct 2026",
+        "start": "2026-10-26",
+        "end": "2026-11-01",
+        "label": "26 Oct – 1 Nov 2026",
         "year": 2026
     },
-    "generatedAt": "2026-10-27T09:12:36.030Z",
+    "generatedAt": "2026-11-03T21:19:35.021Z",
     "group": {
         "week": {
-            "runners": 28,
-            "runs": 104,
-            "distanceM": 860260,
-            "movingTimeS": 283213,
-            "elevationM": 11304
+            "runners": 29,
+            "runs": 85,
+            "distanceM": 748500,
+            "movingTimeS": 258487,
+            "elevationM": 8914
         },
         "previousWeek": {
-            "runners": 30,
-            "runs": 107,
-            "distanceM": 867750,
-            "movingTimeS": 281386,
-            "elevationM": 11211
+            "runners": 28,
+            "runs": 82,
+            "distanceM": 685240,
+            "movingTimeS": 237098,
+            "elevationM": 8040
         },
         "ytd": {
             "runners": 30,
-            "runs": 4461,
-            "distanceM": 36189030,
-            "movingTimeS": 11911365,
-            "elevationM": 470980,
+            "runs": 3633,
+            "distanceM": 30339190,
+            "movingTimeS": 10357731,
+            "elevationM": 351632,
             "goalKm": 30000
         }
     },
@@ -59,21 +59,21 @@
             "entries": [
                 {
                     "rank": 1,
-                    "name": "Josh M.",
-                    "value": 1167,
-                    "display": "19:27"
+                    "name": "Megan K.",
+                    "value": 1171,
+                    "display": "19:31"
                 },
                 {
                     "rank": 2,
-                    "name": "Chris N.",
-                    "value": 1196,
-                    "display": "19:56"
+                    "name": "Nina W.",
+                    "value": 1187,
+                    "display": "19:47"
                 },
                 {
                     "rank": 3,
-                    "name": "Dan P.",
-                    "value": 1262,
-                    "display": "21:02"
+                    "name": "Ravi B.",
+                    "value": 1240,
+                    "display": "20:40"
                 }
             ],
             "moreTied": 0
@@ -85,21 +85,21 @@
             "entries": [
                 {
                     "rank": 1,
-                    "name": "Sarah K.",
-                    "value": 27550,
-                    "display": "27.6 km"
+                    "name": "Ellie S.",
+                    "value": 26860,
+                    "display": "26.9 km"
                 },
                 {
                     "rank": 2,
-                    "name": "Ellie S.",
-                    "value": 26190,
-                    "display": "26.2 km"
+                    "name": "Will P.",
+                    "value": 22540,
+                    "display": "22.5 km"
                 },
                 {
                     "rank": 3,
-                    "name": "Grace L.",
-                    "value": 20930,
-                    "display": "20.9 km"
+                    "name": "Lucy G.",
+                    "value": 19450,
+                    "display": "19.4 km"
                 }
             ],
             "moreTied": 0
@@ -111,21 +111,21 @@
             "entries": [
                 {
                     "rank": 1,
-                    "name": "Beth B.",
-                    "value": 1734,
-                    "display": "1,734 m"
+                    "name": "Chris N.",
+                    "value": 1193,
+                    "display": "1,193 m"
                 },
                 {
                     "rank": 2,
-                    "name": "Dan P.",
-                    "value": 1510,
-                    "display": "1,510 m"
+                    "name": "Luke R.",
+                    "value": 924,
+                    "display": "924 m"
                 },
                 {
                     "rank": 3,
-                    "name": "Nina W.",
-                    "value": 1279,
-                    "display": "1,279 m"
+                    "name": "Ben C.",
+                    "value": 773,
+                    "display": "773 m"
                 }
             ],
             "moreTied": 0
@@ -137,21 +137,21 @@
             "entries": [
                 {
                     "rank": 1,
-                    "name": "Ellie S.",
-                    "value": 65840,
-                    "display": "65.8 km"
+                    "name": "Will P.",
+                    "value": 64210,
+                    "display": "64.2 km"
                 },
                 {
                     "rank": 2,
-                    "name": "Beth B.",
-                    "value": 56830,
-                    "display": "56.8 km"
+                    "name": "Ellie S.",
+                    "value": 60120,
+                    "display": "60.1 km"
                 },
                 {
                     "rank": 3,
-                    "name": "Dan P.",
-                    "value": 55650,
-                    "display": "55.6 km"
+                    "name": "Sarah K.",
+                    "value": 48740,
+                    "display": "48.7 km"
                 }
             ],
             "moreTied": 0
@@ -163,24 +163,24 @@
             "entries": [
                 {
                     "rank": 1,
+                    "name": "Will P.",
+                    "value": 6,
+                    "display": "6 runs"
+                },
+                {
+                    "rank": 1,
                     "name": "Nina W.",
-                    "value": 7,
-                    "display": "7 runs"
-                },
-                {
-                    "rank": 2,
-                    "name": "Beth B.",
                     "value": 6,
                     "display": "6 runs"
                 },
                 {
-                    "rank": 2,
-                    "name": "Kieran H.",
-                    "value": 6,
-                    "display": "6 runs"
+                    "rank": 3,
+                    "name": "Megan K.",
+                    "value": 5,
+                    "display": "5 runs"
                 }
             ],
-            "moreTied": 1
+            "moreTied": 3
         },
         {
             "id": "time-on-feet",
@@ -189,21 +189,21 @@
             "entries": [
                 {
                     "rank": 1,
-                    "name": "Ellie S.",
-                    "value": 23154,
-                    "display": "6h 26m"
+                    "name": "Will P.",
+                    "value": 27345,
+                    "display": "7h 36m"
                 },
                 {
                     "rank": 2,
-                    "name": "Aisha D.",
-                    "value": 18949,
-                    "display": "5h 16m"
+                    "name": "Ellie S.",
+                    "value": 26576,
+                    "display": "7h 23m"
                 },
                 {
                     "rank": 3,
-                    "name": "Chloe S.",
-                    "value": 17486,
-                    "display": "4h 51m"
+                    "name": "Sarah K.",
+                    "value": 17602,
+                    "display": "4h 53m"
                 }
             ],
             "moreTied": 0
@@ -211,12 +211,16 @@
     ],
     "milestones": [
         {
-            "name": "Sarah K.",
+            "name": "Matt C.",
             "km": 1500
         },
         {
-            "name": "Chris N.",
-            "km": 1000
+            "name": "Megan K.",
+            "km": 1500
+        },
+        {
+            "name": "Sam H.",
+            "km": 750
         }
     ]
 }

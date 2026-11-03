@@ -1,0 +1,1560 @@
+{
+    "weekStart": "2026-10-26",
+    "rows": [
+        {
+            "name": "Emma L.",
+            "distanceM": 18960,
+            "runs": 2,
+            "longestM": 9890,
+            "paceSPerKm": 282.542194092827,
+            "elevationM": 194,
+            "movingTimeS": 5357
+        },
+        {
+            "name": "Grace L.",
+            "distanceM": 39040,
+            "runs": 5,
+            "longestM": 14080,
+            "paceSPerKm": 325.61475409836066,
+            "elevationM": 364,
+            "movingTimeS": 12712
+        },
+        {
+            "name": "Megan K.",
+            "distanceM": 40670,
+            "runs": 5,
+            "longestM": 10050,
+            "paceSPerKm": 250.1598229653307,
+            "elevationM": 290,
+            "movingTimeS": 10174
+        },
+        {
+            "name": "Will P.",
+            "distanceM": 64210,
+            "runs": 6,
+            "longestM": 22540,
+            "paceSPerKm": 425.8682448216789,
+            "elevationM": 606,
+            "movingTimeS": 27345
+        },
+        {
+            "name": "Matt C.",
+            "distanceM": 39960,
+            "runs": 5,
+            "longestM": 14880,
+            "paceSPerKm": 321.57157157157155,
+            "elevationM": 284,
+            "movingTimeS": 12850
+        },
+        {
+            "name": "Jack W.",
+            "distanceM": 13300,
+            "runs": 2,
+            "longestM": 7800,
+            "paceSPerKm": 283.45864661654133,
+            "elevationM": 118,
+            "movingTimeS": 3770
+        },
+        {
+            "name": "Aisha D.",
+            "distanceM": 33460,
+            "runs": 3,
+            "longestM": 18540,
+            "paceSPerKm": 312.49252839211,
+            "elevationM": 191,
+            "movingTimeS": 10456
+        },
+        {
+            "name": "Zoe Y.",
+            "distanceM": 8870,
+            "runs": 1,
+            "longestM": 8870,
+            "paceSPerKm": 411.6121758737317,
+            "elevationM": 75,
+            "movingTimeS": 3651
+        },
+        {
+            "name": "Sarah K.",
+            "distanceM": 48740,
+            "runs": 4,
+            "longestM": 16050,
+            "paceSPerKm": 361.14074681986045,
+            "elevationM": 464,
+            "movingTimeS": 17602
+        },
+        {
+            "name": "Nina W.",
+            "distanceM": 30440,
+            "runs": 6,
+            "longestM": 6390,
+            "paceSPerKm": 261.07095926412615,
+            "elevationM": 266,
+            "movingTimeS": 7947
+        },
+        {
+            "name": "Ravi B.",
+            "distanceM": 18780,
+            "runs": 3,
+            "longestM": 7560,
+            "paceSPerKm": 263.258785942492,
+            "elevationM": 156,
+            "movingTimeS": 4944
+        },
+        {
+            "name": "Sam H.",
+            "distanceM": 29610,
+            "runs": 5,
+            "longestM": 8360,
+            "paceSPerKm": 305.03208375548803,
+            "elevationM": 274,
+            "movingTimeS": 9032
+        },
+        {
+            "name": "Luke R.",
+            "distanceM": 38170,
+            "runs": 4,
+            "longestM": 12630,
+            "paceSPerKm": 421.2732512444328,
+            "elevationM": 924,
+            "movingTimeS": 16080
+        },
+        {
+            "name": "Fran W.",
+            "distanceM": 18970,
+            "runs": 2,
+            "longestM": 10230,
+            "paceSPerKm": 364.73379019504483,
+            "elevationM": 137,
+            "movingTimeS": 6919
+        },
+        {
+            "name": "Chloe S.",
+            "distanceM": 3500,
+            "runs": 1,
+            "longestM": 3500,
+            "paceSPerKm": 276.57142857142856,
+            "elevationM": 104,
+            "movingTimeS": 968
+        },
+        {
+            "name": "Chris N.",
+            "distanceM": 37230,
+            "runs": 4,
+            "longestM": 14140,
+            "paceSPerKm": 357.2656459844212,
+            "elevationM": 1193,
+            "movingTimeS": 13301
+        },
+        {
+            "name": "Ellie S.",
+            "distanceM": 60120,
+            "runs": 4,
+            "longestM": 26860,
+            "paceSPerKm": 442.04923486360616,
+            "elevationM": 605,
+            "movingTimeS": 26576
+        },
+        {
+            "name": "Josh M.",
+            "distanceM": 14680,
+            "runs": 2,
+            "longestM": 7600,
+            "paceSPerKm": 294.2098092643052,
+            "elevationM": 153,
+            "movingTimeS": 4319
+        },
+        {
+            "name": "Katie F.",
+            "distanceM": 24240,
+            "runs": 3,
+            "longestM": 11080,
+            "paceSPerKm": 334.2821782178218,
+            "elevationM": 162,
+            "movingTimeS": 8103
+        },
+        {
+            "name": "Ollie H.",
+            "distanceM": 14430,
+            "runs": 2,
+            "longestM": 9340,
+            "paceSPerKm": 358.2813582813583,
+            "elevationM": 475,
+            "movingTimeS": 5170
+        },
+        {
+            "name": "Priya R.",
+            "distanceM": 5660,
+            "runs": 1,
+            "longestM": 5660,
+            "paceSPerKm": 354.0636042402827,
+            "elevationM": 178,
+            "movingTimeS": 2004
+        },
+        {
+            "name": "Dan P.",
+            "distanceM": 21670,
+            "runs": 2,
+            "longestM": 11060,
+            "paceSPerKm": 303.83017997231195,
+            "elevationM": 169,
+            "movingTimeS": 6584
+        },
+        {
+            "name": "Beth B.",
+            "distanceM": 11610,
+            "runs": 2,
+            "longestM": 5880,
+            "paceSPerKm": 323.16968130921623,
+            "elevationM": 118,
+            "movingTimeS": 3752
+        },
+        {
+            "name": "Tom M.",
+            "distanceM": 23690,
+            "runs": 3,
+            "longestM": 10040,
+            "paceSPerKm": 422.7522161249472,
+            "elevationM": 225,
+            "movingTimeS": 10015
+        },
+        {
+            "name": "Lucy G.",
+            "distanceM": 33040,
+            "runs": 3,
+            "longestM": 19450,
+            "paceSPerKm": 298.728813559322,
+            "elevationM": 213,
+            "movingTimeS": 9870
+        },
+        {
+            "name": "James W.",
+            "distanceM": 12200,
+            "runs": 1,
+            "longestM": 12200,
+            "paceSPerKm": 330.9016393442623,
+            "elevationM": 66,
+            "movingTimeS": 4037
+        },
+        {
+            "name": "Ben C.",
+            "distanceM": 26800,
+            "runs": 2,
+            "longestM": 18480,
+            "paceSPerKm": 363.95522388059703,
+            "elevationM": 773,
+            "movingTimeS": 9754
+        },
+        {
+            "name": "Hannah F.",
+            "distanceM": 5390,
+            "runs": 1,
+            "longestM": 5390,
+            "paceSPerKm": 312.430426716141,
+            "elevationM": 40,
+            "movingTimeS": 1684
+        },
+        {
+            "name": "Kieran H.",
+            "distanceM": 11060,
+            "runs": 1,
+            "longestM": 11060,
+            "paceSPerKm": 317.4502712477396,
+            "elevationM": 97,
+            "movingTimeS": 3511
+        }
+    ],
+    "previousRows": [
+        {
+            "name": "Ravi B.",
+            "distanceM": 16780,
+            "runs": 3,
+            "longestM": 6020,
+            "paceSPerKm": 267.87842669845054,
+            "elevationM": 127,
+            "movingTimeS": 4495
+        },
+        {
+            "name": "Jack W.",
+            "distanceM": 26940,
+            "runs": 4,
+            "longestM": 8450,
+            "paceSPerKm": 275.35263548626574,
+            "elevationM": 263,
+            "movingTimeS": 7418
+        },
+        {
+            "name": "Ellie S.",
+            "distanceM": 62110,
+            "runs": 7,
+            "longestM": 13260,
+            "paceSPerKm": 418.5960392851393,
+            "elevationM": 512,
+            "movingTimeS": 25999
+        },
+        {
+            "name": "Will P.",
+            "distanceM": 52000,
+            "runs": 5,
+            "longestM": 16360,
+            "paceSPerKm": 423.65384615384613,
+            "elevationM": 488,
+            "movingTimeS": 22030
+        },
+        {
+            "name": "Chloe S.",
+            "distanceM": 16800,
+            "runs": 2,
+            "longestM": 12700,
+            "paceSPerKm": 288.0952380952381,
+            "elevationM": 440,
+            "movingTimeS": 4840
+        },
+        {
+            "name": "Lucy G.",
+            "distanceM": 44920,
+            "runs": 6,
+            "longestM": 14390,
+            "paceSPerKm": 289.0249332146037,
+            "elevationM": 478,
+            "movingTimeS": 12983
+        },
+        {
+            "name": "Ben C.",
+            "distanceM": 19890,
+            "runs": 3,
+            "longestM": 7710,
+            "paceSPerKm": 385.3192559074912,
+            "elevationM": 575,
+            "movingTimeS": 7664
+        },
+        {
+            "name": "Sam H.",
+            "distanceM": 8880,
+            "runs": 2,
+            "longestM": 4820,
+            "paceSPerKm": 295.27027027027026,
+            "elevationM": 83,
+            "movingTimeS": 2622
+        },
+        {
+            "name": "Aisha D.",
+            "distanceM": 17450,
+            "runs": 2,
+            "longestM": 8960,
+            "paceSPerKm": 307.7936962750716,
+            "elevationM": 119,
+            "movingTimeS": 5371
+        },
+        {
+            "name": "Nina W.",
+            "distanceM": 38550,
+            "runs": 6,
+            "longestM": 11480,
+            "paceSPerKm": 259.2217898832685,
+            "elevationM": 286,
+            "movingTimeS": 9993
+        },
+        {
+            "name": "Chris N.",
+            "distanceM": 42710,
+            "runs": 5,
+            "longestM": 13350,
+            "paceSPerKm": 347.6469210957621,
+            "elevationM": 1226,
+            "movingTimeS": 14848
+        },
+        {
+            "name": "Megan K.",
+            "distanceM": 18430,
+            "runs": 3,
+            "longestM": 6800,
+            "paceSPerKm": 262.61530113944656,
+            "elevationM": 177,
+            "movingTimeS": 4840
+        },
+        {
+            "name": "Matt C.",
+            "distanceM": 26510,
+            "runs": 3,
+            "longestM": 15550,
+            "paceSPerKm": 337.79705771407015,
+            "elevationM": 173,
+            "movingTimeS": 8955
+        },
+        {
+            "name": "Josh M.",
+            "distanceM": 6450,
+            "runs": 1,
+            "longestM": 6450,
+            "paceSPerKm": 300.62015503875966,
+            "elevationM": 59,
+            "movingTimeS": 1939
+        },
+        {
+            "name": "Luke R.",
+            "distanceM": 20900,
+            "runs": 3,
+            "longestM": 8550,
+            "paceSPerKm": 418.4688995215311,
+            "elevationM": 532,
+            "movingTimeS": 8746
+        },
+        {
+            "name": "Grace L.",
+            "distanceM": 29330,
+            "runs": 5,
+            "longestM": 6940,
+            "paceSPerKm": 309.001022843505,
+            "elevationM": 233,
+            "movingTimeS": 9063
+        },
+        {
+            "name": "Ollie H.",
+            "distanceM": 20070,
+            "runs": 2,
+            "longestM": 10850,
+            "paceSPerKm": 357.49875435974093,
+            "elevationM": 487,
+            "movingTimeS": 7175
+        },
+        {
+            "name": "Tom M.",
+            "distanceM": 31610,
+            "runs": 3,
+            "longestM": 16720,
+            "paceSPerKm": 452.1986713065486,
+            "elevationM": 326,
+            "movingTimeS": 14294
+        },
+        {
+            "name": "Emma L.",
+            "distanceM": 32340,
+            "runs": 3,
+            "longestM": 14000,
+            "paceSPerKm": 293.84662956091523,
+            "elevationM": 191,
+            "movingTimeS": 9503
+        },
+        {
+            "name": "Sarah K.",
+            "distanceM": 47340,
+            "runs": 3,
+            "longestM": 27550,
+            "paceSPerKm": 352.80946345585124,
+            "elevationM": 369,
+            "movingTimeS": 16702
+        },
+        {
+            "name": "Kieran H.",
+            "distanceM": 15360,
+            "runs": 2,
+            "longestM": 10290,
+            "paceSPerKm": 314.38802083333337,
+            "elevationM": 153,
+            "movingTimeS": 4829
+        },
+        {
+            "name": "Dan P.",
+            "distanceM": 23480,
+            "runs": 3,
+            "longestM": 10290,
+            "paceSPerKm": 286.1158432708688,
+            "elevationM": 157,
+            "movingTimeS": 6718
+        },
+        {
+            "name": "Fran W.",
+            "distanceM": 9440,
+            "runs": 1,
+            "longestM": 9440,
+            "paceSPerKm": 358.5805084745763,
+            "elevationM": 95,
+            "movingTimeS": 3385
+        },
+        {
+            "name": "Hannah F.",
+            "distanceM": 7880,
+            "runs": 1,
+            "longestM": 7880,
+            "paceSPerKm": 296.4467005076142,
+            "elevationM": 92,
+            "movingTimeS": 2336
+        },
+        {
+            "name": "Beth B.",
+            "distanceM": 7610,
+            "runs": 1,
+            "longestM": 7610,
+            "paceSPerKm": 334.9540078843627,
+            "elevationM": 60,
+            "movingTimeS": 2549
+        },
+        {
+            "name": "James W.",
+            "distanceM": 10410,
+            "runs": 1,
+            "longestM": 10410,
+            "paceSPerKm": 348.895292987512,
+            "elevationM": 115,
+            "movingTimeS": 3632
+        },
+        {
+            "name": "Alex P.",
+            "distanceM": 10220,
+            "runs": 1,
+            "longestM": 10220,
+            "paceSPerKm": 420.8414872798434,
+            "elevationM": 83,
+            "movingTimeS": 4301
+        },
+        {
+            "name": "Zoe Y.",
+            "distanceM": 20830,
+            "runs": 1,
+            "longestM": 20830,
+            "paceSPerKm": 473.7397983677389,
+            "elevationM": 141,
+            "movingTimeS": 9868
+        }
+    ],
+    "history": [
+        {
+            "weekStart": "2026-09-28",
+            "rows": [
+                {
+                    "name": "Ollie H.",
+                    "distanceM": 70280,
+                    "runs": 5,
+                    "longestM": 29830,
+                    "paceSPerKm": 359.1918042117245,
+                    "elevationM": 1876,
+                    "movingTimeS": 25244
+                },
+                {
+                    "name": "Ellie S.",
+                    "distanceM": 43700,
+                    "runs": 5,
+                    "longestM": 13280,
+                    "paceSPerKm": 413.5697940503432,
+                    "elevationM": 322,
+                    "movingTimeS": 18073
+                },
+                {
+                    "name": "Will P.",
+                    "distanceM": 52310,
+                    "runs": 6,
+                    "longestM": 11120,
+                    "paceSPerKm": 411.25979736188106,
+                    "elevationM": 401,
+                    "movingTimeS": 21513
+                },
+                {
+                    "name": "Ben C.",
+                    "distanceM": 40470,
+                    "runs": 5,
+                    "longestM": 11750,
+                    "paceSPerKm": 367.1361502347418,
+                    "elevationM": 1145,
+                    "movingTimeS": 14858
+                },
+                {
+                    "name": "Luke R.",
+                    "distanceM": 30510,
+                    "runs": 4,
+                    "longestM": 13540,
+                    "paceSPerKm": 415.3064568993772,
+                    "elevationM": 880,
+                    "movingTimeS": 12671
+                },
+                {
+                    "name": "Matt C.",
+                    "distanceM": 34030,
+                    "runs": 5,
+                    "longestM": 7220,
+                    "paceSPerKm": 324.50778724654714,
+                    "elevationM": 340,
+                    "movingTimeS": 11043
+                },
+                {
+                    "name": "Grace L.",
+                    "distanceM": 25260,
+                    "runs": 3,
+                    "longestM": 15670,
+                    "paceSPerKm": 332.77909738717335,
+                    "elevationM": 187,
+                    "movingTimeS": 8406
+                },
+                {
+                    "name": "Sarah K.",
+                    "distanceM": 41150,
+                    "runs": 3,
+                    "longestM": 22180,
+                    "paceSPerKm": 366.82867557715673,
+                    "elevationM": 363,
+                    "movingTimeS": 15095
+                },
+                {
+                    "name": "Jack W.",
+                    "distanceM": 28060,
+                    "runs": 4,
+                    "longestM": 8350,
+                    "paceSPerKm": 287.6692801140413,
+                    "elevationM": 257,
+                    "movingTimeS": 8072
+                },
+                {
+                    "name": "Kieran H.",
+                    "distanceM": 17170,
+                    "runs": 2,
+                    "longestM": 9260,
+                    "paceSPerKm": 319.0448456610367,
+                    "elevationM": 141,
+                    "movingTimeS": 5478
+                },
+                {
+                    "name": "Chris N.",
+                    "distanceM": 39890,
+                    "runs": 6,
+                    "longestM": 7930,
+                    "paceSPerKm": 350.83980947605914,
+                    "elevationM": 1193,
+                    "movingTimeS": 13995
+                },
+                {
+                    "name": "Nina W.",
+                    "distanceM": 29500,
+                    "runs": 4,
+                    "longestM": 13680,
+                    "paceSPerKm": 259.49152542372883,
+                    "elevationM": 198,
+                    "movingTimeS": 7655
+                },
+                {
+                    "name": "Katie F.",
+                    "distanceM": 15570,
+                    "runs": 2,
+                    "longestM": 10540,
+                    "paceSPerKm": 338.4714193962749,
+                    "elevationM": 101,
+                    "movingTimeS": 5270
+                },
+                {
+                    "name": "Lucy G.",
+                    "distanceM": 28590,
+                    "runs": 3,
+                    "longestM": 13640,
+                    "paceSPerKm": 286.428821266177,
+                    "elevationM": 276,
+                    "movingTimeS": 8189
+                },
+                {
+                    "name": "Alex P.",
+                    "distanceM": 29450,
+                    "runs": 3,
+                    "longestM": 14270,
+                    "paceSPerKm": 406.4516129032258,
+                    "elevationM": 222,
+                    "movingTimeS": 11970
+                },
+                {
+                    "name": "Emma L.",
+                    "distanceM": 41450,
+                    "runs": 4,
+                    "longestM": 17720,
+                    "paceSPerKm": 297.8045838359469,
+                    "elevationM": 306,
+                    "movingTimeS": 12344
+                },
+                {
+                    "name": "Chloe S.",
+                    "distanceM": 10840,
+                    "runs": 2,
+                    "longestM": 5490,
+                    "paceSPerKm": 294.37269372693726,
+                    "elevationM": 255,
+                    "movingTimeS": 3191
+                },
+                {
+                    "name": "Megan K.",
+                    "distanceM": 21930,
+                    "runs": 3,
+                    "longestM": 7830,
+                    "paceSPerKm": 260.3739170086639,
+                    "elevationM": 187,
+                    "movingTimeS": 5710
+                },
+                {
+                    "name": "Aisha D.",
+                    "distanceM": 23610,
+                    "runs": 2,
+                    "longestM": 14940,
+                    "paceSPerKm": 311.0546378653113,
+                    "elevationM": 212,
+                    "movingTimeS": 7344
+                },
+                {
+                    "name": "Sam H.",
+                    "distanceM": 9520,
+                    "runs": 2,
+                    "longestM": 5500,
+                    "paceSPerKm": 311.5546218487395,
+                    "elevationM": 83,
+                    "movingTimeS": 2966
+                },
+                {
+                    "name": "Dan P.",
+                    "distanceM": 18950,
+                    "runs": 2,
+                    "longestM": 10290,
+                    "paceSPerKm": 299.2084432717678,
+                    "elevationM": 191,
+                    "movingTimeS": 5670
+                },
+                {
+                    "name": "Tom M.",
+                    "distanceM": 8760,
+                    "runs": 1,
+                    "longestM": 8760,
+                    "paceSPerKm": 400.57077625570776,
+                    "elevationM": 72,
+                    "movingTimeS": 3509
+                },
+                {
+                    "name": "Beth B.",
+                    "distanceM": 10570,
+                    "runs": 2,
+                    "longestM": 5470,
+                    "paceSPerKm": 326.6792809839167,
+                    "elevationM": 102,
+                    "movingTimeS": 3453
+                },
+                {
+                    "name": "Fran W.",
+                    "distanceM": 25100,
+                    "runs": 2,
+                    "longestM": 20060,
+                    "paceSPerKm": 407.72908366533864,
+                    "elevationM": 228,
+                    "movingTimeS": 10234
+                },
+                {
+                    "name": "James W.",
+                    "distanceM": 8410,
+                    "runs": 1,
+                    "longestM": 8410,
+                    "paceSPerKm": 366.3495838287753,
+                    "elevationM": 43,
+                    "movingTimeS": 3081
+                },
+                {
+                    "name": "Josh M.",
+                    "distanceM": 5340,
+                    "runs": 1,
+                    "longestM": 5340,
+                    "paceSPerKm": 307.4906367041199,
+                    "elevationM": 47,
+                    "movingTimeS": 1642
+                },
+                {
+                    "name": "Ravi B.",
+                    "distanceM": 10510,
+                    "runs": 1,
+                    "longestM": 10510,
+                    "paceSPerKm": 281.92197906755473,
+                    "elevationM": 49,
+                    "movingTimeS": 2963
+                },
+                {
+                    "name": "Zoe Y.",
+                    "distanceM": 7730,
+                    "runs": 1,
+                    "longestM": 7730,
+                    "paceSPerKm": 396.248382923674,
+                    "elevationM": 73,
+                    "movingTimeS": 3063
+                }
+            ]
+        },
+        {
+            "weekStart": "2026-10-05",
+            "rows": [
+                {
+                    "name": "Dan P.",
+                    "distanceM": 26250,
+                    "runs": 3,
+                    "longestM": 9820,
+                    "paceSPerKm": 308.45714285714286,
+                    "elevationM": 175,
+                    "movingTimeS": 8097
+                },
+                {
+                    "name": "Alex P.",
+                    "distanceM": 34820,
+                    "runs": 4,
+                    "longestM": 13060,
+                    "paceSPerKm": 389.9195864445721,
+                    "elevationM": 357,
+                    "movingTimeS": 13577
+                },
+                {
+                    "name": "Emma L.",
+                    "distanceM": 57750,
+                    "runs": 6,
+                    "longestM": 23270,
+                    "paceSPerKm": 292.8484848484849,
+                    "elevationM": 409,
+                    "movingTimeS": 16912
+                },
+                {
+                    "name": "Lucy G.",
+                    "distanceM": 12520,
+                    "runs": 2,
+                    "longestM": 6850,
+                    "paceSPerKm": 270.76677316293933,
+                    "elevationM": 83,
+                    "movingTimeS": 3390
+                },
+                {
+                    "name": "Fran W.",
+                    "distanceM": 30530,
+                    "runs": 3,
+                    "longestM": 10950,
+                    "paceSPerKm": 360.268588273829,
+                    "elevationM": 295,
+                    "movingTimeS": 10999
+                },
+                {
+                    "name": "Ellie S.",
+                    "distanceM": 44320,
+                    "runs": 5,
+                    "longestM": 11490,
+                    "paceSPerKm": 430.7761732851986,
+                    "elevationM": 353,
+                    "movingTimeS": 19092
+                },
+                {
+                    "name": "Jack W.",
+                    "distanceM": 27250,
+                    "runs": 4,
+                    "longestM": 11210,
+                    "paceSPerKm": 274.348623853211,
+                    "elevationM": 199,
+                    "movingTimeS": 7476
+                },
+                {
+                    "name": "Aisha D.",
+                    "distanceM": 15190,
+                    "runs": 2,
+                    "longestM": 8350,
+                    "paceSPerKm": 311.38907175773534,
+                    "elevationM": 130,
+                    "movingTimeS": 4730
+                },
+                {
+                    "name": "Tom M.",
+                    "distanceM": 10940,
+                    "runs": 1,
+                    "longestM": 10940,
+                    "paceSPerKm": 409.96343692870204,
+                    "elevationM": 66,
+                    "movingTimeS": 4485
+                },
+                {
+                    "name": "Katie F.",
+                    "distanceM": 16840,
+                    "runs": 2,
+                    "longestM": 9630,
+                    "paceSPerKm": 337.8859857482185,
+                    "elevationM": 132,
+                    "movingTimeS": 5690
+                },
+                {
+                    "name": "Grace L.",
+                    "distanceM": 28970,
+                    "runs": 4,
+                    "longestM": 14180,
+                    "paceSPerKm": 322.40248532965137,
+                    "elevationM": 221,
+                    "movingTimeS": 9340
+                },
+                {
+                    "name": "Matt C.",
+                    "distanceM": 45810,
+                    "runs": 6,
+                    "longestM": 15700,
+                    "paceSPerKm": 315.06221349050423,
+                    "elevationM": 407,
+                    "movingTimeS": 14433
+                },
+                {
+                    "name": "Sam H.",
+                    "distanceM": 26650,
+                    "runs": 5,
+                    "longestM": 6520,
+                    "paceSPerKm": 299.69981238273925,
+                    "elevationM": 203,
+                    "movingTimeS": 7987
+                },
+                {
+                    "name": "Ollie H.",
+                    "distanceM": 32010,
+                    "runs": 3,
+                    "longestM": 12030,
+                    "paceSPerKm": 361.41830677913157,
+                    "elevationM": 758,
+                    "movingTimeS": 11569
+                },
+                {
+                    "name": "Nina W.",
+                    "distanceM": 18220,
+                    "runs": 4,
+                    "longestM": 5450,
+                    "paceSPerKm": 261.9099890230516,
+                    "elevationM": 122,
+                    "movingTimeS": 4772
+                },
+                {
+                    "name": "Sarah K.",
+                    "distanceM": 52250,
+                    "runs": 4,
+                    "longestM": 26230,
+                    "paceSPerKm": 350.66028708133973,
+                    "elevationM": 474,
+                    "movingTimeS": 18322
+                },
+                {
+                    "name": "Ben C.",
+                    "distanceM": 8140.000000000001,
+                    "runs": 1,
+                    "longestM": 8140.000000000001,
+                    "paceSPerKm": 359.8280098280098,
+                    "elevationM": 171,
+                    "movingTimeS": 2929
+                },
+                {
+                    "name": "Chris N.",
+                    "distanceM": 35260,
+                    "runs": 4,
+                    "longestM": 16379.999999999998,
+                    "paceSPerKm": 368.5479296653432,
+                    "elevationM": 843,
+                    "movingTimeS": 12995
+                },
+                {
+                    "name": "Will P.",
+                    "distanceM": 57840,
+                    "runs": 4,
+                    "longestM": 26010,
+                    "paceSPerKm": 430.51521438450897,
+                    "elevationM": 275,
+                    "movingTimeS": 24901
+                },
+                {
+                    "name": "Priya R.",
+                    "distanceM": 7940,
+                    "runs": 1,
+                    "longestM": 7940,
+                    "paceSPerKm": 331.98992443324937,
+                    "elevationM": 173,
+                    "movingTimeS": 2636
+                },
+                {
+                    "name": "Hannah F.",
+                    "distanceM": 16750,
+                    "runs": 2,
+                    "longestM": 8950,
+                    "paceSPerKm": 309.85074626865674,
+                    "elevationM": 120,
+                    "movingTimeS": 5190
+                },
+                {
+                    "name": "Megan K.",
+                    "distanceM": 46860,
+                    "runs": 4,
+                    "longestM": 20300,
+                    "paceSPerKm": 263.52966282543747,
+                    "elevationM": 369,
+                    "movingTimeS": 12349
+                },
+                {
+                    "name": "Ravi B.",
+                    "distanceM": 21570,
+                    "runs": 2,
+                    "longestM": 16300,
+                    "paceSPerKm": 274.13073713490957,
+                    "elevationM": 127,
+                    "movingTimeS": 5913
+                },
+                {
+                    "name": "James W.",
+                    "distanceM": 21850,
+                    "runs": 2,
+                    "longestM": 12150,
+                    "paceSPerKm": 354.324942791762,
+                    "elevationM": 132,
+                    "movingTimeS": 7742
+                },
+                {
+                    "name": "Luke R.",
+                    "distanceM": 9180,
+                    "runs": 1,
+                    "longestM": 9180,
+                    "paceSPerKm": 408.06100217864923,
+                    "elevationM": 288,
+                    "movingTimeS": 3746
+                },
+                {
+                    "name": "Beth B.",
+                    "distanceM": 12750,
+                    "runs": 2,
+                    "longestM": 7820,
+                    "paceSPerKm": 325.88235294117646,
+                    "elevationM": 118,
+                    "movingTimeS": 4155
+                },
+                {
+                    "name": "Zoe Y.",
+                    "distanceM": 21420,
+                    "runs": 1,
+                    "longestM": 21420,
+                    "paceSPerKm": 421.3352007469654,
+                    "elevationM": 178,
+                    "movingTimeS": 9025
+                },
+                {
+                    "name": "Kieran H.",
+                    "distanceM": 21750,
+                    "runs": 1,
+                    "longestM": 21750,
+                    "paceSPerKm": 344.4597701149425,
+                    "elevationM": 124,
+                    "movingTimeS": 7492
+                }
+            ]
+        },
+        {
+            "weekStart": "2026-10-12",
+            "rows": [
+                {
+                    "name": "Nina W.",
+                    "distanceM": 32080,
+                    "runs": 6,
+                    "longestM": 6360,
+                    "paceSPerKm": 262.0635910224439,
+                    "elevationM": 222,
+                    "movingTimeS": 8407
+                },
+                {
+                    "name": "Ellie S.",
+                    "distanceM": 71970,
+                    "runs": 6,
+                    "longestM": 26040,
+                    "paceSPerKm": 423.759899958316,
+                    "elevationM": 587,
+                    "movingTimeS": 30498
+                },
+                {
+                    "name": "Dan P.",
+                    "distanceM": 15460,
+                    "runs": 2,
+                    "longestM": 8090,
+                    "paceSPerKm": 289.5213454075032,
+                    "elevationM": 164,
+                    "movingTimeS": 4476
+                },
+                {
+                    "name": "Megan K.",
+                    "distanceM": 25870,
+                    "runs": 2,
+                    "longestM": 19120,
+                    "paceSPerKm": 258.29145728643215,
+                    "elevationM": 228,
+                    "movingTimeS": 6682
+                },
+                {
+                    "name": "Luke R.",
+                    "distanceM": 49890,
+                    "runs": 5,
+                    "longestM": 19870,
+                    "paceSPerKm": 432.7720986169573,
+                    "elevationM": 1446,
+                    "movingTimeS": 21591
+                },
+                {
+                    "name": "Chris N.",
+                    "distanceM": 23470,
+                    "runs": 4,
+                    "longestM": 7060,
+                    "paceSPerKm": 348.2743928419259,
+                    "elevationM": 810,
+                    "movingTimeS": 8174
+                },
+                {
+                    "name": "Ravi B.",
+                    "distanceM": 30490,
+                    "runs": 5,
+                    "longestM": 6890,
+                    "paceSPerKm": 262.1515250901935,
+                    "elevationM": 212,
+                    "movingTimeS": 7993
+                },
+                {
+                    "name": "Jack W.",
+                    "distanceM": 31440,
+                    "runs": 4,
+                    "longestM": 11980,
+                    "paceSPerKm": 284.66921119592877,
+                    "elevationM": 278,
+                    "movingTimeS": 8950
+                },
+                {
+                    "name": "Grace L.",
+                    "distanceM": 44200,
+                    "runs": 6,
+                    "longestM": 15010,
+                    "paceSPerKm": 322.17194570135746,
+                    "elevationM": 312,
+                    "movingTimeS": 14240
+                },
+                {
+                    "name": "Matt C.",
+                    "distanceM": 22270,
+                    "runs": 4,
+                    "longestM": 7560,
+                    "paceSPerKm": 325.77458464301753,
+                    "elevationM": 177,
+                    "movingTimeS": 7255
+                },
+                {
+                    "name": "Aisha D.",
+                    "distanceM": 39230,
+                    "runs": 5,
+                    "longestM": 10760,
+                    "paceSPerKm": 306.1942391027275,
+                    "elevationM": 219,
+                    "movingTimeS": 12012
+                },
+                {
+                    "name": "Kieran H.",
+                    "distanceM": 11640,
+                    "runs": 1,
+                    "longestM": 11640,
+                    "paceSPerKm": 310.3951890034364,
+                    "elevationM": 117,
+                    "movingTimeS": 3613
+                },
+                {
+                    "name": "Sarah K.",
+                    "distanceM": 35370,
+                    "runs": 4,
+                    "longestM": 12170,
+                    "paceSPerKm": 365.7054000565451,
+                    "elevationM": 266,
+                    "movingTimeS": 12935
+                },
+                {
+                    "name": "Priya R.",
+                    "distanceM": 7030,
+                    "runs": 1,
+                    "longestM": 7030,
+                    "paceSPerKm": 373.1152204836415,
+                    "elevationM": 158,
+                    "movingTimeS": 2623
+                },
+                {
+                    "name": "Ben C.",
+                    "distanceM": 39840,
+                    "runs": 5,
+                    "longestM": 18610,
+                    "paceSPerKm": 381.1997991967871,
+                    "elevationM": 1291,
+                    "movingTimeS": 15187
+                },
+                {
+                    "name": "Emma L.",
+                    "distanceM": 38470,
+                    "runs": 5,
+                    "longestM": 11000,
+                    "paceSPerKm": 280.9981804003119,
+                    "elevationM": 348,
+                    "movingTimeS": 10810
+                },
+                {
+                    "name": "Beth B.",
+                    "distanceM": 17850,
+                    "runs": 3,
+                    "longestM": 6890,
+                    "paceSPerKm": 329.57983193277306,
+                    "elevationM": 124,
+                    "movingTimeS": 5883
+                },
+                {
+                    "name": "Ollie H.",
+                    "distanceM": 40070,
+                    "runs": 4,
+                    "longestM": 11230,
+                    "paceSPerKm": 354.4297479411031,
+                    "elevationM": 1053,
+                    "movingTimeS": 14202
+                },
+                {
+                    "name": "Lucy G.",
+                    "distanceM": 34150,
+                    "runs": 4,
+                    "longestM": 16460,
+                    "paceSPerKm": 290.86383601756955,
+                    "elevationM": 239,
+                    "movingTimeS": 9933
+                },
+                {
+                    "name": "Alex P.",
+                    "distanceM": 7940,
+                    "runs": 1,
+                    "longestM": 7940,
+                    "paceSPerKm": 417.5062972292191,
+                    "elevationM": 56,
+                    "movingTimeS": 3315
+                },
+                {
+                    "name": "Tom M.",
+                    "distanceM": 31390,
+                    "runs": 3,
+                    "longestM": 12030,
+                    "paceSPerKm": 414.14463204842303,
+                    "elevationM": 193,
+                    "movingTimeS": 13000
+                },
+                {
+                    "name": "Will P.",
+                    "distanceM": 21990,
+                    "runs": 3,
+                    "longestM": 8950,
+                    "paceSPerKm": 432.78763074124606,
+                    "elevationM": 119,
+                    "movingTimeS": 9517
+                },
+                {
+                    "name": "Josh M.",
+                    "distanceM": 6430,
+                    "runs": 1,
+                    "longestM": 6430,
+                    "paceSPerKm": 284.9144634525661,
+                    "elevationM": 63,
+                    "movingTimeS": 1832
+                },
+                {
+                    "name": "Hannah F.",
+                    "distanceM": 6370,
+                    "runs": 1,
+                    "longestM": 6370,
+                    "paceSPerKm": 309.7331240188383,
+                    "elevationM": 76,
+                    "movingTimeS": 1973
+                },
+                {
+                    "name": "James W.",
+                    "distanceM": 32400,
+                    "runs": 2,
+                    "longestM": 27350,
+                    "paceSPerKm": 370.98765432098764,
+                    "elevationM": 221,
+                    "movingTimeS": 12020
+                },
+                {
+                    "name": "Zoe Y.",
+                    "distanceM": 9790,
+                    "runs": 1,
+                    "longestM": 9790,
+                    "paceSPerKm": 430.03064351378964,
+                    "elevationM": 115,
+                    "movingTimeS": 4210
+                },
+                {
+                    "name": "Sam H.",
+                    "distanceM": 14070,
+                    "runs": 1,
+                    "longestM": 14070,
+                    "paceSPerKm": 303.1272210376688,
+                    "elevationM": 106,
+                    "movingTimeS": 4265
+                }
+            ]
+        },
+        {
+            "weekStart": "2026-10-19",
+            "rows": [
+                {
+                    "name": "Ravi B.",
+                    "distanceM": 16780,
+                    "runs": 3,
+                    "longestM": 6020,
+                    "paceSPerKm": 267.87842669845054,
+                    "elevationM": 127,
+                    "movingTimeS": 4495
+                },
+                {
+                    "name": "Jack W.",
+                    "distanceM": 26940,
+                    "runs": 4,
+                    "longestM": 8450,
+                    "paceSPerKm": 275.35263548626574,
+                    "elevationM": 263,
+                    "movingTimeS": 7418
+                },
+                {
+                    "name": "Ellie S.",
+                    "distanceM": 62110,
+                    "runs": 7,
+                    "longestM": 13260,
+                    "paceSPerKm": 418.5960392851393,
+                    "elevationM": 512,
+                    "movingTimeS": 25999
+                },
+                {
+                    "name": "Will P.",
+                    "distanceM": 52000,
+                    "runs": 5,
+                    "longestM": 16360,
+                    "paceSPerKm": 423.65384615384613,
+                    "elevationM": 488,
+                    "movingTimeS": 22030
+                },
+                {
+                    "name": "Chloe S.",
+                    "distanceM": 16800,
+                    "runs": 2,
+                    "longestM": 12700,
+                    "paceSPerKm": 288.0952380952381,
+                    "elevationM": 440,
+                    "movingTimeS": 4840
+                },
+                {
+                    "name": "Lucy G.",
+                    "distanceM": 44920,
+                    "runs": 6,
+                    "longestM": 14390,
+                    "paceSPerKm": 289.0249332146037,
+                    "elevationM": 478,
+                    "movingTimeS": 12983
+                },
+                {
+                    "name": "Ben C.",
+                    "distanceM": 19890,
+                    "runs": 3,
+                    "longestM": 7710,
+                    "paceSPerKm": 385.3192559074912,
+                    "elevationM": 575,
+                    "movingTimeS": 7664
+                },
+                {
+                    "name": "Sam H.",
+                    "distanceM": 8880,
+                    "runs": 2,
+                    "longestM": 4820,
+                    "paceSPerKm": 295.27027027027026,
+                    "elevationM": 83,
+                    "movingTimeS": 2622
+                },
+                {
+                    "name": "Aisha D.",
+                    "distanceM": 17450,
+                    "runs": 2,
+                    "longestM": 8960,
+                    "paceSPerKm": 307.7936962750716,
+                    "elevationM": 119,
+                    "movingTimeS": 5371
+                },
+                {
+                    "name": "Nina W.",
+                    "distanceM": 38550,
+                    "runs": 6,
+                    "longestM": 11480,
+                    "paceSPerKm": 259.2217898832685,
+                    "elevationM": 286,
+                    "movingTimeS": 9993
+                },
+                {
+                    "name": "Chris N.",
+                    "distanceM": 42710,
+                    "runs": 5,
+                    "longestM": 13350,
+                    "paceSPerKm": 347.6469210957621,
+                    "elevationM": 1226,
+                    "movingTimeS": 14848
+                },
+                {
+                    "name": "Megan K.",
+                    "distanceM": 18430,
+                    "runs": 3,
+                    "longestM": 6800,
+                    "paceSPerKm": 262.61530113944656,
+                    "elevationM": 177,
+                    "movingTimeS": 4840
+                },
+                {
+                    "name": "Matt C.",
+                    "distanceM": 26510,
+                    "runs": 3,
+                    "longestM": 15550,
+                    "paceSPerKm": 337.79705771407015,
+                    "elevationM": 173,
+                    "movingTimeS": 8955
+                },
+                {
+                    "name": "Josh M.",
+                    "distanceM": 6450,
+                    "runs": 1,
+                    "longestM": 6450,
+                    "paceSPerKm": 300.62015503875966,
+                    "elevationM": 59,
+                    "movingTimeS": 1939
+                },
+                {
+                    "name": "Luke R.",
+                    "distanceM": 20900,
+                    "runs": 3,
+                    "longestM": 8550,
+                    "paceSPerKm": 418.4688995215311,
+                    "elevationM": 532,
+                    "movingTimeS": 8746
+                },
+                {
+                    "name": "Grace L.",
+                    "distanceM": 29330,
+                    "runs": 5,
+                    "longestM": 6940,
+                    "paceSPerKm": 309.001022843505,
+                    "elevationM": 233,
+                    "movingTimeS": 9063
+                },
+                {
+                    "name": "Ollie H.",
+                    "distanceM": 20070,
+                    "runs": 2,
+                    "longestM": 10850,
+                    "paceSPerKm": 357.49875435974093,
+                    "elevationM": 487,
+                    "movingTimeS": 7175
+                },
+                {
+                    "name": "Tom M.",
+                    "distanceM": 31610,
+                    "runs": 3,
+                    "longestM": 16720,
+                    "paceSPerKm": 452.1986713065486,
+                    "elevationM": 326,
+                    "movingTimeS": 14294
+                },
+                {
+                    "name": "Emma L.",
+                    "distanceM": 32340,
+                    "runs": 3,
+                    "longestM": 14000,
+                    "paceSPerKm": 293.84662956091523,
+                    "elevationM": 191,
+                    "movingTimeS": 9503
+                },
+                {
+                    "name": "Sarah K.",
+                    "distanceM": 47340,
+                    "runs": 3,
+                    "longestM": 27550,
+                    "paceSPerKm": 352.80946345585124,
+                    "elevationM": 369,
+                    "movingTimeS": 16702
+                },
+                {
+                    "name": "Kieran H.",
+                    "distanceM": 15360,
+                    "runs": 2,
+                    "longestM": 10290,
+                    "paceSPerKm": 314.38802083333337,
+                    "elevationM": 153,
+                    "movingTimeS": 4829
+                },
+                {
+                    "name": "Dan P.",
+                    "distanceM": 23480,
+                    "runs": 3,
+                    "longestM": 10290,
+                    "paceSPerKm": 286.1158432708688,
+                    "elevationM": 157,
+                    "movingTimeS": 6718
+                },
+                {
+                    "name": "Fran W.",
+                    "distanceM": 9440,
+                    "runs": 1,
+                    "longestM": 9440,
+                    "paceSPerKm": 358.5805084745763,
+                    "elevationM": 95,
+                    "movingTimeS": 3385
+                },
+                {
+                    "name": "Hannah F.",
+                    "distanceM": 7880,
+                    "runs": 1,
+                    "longestM": 7880,
+                    "paceSPerKm": 296.4467005076142,
+                    "elevationM": 92,
+                    "movingTimeS": 2336
+                },
+                {
+                    "name": "Beth B.",
+                    "distanceM": 7610,
+                    "runs": 1,
+                    "longestM": 7610,
+                    "paceSPerKm": 334.9540078843627,
+                    "elevationM": 60,
+                    "movingTimeS": 2549
+                },
+                {
+                    "name": "James W.",
+                    "distanceM": 10410,
+                    "runs": 1,
+                    "longestM": 10410,
+                    "paceSPerKm": 348.895292987512,
+                    "elevationM": 115,
+                    "movingTimeS": 3632
+                },
+                {
+                    "name": "Alex P.",
+                    "distanceM": 10220,
+                    "runs": 1,
+                    "longestM": 10220,
+                    "paceSPerKm": 420.8414872798434,
+                    "elevationM": 83,
+                    "movingTimeS": 4301
+                },
+                {
+                    "name": "Zoe Y.",
+                    "distanceM": 20830,
+                    "runs": 1,
+                    "longestM": 20830,
+                    "paceSPerKm": 473.7397983677389,
+                    "elevationM": 141,
+                    "movingTimeS": 9868
+                }
+            ]
+        }
+    ],
+    "groups": [
+        {
+            "id": "women",
+            "label": "Women",
+            "title": "Women's leaders",
+            "members": [
+                "Sarah K.",
+                "James W.",
+                "Aisha D.",
+                "Ollie H.",
+                "Chloe S.",
+                "Sam H.",
+                "Megan K.",
+                "Chris N.",
+                "Beth B.",
+                "Kieran H."
+            ]
+        }
+    ]
+}

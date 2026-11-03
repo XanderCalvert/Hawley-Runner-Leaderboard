@@ -76,5 +76,5 @@ export function clubInfo(slug: string): Response {
     if (!club) {
         return error(404, 'Unknown club');
     }
-    return json({ slug: club.slug, name: club.name, stravaUrl: club.stravaUrl, locale: club.locale, branding: club.branding, stravaClubId: club.stravaClubId });
+    return json({ slug: club.slug, name: club.name, stravaUrl: club.stravaUrl, locale: club.locale, groups: club.groups ?? [], branding: club.branding, stravaClubId: club.stravaClubId });
 }

@@ -12,6 +12,7 @@ const STATUS_LABELS = { active: 'Showing', hidden: 'Hidden' };
 
 let api = null;
 let members = [];
+let groups = [];
 
 function remember(token) {
     try {
@@ -71,6 +72,19 @@ function render() {
                 statusTd.append(pill);
                 tr.append(statusTd);
 
+                // Which leaders panel they appear in on the first card (e.g. Women). Everyone else shows as Men's.
+                const groupTd = document.createElement('td');
+                if (member.connected && groups.length) {
+                    const select = document.createElement('select');
+                    select.className = 'input';
+                    select.setAttribute('aria-label', `Group for ${member.name}`);
+                    select.append(new Option('Men', ''), ...groups.map((g) => new Option(g.label, g.id)));
+                    select.value = member.group ?? '';
+                    select.addEventListener('change', () => setGroup(member, select.value || null));
+                    groupTd.append(select);
+                }
+                tr.append(groupTd);
+
                 tr.append(cell(String(member.runsThisYear), 'num'));
                 tr.append(cell(formatDate(member.joinedAt)));
                 tr.append(cell(formatDate(member.lastSyncedAt)));
@@ -127,6 +141,17 @@ async function setStatus(member, status) {
     }
 }
 
+async function setGroup(member, group) {
+    try {
+        await api.setGroup(member.athleteId, group);
+        member.group = group;
+        statusEl.textContent = `${member.name} is now in ${group ? groups.find((g) => g.id === group)?.label : "the Men's"} leaders.`;
+    } catch (error) {
+        statusEl.textContent = `Update failed: ${error.message}`;
+        render();
+    }
+}
+
 async function resyncMember(member) {
     try {
         await api.resync(member.athleteId);
@@ -169,4 +194,10 @@ if (isSample) {
     }
 }
 
-fetchClub().then(applyBrand).catch(() => {});
+fetchClub()
+    .then((club) => {
+        groups = club.groups ?? [];
+        applyBrand(club);
+        render();
+    })
+    .catch(() => {});

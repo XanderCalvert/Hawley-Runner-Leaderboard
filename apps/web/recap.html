@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="assets/css/fonts.css">
     <link rel="stylesheet" href="assets/css/site.css">
     <link rel="stylesheet" href="assets/css/card.css">
+    <link rel="stylesheet" href="assets/css/quick-card.css">
     <style>
         .toolbar {
             display: flex;
@@ -40,6 +41,11 @@
         .preview__scaler {
             width: 1080px;
             transform-origin: top left;
+        }
+
+        .cards {
+            display: grid;
+            gap: 16px;
         }
 
         .caption {
@@ -79,15 +85,23 @@
             </div>
             <button class="button button--ghost" id="next" type="button" aria-label="Next week">Next →</button>
             <div class="spacer"></div>
-            <button class="button" id="download" type="button">Download PNG</button>
+            <button class="button" id="download" type="button">Download card 1</button>
+            <button class="button" id="download2" type="button">Download card 2</button>
         </div>
 
         <p class="status small" id="status" role="status"></p>
 
         <div class="layout">
-            <div class="preview" id="preview">
-                <div class="preview__scaler" id="scaler">
-                    <article class="recap-card" id="card" aria-live="polite"></article>
+            <div class="cards">
+                <div class="preview" id="preview">
+                    <div class="preview__scaler" id="scaler">
+                        <article class="recap-card" id="card" aria-live="polite"></article>
+                    </div>
+                </div>
+                <div class="preview" id="preview2">
+                    <div class="preview__scaler" id="scaler2">
+                        <article class="recap-card" id="card2"></article>
+                    </div>
                 </div>
             </div>
             <aside class="panel">

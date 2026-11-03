@@ -5,7 +5,7 @@
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { buildWeeklySummary, displayName, lastCompletedWeekStart, weekEndOf, weekStartOf } from '../packages/core/src/index.ts';
+import { addDays, buildWeekRows, buildWeeklySummary, displayName, lastCompletedWeekStart, weekEndOf, weekStartOf } from '../packages/core/src/index.ts';
 import type { ActivityRecord } from '../packages/core/src/index.ts';
 import { getClub } from '../config/clubs/index.ts';
 import { fakeActivities, fakeAthletes } from './lib/fake-runners.ts';
@@ -47,3 +47,25 @@ const out = resolve(root, 'apps/web/sample', `${slug}.json`);
 mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, JSON.stringify(summary, null, 4) + '\n');
 console.log(`Wrote ${out} for week ${summary.week.label}`);
+
+// The per-runner rows the recap page builds both cards from (same shape as GET /api/clubs/:slug/week-rows).
+const people = athletes.map((a) => ({ id: a.id, displayName: displayName(a.firstname, a.lastname) }));
+const rowsFor = (start: string) => buildWeekRows({ club, athletes: people, activities, weekStart: start });
+const history = [4, 3, 2, 1].map((n) => ({ weekStart: addDays(weekStart, -7 * n), rows: rowsFor(addDays(weekStart, -7 * n)) }));
+const rowsOut = resolve(root, 'apps/web/sample', `${slug}-rows.json`);
+writeFileSync(
+    rowsOut,
+    JSON.stringify(
+        {
+            weekStart,
+            rows: rowsFor(weekStart),
+            previousRows: history.at(-1)?.rows ?? [],
+            history,
+            // Fake: every third fake runner is "women", just to show the two panels.
+            groups: (club.groups ?? []).map((g) => ({ ...g, members: people.filter((_, i) => i % 3 === 0).map((p) => p.displayName) })),
+        },
+        null,
+        4,
+    ) + '\n',
+);
+console.log(`Wrote ${rowsOut}`);

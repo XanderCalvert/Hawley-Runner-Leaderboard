@@ -35,6 +35,15 @@ export async function fetchSummary(weekStart) {
     return getJson(`${config.apiBase}/api/clubs/${clubSlug}/summary${query}`);
 }
 
+/** Per-runner rows for a week and the four before it, plus the club's groups: what both recap cards are built from. */
+export async function fetchWeekRows(weekStart) {
+    if (isSample) {
+        return getJson(`sample/${clubSlug}-rows.json`);
+    }
+    const query = weekStart ? `?week=${encodeURIComponent(weekStart)}` : '';
+    return getJson(`${config.apiBase}/api/clubs/${clubSlug}/week-rows${query}`);
+}
+
 export async function fetchClub() {
     if (isSample) {
         const summary = await getJson(`sample/${clubSlug}.json`);
@@ -47,6 +56,12 @@ export function adminApi(token) {
     const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
     return {
         members: () => getJson(`${config.apiBase}/admin/clubs/${clubSlug}/members`, { headers }),
+        setGroup: (athleteId, group) =>
+            getJson(`${config.apiBase}/admin/clubs/${clubSlug}/members/${athleteId}`, {
+                method: 'PUT',
+                headers,
+                body: JSON.stringify({ group }),
+            }),
         setStatus: (athleteId, status) =>
             getJson(`${config.apiBase}/admin/clubs/${clubSlug}/members/${athleteId}`, {
                 method: 'PUT',
