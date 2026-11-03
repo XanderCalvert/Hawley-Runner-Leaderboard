@@ -11,8 +11,8 @@
     "d1_databases": [
         {
             "binding": "DB",
-            // Replace with the id printed by: npx wrangler d1 create club-recap
-            "database_id": "00000000-0000-0000-0000-000000000000",
+            // From: npx wrangler d1 create club-recap (an ID, not a credential)
+            "database_id": "5d2ee2ca-7461-43e1-bc48-20f9069ed9c9",
             "database_name": "club-recap",
             "migrations_dir": "migrations"
         }
