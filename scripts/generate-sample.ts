@@ -2,10 +2,10 @@
  * Writes a sample weekly summary for the static site, so the infographic can be designed
  * and tested without Strava. Usage: npm run sample -- [club-slug] [week-start YYYY-MM-DD]
  */
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { addDays, buildWeekRows, buildWeeklySummary, displayName, lastCompletedWeekStart, weekEndOf, weekStartOf } from '../packages/core/src/index.ts';
+import { addDays, buildAchievements, buildWeekRows, buildWeeklySummary, displayName, lastCompletedWeekStart, weekEndOf, weekStartOf } from '../packages/core/src/index.ts';
 import type { ActivityRecord } from '../packages/core/src/index.ts';
 import { getClub } from '../config/clubs/index.ts';
 import { fakeActivities, fakeAthletes } from './lib/fake-runners.ts';
@@ -34,6 +34,8 @@ const activities: ActivityRecord[] = fakeActivities(athletes, `${Number(year) - 
     trainer: a.trainer,
     flagged: a.flagged,
     best5kS: a.best_efforts.find((e) => e.distance === 5000)?.elapsed_time ?? null,
+    // Fake: a few runs are flagged as PBs so the card has something to show.
+    prEfforts: a.id % 11 === 0 ? (a.id % 22 === 0 ? ['5K', '10K'] : ['5K']) : [],
 }));
 
 const summary = buildWeeklySummary({
@@ -68,4 +70,14 @@ writeFileSync(
         4,
     ) + '\n',
 );
+// Fake lifetime baselines, nudged so a few runners cross a milestone this week.
+const lifetimeBaseM = new Map(
+    people.map((p, i) => {
+        const before = activities.filter((a) => a.athleteId === p.id && a.startDateLocal.slice(0, 10) < weekStart).reduce((s, a) => s + a.distanceM, 0);
+        return [p.id, i % 6 === 0 ? 5_000_000 - before - 15_000 : 1_200_000 + i * 90_000];
+    }),
+);
+const achievements = buildAchievements({ club, athletes: people, activities, lifetimeBaseM, weekStart });
+const stored = JSON.parse(readFileSync(rowsOut, 'utf-8'));
+writeFileSync(rowsOut, JSON.stringify({ ...stored, achievements }, null, 4) + '\n');
 console.log(`Wrote ${rowsOut}`);

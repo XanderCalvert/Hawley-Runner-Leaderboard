@@ -92,6 +92,16 @@
     display: none;
 }
 
+/* Achievements card: four tiles share the card's height, and "+N more" stays visible. */
+.rc-grid--achievements {
+    flex: 1;
+    grid-auto-rows: 1fr;
+}
+
+.rc-grid--achievements .rc-more {
+    display: block;
+}
+
 .rc-span {
     grid-column: 1 / -1;
 }

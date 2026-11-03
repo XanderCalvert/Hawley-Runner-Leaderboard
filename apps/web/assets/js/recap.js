@@ -1,4 +1,5 @@
 import { applyBrand, clubSlug, fetchClub, fetchWeekRows, isSample } from './api.js';
+import { renderAchievementsCard } from './achievements-card.js';
 import { applyCardTheme, renderCard } from './card.js';
 import { fitRoll, renderExtrasCard } from './quick-card.js';
 import { buildCaption } from './quick-caption.js';
@@ -7,6 +8,7 @@ import { addDays, buildQuickSummary } from './quick-summary.js';
 const cards = [
     { card: document.getElementById('card'), scaler: document.getElementById('scaler'), preview: document.getElementById('preview') },
     { card: document.getElementById('card2'), scaler: document.getElementById('scaler2'), preview: document.getElementById('preview2') },
+    { card: document.getElementById('card3'), scaler: document.getElementById('scaler3'), preview: document.getElementById('preview3') },
 ];
 const weekInput = document.getElementById('week');
 const statusEl = document.getElementById('status');
@@ -16,6 +18,7 @@ const buttons = {
     next: document.getElementById('next'),
     download: document.getElementById('download'),
     download2: document.getElementById('download2'),
+    download3: document.getElementById('download3'),
     copy: document.getElementById('copy'),
 };
 
@@ -56,14 +59,20 @@ async function load(weekStart) {
             applyBrand(club);
             branded = true;
         }
-        for (const { card } of cards) {
+        cards.forEach(({ card }, i) => {
             applyCardTheme(card, club.branding);
-            card.classList.toggle('is-compact', TOP > 3);
-        }
+            // The first two cards are packed with places; the achievements card has room for full-size tiles.
+            card.classList.toggle('is-compact', TOP > 3 && i < 2);
+        });
         cards[0].card.innerHTML = renderCard(summary);
         cards[1].card.innerHTML = renderExtrasCard(summary);
         fitRoll(cards[1].card);
         document.fonts.ready.then(() => fitRoll(cards[1].card));
+        // An older Worker may not send achievements yet: show two cards rather than fail.
+        const hasAchievements = Boolean(data.achievements);
+        cards[2].preview.hidden = !hasAchievements;
+        buttons.download3.hidden = !hasAchievements;
+        cards[2].card.innerHTML = hasAchievements ? renderAchievementsCard(summary, data.achievements) : '';
         weekInput.value = summary.week.start;
         caption.value = buildCaption(summary);
         statusEl.textContent = `Showing ${summary.week.label}. ${summary.group.week.runners} ${summary.group.week.runners === 1 ? 'runner' : 'runners'} on the board.`;
@@ -111,6 +120,7 @@ buttons.next.addEventListener('click', () => current && load(addDays(current.wee
 weekInput.addEventListener('change', () => weekInput.value && load(weekInput.value));
 buttons.download.addEventListener('click', () => download(cards[0].card, buttons.download, 'recap'));
 buttons.download2.addEventListener('click', () => download(cards[1].card, buttons.download2, 'more'));
+buttons.download3.addEventListener('click', () => download(cards[2].card, buttons.download3, 'achievements'));
 buttons.copy.addEventListener('click', async () => {
     try {
         await navigator.clipboard.writeText(caption.value);

@@ -19,6 +19,7 @@ Club Recap is a small, free, volunteer-run tool for a UK running club ([club nam
 | Consent | OAuth authorise with scope `read,activity:read` only (never `activity:read_all`, so private activities are never seen) |
 | Tokens | `POST /oauth/token` for the code exchange and for refresh (refreshed within 5 minutes of expiry; the rotated refresh token is always saved) |
 | Club membership | `GET /athlete/clubs` with the runner's own token |
+| Lifetime milestones | `GET /athletes/{id}/stats`, once per runner per week (only the lifetime run distance is used) |
 | New and changed runs | Webhook subscription (`activity` create/update/delete, `athlete` deauthorisation), then `GET /activities/{id}` for that one activity |
 | Safety-net catch-up | Hourly, a few runners at a time: `GET /athlete/activities?after=` |
 | Disconnect | `POST /oauth/revoke` (HTTP Basic client auth, form body), and handling of the deauthorisation webhook |
@@ -31,7 +32,9 @@ Access tokens are sent in the `Authorization: Bearer` header only. The API base 
 
 Per runner: Strava athlete ID, first name, **surname initial only**, access and refresh tokens (AES-GCM encrypted, key held as a Worker secret), granted scope, and when they connected and were last synced.
 
-Per run: activity ID, athlete ID, local start date and time, `sport_type`, distance, moving time, elevation gain, the manual / treadmill / flagged flags (needed to apply the club's rules), and the best 5K effort if Strava provides one.
+Per run: activity ID, athlete ID, local start date and time, `sport_type`, distance, moving time, elevation gain, the manual / treadmill / flagged flags (needed to apply the club's rules), the best 5K effort if Strava provides one, and which standard distances (1K, 1 mile, 5K, 10K, half, marathon) Strava ranked as a new personal best on that run.
+
+Per runner, in addition: a lifetime run-distance baseline (Strava's lifetime run total minus the runs we hold), refreshed weekly, used only for lifetime milestones such as "passed 5,000 km".
 
 **Not stored:** titles, descriptions, maps or polylines, start locations, heart rate, photos, kudos, comments, anything about other athletes' activities, private activities.
 
@@ -39,7 +42,7 @@ Per run: activity ID, athlete ID, local start date and time, `sport_type`, dista
 
 ## What leaves the system
 
-- A public JSON feed per club, per week: each connected runner's weekly totals (distance, runs, longest run, average pace of outdoor runs, climbing, moving time) under **"First L."**, for the week and the four before it, plus an optional group label list (for example the Women's leaders panel). No IDs, no links to profiles. The recap page turns this into two images (leaders lists, and "more from the week" with a club distance trend and an "everyone who ran" list) that the club posts. A separate summary endpoint returns only award podiums and totals.
+- A public JSON feed per club, per week: each connected runner's weekly totals (distance, runs, longest run, average pace of outdoor runs, climbing, moving time) under **"First L."**, for the week and the four before it, plus an optional group label list (for example the Women's leaders panel). No IDs, no links to profiles. The recap page turns this into two images (leaders lists, and "more from the week" with a club distance trend and an "everyone who ran" list) that the club posts. A third image shows achievements: personal bests set that week, lifetime distance milestones crossed, and running streaks (consecutive days and weeks). A separate summary endpoint returns only award podiums and totals.
 - An admin page (behind a secret token held by the club) shows each connected runner's name as "First L.", their Strava ID and a link to their profile, so two runners with the same initials can be told apart. Not exposed publicly.
 
 ## Notifications to the club owner

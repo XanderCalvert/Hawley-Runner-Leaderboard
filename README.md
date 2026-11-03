@@ -49,7 +49,7 @@ It costs nothing to run: GitHub Pages, Cloudflare's free Workers tier and the fr
 ### Privacy by design
 
 - Stored per run: sport type, local start time, distance, moving time, climbing, the manual/treadmill/flagged flags the rules need, and the best 5K. No titles, maps, locations, heart rate or photos.
-- Stored per runner: Strava ID, first name, surname *initial*, encrypted tokens.
+- Stored per runner: Strava ID, first name, surname *initial*, encrypted tokens, and a lifetime run-distance baseline (for milestones). Which standard distances were personal bests is stored per run.
 - Only the hide list (club + Strava ID) outlives a disconnect.
 - Strava tokens are AES-GCM encrypted at rest.
 - Only "First L." ever leaves the Worker publicly.
