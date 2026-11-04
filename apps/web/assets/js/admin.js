@@ -38,6 +38,17 @@ function formatDate(value) {
     return new Date(`${value.replace(' ', 'T')}Z`).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
 }
 
+/** "20 Oct 2026 (15 days ago)" from a local start time, or a plain note when no run is stored. */
+function formatLastRun(value) {
+    if (!value) {
+        return 'No runs stored';
+    }
+    const day = new Date(`${value.slice(0, 10)}T00:00:00Z`);
+    const ago = Math.floor((Date.now() - day.getTime()) / 86400000);
+    const when = ago <= 0 ? 'today' : ago === 1 ? 'yesterday' : `${ago} days ago`;
+    return `${day.toLocaleDateString('en-GB', { dateStyle: 'medium', timeZone: 'UTC' })} (${when})`;
+}
+
 function cell(text, className = '') {
     const td = document.createElement('td');
     td.textContent = text;
@@ -88,12 +99,21 @@ function render() {
 
                 tr.append(cell(String(member.runsThisYear), 'num'));
                 tr.append(cell(formatDate(member.joinedAt)));
-                tr.append(cell(formatDate(member.lastSyncedAt)));
+                tr.append(cell(member.connected ? formatLastRun(member.lastRun) : '—'));
 
+                // The buttons live in a collapsed "Manage" section so the row stays short enough to scan for who has stopped running.
                 const actionsTd = document.createElement('td');
+                const manage = document.createElement('details');
+                manage.className = 'manage';
+                const summary = document.createElement('summary');
+                summary.textContent = 'Manage';
                 const actions = document.createElement('div');
                 actions.className = 'row-actions';
-                actionsTd.append(actions);
+                const synced = document.createElement('p');
+                synced.className = 'small';
+                synced.textContent = `Last synced: ${formatDate(member.lastSyncedAt)}`;
+                manage.append(summary, synced, actions);
+                actionsTd.append(manage);
                 const toggle = document.createElement('button');
                 toggle.type = 'button';
                 toggle.className = 'button button--ghost';

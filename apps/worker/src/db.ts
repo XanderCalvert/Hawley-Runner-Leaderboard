@@ -325,11 +325,12 @@ export class Repository {
                 `SELECT m.athlete_id AS id, a.firstname AS firstname, a.lastname_initial AS initial, 1 AS connected,
                     EXISTS (SELECT 1 FROM hidden h WHERE h.club_slug = m.club_slug AND h.athlete_id = m.athlete_id) AS hidden,
                     m.group_id AS group_id, m.approval AS approval, m.joined_at AS joined_at, m.verified_at AS verified_at, a.last_synced_at AS last_synced_at,
-                    (SELECT COUNT(*) FROM activities x WHERE x.athlete_id = a.id AND x.start_date_local >= ?2) AS runs_this_year
+                    (SELECT COUNT(*) FROM activities x WHERE x.athlete_id = a.id AND x.start_date_local >= ?2) AS runs_this_year,
+                    (SELECT MAX(x.start_date_local) FROM activities x WHERE x.athlete_id = a.id) AS last_run
                  FROM memberships m JOIN athletes a ON a.id = m.athlete_id
                  WHERE m.club_slug = ?1
                  UNION ALL
-                 SELECT h.athlete_id, NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, NULL, 0
+                 SELECT h.athlete_id, NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, NULL, 0, NULL
                  FROM hidden h
                  WHERE h.club_slug = ?1 AND h.athlete_id NOT IN (SELECT athlete_id FROM memberships WHERE club_slug = ?1)
                  ORDER BY firstname COLLATE NOCASE, initial COLLATE NOCASE, id`,
@@ -347,6 +348,7 @@ export class Repository {
                 verified_at: string | null;
                 last_synced_at: string | null;
                 runs_this_year: number;
+                last_run: string | null;
             }>();
         return results.map((r) => ({
             athleteId: r.id,
@@ -359,6 +361,7 @@ export class Repository {
             verifiedAt: r.verified_at,
             lastSyncedAt: r.last_synced_at,
             runsThisYear: r.runs_this_year,
+            lastRun: r.last_run,
         }));
     }
 

@@ -70,7 +70,17 @@
 
         .row-actions {
             display: flex;
+            flex-wrap: wrap;
             gap: 8px;
+        }
+
+        .manage summary {
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .manage .small {
+            margin: 8px 0;
         }
 
         .row-actions .button {
@@ -122,7 +132,7 @@
                             <th>Leaders panel</th>
                             <th class="num">Runs this year</th>
                             <th>Joined</th>
-                            <th>Last synced</th>
+                            <th>Last run</th>
                             <th></th>
                         </tr>
                     </thead>
