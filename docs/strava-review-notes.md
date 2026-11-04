@@ -44,7 +44,7 @@ Per runner, in addition: a lifetime run-distance baseline (Strava's lifetime run
 
 ## What leaves the system
 
-- A public JSON feed per club, per week: each connected runner's weekly totals (distance, runs, longest run, average pace of outdoor runs, climbing, moving time) under **"First L."**, for the week and the four before it, plus an optional group label list (for example the Women's leaders panel). No IDs, no links to profiles. The recap page turns this into two images (leaders lists, and "more from the week" with a club distance trend and an "everyone who ran" list) that the club posts. A third image shows achievements: personal bests set that week, lifetime distance milestones crossed, and running streaks (consecutive days and weeks). A separate summary endpoint returns only award podiums and totals.
+- A public JSON feed per club, per week: each connected runner's weekly totals (distance, runs, longest run, average pace of outdoor runs, climbing, moving time) under **"First L."**, for the week and the four before it, plus an optional group label list (for example the Women's leaders panel). No IDs, no links to profiles. The recap page turns this into two images (leaders lists, and "more from the week" with a club distance trend, an "everyone who ran" list and the achievements banner) that the club posts. An orange banner at the foot of the second image highlights the week's personal bests, lifetime distance milestones crossed, and longest running streak. A separate summary endpoint returns only award podiums and totals.
 - An admin page (behind a secret token held by the club) shows each connected runner's name as "First L.", their Strava ID and a link to their profile, so two runners with the same initials can be told apart. Not exposed publicly.
 
 ## Notifications to the club owner
@@ -60,7 +60,7 @@ Optionally, the app emails the club owner (through Resend) when someone connects
 
 ## Capacity
 
-We expect about [N] connected athletes (one club, [N] members). The app is built for several clubs (one JSON file each, consent per club), but only one club is live. We are asking for [N] places.
+We expect about 50 active connected athletes (one club, about 150 members). The app is built for several clubs (one JSON file each, consent per club), but only one club is live. We are asking for 50 places.
 
 ## Open questions for Strava
 
