@@ -315,3 +315,28 @@
 .recap-card .rc-panel .rc-more {
     display: none;
 }
+
+/* Achievement highlights at the foot of card 2: one short column per highlight. */
+.rc-banner {
+    display: flex;
+    gap: 24px;
+    padding: 12px 24px;
+    border-radius: 20px;
+    background: var(--c-primary);
+    color: var(--c-bg);
+    font: 600 22px/1.15 'Barlow Condensed', sans-serif;
+}
+
+.rc-banner p {
+    flex: 1;
+    margin: 0;
+}
+
+.rc-banner strong {
+    display: block;
+    margin-bottom: 2px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 17px;
+    font-weight: 800;
+}

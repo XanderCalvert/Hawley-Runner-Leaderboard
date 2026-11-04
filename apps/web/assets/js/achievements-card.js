@@ -38,6 +38,33 @@ function renderList(label, lines, empty) {
 
 const km = (value) => `${value.toLocaleString('en-GB')} km`;
 
+/** Names for a banner line: up to two, then "+N". */
+const names = (list) => (list.length > 2 ? `${list.slice(0, 2).join(', ')} +${list.length - 2}` : list.join(', '));
+
+/** The orange strip at the foot of card 2: this week's achievement highlights, or nothing when there are none. */
+export function renderBanner(achievements) {
+    const lines = [];
+    if (achievements.prs.length) {
+        lines.push(['New PBs', names(achievements.prs.map((p) => `${p.name} (${p.efforts.at(-1)})`))]);
+    }
+    if (achievements.milestones.length) {
+        // Only the biggest milestone crossed, so the one distance named is true for every name beside it.
+        const top = Math.max(...achievements.milestones.map((m) => m.km));
+        lines.push(['Milestone', `${names(achievements.milestones.filter((m) => m.km === top).map((m) => m.name))} passed ${km(top)}`]);
+    }
+    const streak = achievements.dayStreak.entries[0];
+    if (streak) {
+        lines.push(['Streak', `${streak.name}, ${streak.display}`]);
+    }
+    if (!lines.length) {
+        return '';
+    }
+    return `
+        <section class="rc-banner">
+            ${lines.map(([label, text]) => `<p><strong>${escapeHtml(label)}</strong>${escapeHtml(text)}</p>`).join('')}
+        </section>`;
+}
+
 export function renderAchievementsCard(summary, achievements) {
     const branding = summary.club.branding ?? {};
     const tiles = [

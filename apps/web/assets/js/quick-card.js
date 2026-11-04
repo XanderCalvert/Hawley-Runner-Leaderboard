@@ -52,7 +52,7 @@ export function fitRoll(cardEl) {
     }
 }
 
-export function renderExtrasCard(summary) {
+export function renderExtrasCard(summary, banner = '') {
     const { extras } = summary;
     const branding = summary.club.branding ?? {};
     const tiles = [...extras.awards.map(renderAward), ...(extras.trend.length ? [renderTrend(extras.trend)] : [])];
@@ -75,7 +75,7 @@ export function renderExtrasCard(summary) {
             </div>
             <p class="rc-names">${extras.rollCall.map((r) => `<span${r.isNew ? ' class="is-new"' : ''}>${escapeHtml(r.name)}</span>`).join('')}</p>
         </section>
-
+${banner}
         <footer class="rc-foot">
             <span class="rc-foot__tag">${escapeHtml(branding.hashtag ?? '')}</span>
             <span>${escapeHtml(branding.footer ?? '')}</span>
