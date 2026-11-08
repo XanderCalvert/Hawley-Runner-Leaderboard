@@ -343,7 +343,7 @@
 
 /* A chart alone on its row would otherwise grow to fill the card and squeeze the roll call. */
 .rc-span .rc-trend {
-    height: 178px;
+    height: 168px;
     flex: none;
 }
 
@@ -359,4 +359,12 @@
     stroke: var(--c-muted);
     stroke-width: 2;
     stroke-dasharray: 8 8;
+}
+
+.rc-trend text.is-right {
+    text-anchor: start;
+}
+
+.rc-trend text.is-left {
+    text-anchor: end;
 }
