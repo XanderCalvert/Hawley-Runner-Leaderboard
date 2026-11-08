@@ -7,8 +7,8 @@ import { escapeHtml, renderAward, renderHeader } from './card.js';
 /** Club distance, this week and up to four before, as a line chart (this week highlighted). */
 function renderYtdTrend(trend) {
     const W = 940;
-    const H = 150;
-    const pad = { l: 20, r: 20, t: 34, b: 26 };
+    const H = 178;
+    const pad = { l: 20, r: 20, t: 34, b: 50 };
     const km = trend.map((p) => p.distanceM / 1000);
     const x = (i) => pad.l + (i * (W - pad.l - pad.r)) / (trend.length - 1);
     const pts = trend.map((p, i) => ({ ...p, cx: x(i), cy: 0, km: km[i] }));
@@ -25,8 +25,9 @@ function renderYtdTrend(trend) {
     const fmt = (v) => Math.round(v).toLocaleString('en-GB');
     const peak = pts.reduce((best, p) => (p.km > best.km ? p : best));
     const now = pts.find((p) => p.current) ?? pts.at(-1);
-    // The peak and this week get a number; the months along the bottom mark where each starts.
-    const labelled = peak === now ? [now] : [peak, now];
+    // The peak, the lowest week and this week get a number; the months along the bottom mark where each starts.
+    const trough = pts.reduce((worst, p) => (p.km > 0 && (worst.km <= 0 || p.km < worst.km) ? p : worst));
+    const labelled = [...new Set([peak, now, trough])];
     return `
         <section class="rc-award rc-span">
             <div class="rc-roll__head">
@@ -41,7 +42,7 @@ function renderYtdTrend(trend) {
                     .map(
                         (p) => `
                 <circle class="rc-trend__dot${p === now ? ' is-current' : ''}" cx="${p.cx.toFixed(1)}" cy="${p.cy.toFixed(1)}" r="7"/>
-                <text class="rc-trend__val${p === now ? ' is-current' : ''}" x="${Math.min(W - 24, Math.max(24, p.cx)).toFixed(1)}" y="${(p.cy - 14).toFixed(1)}">${Math.round(p.km).toLocaleString('en-GB')}</text>`,
+                <text class="rc-trend__val${p === now ? ' is-current' : ''}" x="${Math.min(W - 24, Math.max(24, p.cx)).toFixed(1)}" y="${(p === trough && p !== now && p !== peak ? p.cy + 26 : p.cy - 14).toFixed(1)}">${Math.round(p.km).toLocaleString('en-GB')}</text>`,
                     )
                     .join('')}
                 ${pts
