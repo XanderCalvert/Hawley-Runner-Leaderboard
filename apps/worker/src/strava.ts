@@ -25,6 +25,8 @@ export interface StravaAthlete {
     id: number;
     firstname?: string;
     lastname?: string;
+    /** "M" or "F". Used once, on connecting, to pick a group; never stored. */
+    sex?: string;
 }
 
 export interface StravaClub {

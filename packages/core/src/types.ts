@@ -53,6 +53,8 @@ export interface ClubGroup {
     label: string;
     /** Panel heading, e.g. "Women's leaders". */
     title: string;
+    /** Put runners in this group automatically when Strava says this is their sex on connecting (an admin can still change it). */
+    stravaSex?: 'M' | 'F';
 }
 
 export interface ClubConfig {

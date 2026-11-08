@@ -1,4 +1,5 @@
 import { displayName } from '@club-recap/core';
+import type { ClubConfig } from '@club-recap/core';
 import { getClub } from '../../../../config/clubs/index.ts';
 import { signState, verifyState } from '../crypto.ts';
 import { Repository } from '../db.ts';
@@ -19,6 +20,11 @@ interface OAuthState {
 }
 
 const STATE_MAX_AGE_MS = 15 * 60_000;
+
+/** The club group that matches the sex Strava reports for this athlete (if the club maps one), else null. The sex itself is not kept. */
+function groupFor(club: ClubConfig, athlete: { sex?: string }): string | null {
+    return club.groups?.find((g) => g.stravaSex && g.stravaSex === athlete.sex)?.id ?? null;
+}
 
 function resultUrl(env: Env, club: string, status: string): string {
     const params = new URLSearchParams({ club, status });
@@ -117,7 +123,7 @@ export async function authCallback(request: Request, env: Env, ctx: ExecutionCon
         // Not in the Strava club: keep only their name, ID and token, fetch nothing, and wait for an admin to approve.
         const firstRequest = (await repo.getApproval(club.slug, athlete.id)) === null;
         await repo.saveAthlete(athlete, tokens, scope);
-        await repo.joinClub(club.slug, athlete.id, 'pending');
+        await repo.joinClub(club.slug, athlete.id, 'pending', groupFor(club, athlete));
         if (firstRequest) {
             const name = displayName(athlete.firstname, athlete.lastname);
             ctx.waitUntil(
@@ -129,7 +135,7 @@ export async function authCallback(request: Request, env: Env, ctx: ExecutionCon
 
     const isNew = !(await repo.isConnected(athlete.id));
     await repo.saveAthlete(athlete, tokens, scope);
-    await repo.joinClub(club.slug, athlete.id);
+    await repo.joinClub(club.slug, athlete.id, 'member', groupFor(club, athlete));
     if (isNew) {
         ctx.waitUntil(announceConnect(env, repo, club.name, club.slug, athlete.firstname, athlete.lastname));
     }

@@ -38,6 +38,8 @@ Per runner, in addition: a lifetime run-distance baseline (Strava's lifetime run
 
 **People outside the club who ask to join** (an admin must approve them): until approved we hold only their Strava ID, first name, surname initial and encrypted token. No runs are fetched, nothing is shown anywhere, and a request not approved within 14 days is deleted automatically and the token revoked. Approved guests are exempt from the weekly club-membership check.
 
+**Used but not stored:** the `sex` field Strava returns when a runner connects. It picks the club's "Women's leaders" group automatically; only the resulting group is kept, not the field.
+
 **Not stored:** titles, descriptions, maps or polylines, start locations, heart rate, photos, kudos, comments, anything about other athletes' activities, private activities.
 
 **Kept after a runner disconnects:** only a "hide list" entry (club + Strava athlete ID, no name) if a club admin chose to hide them, so the decision survives a reconnect. See open question 4.

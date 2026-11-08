@@ -150,16 +150,18 @@ export class Repository {
     /**
      * Opts an athlete in to a club. Hiding is separate (see setHidden), so a reconnect never un-hides anyone.
      * A pending request is upgraded if they have since proved membership, but an approved status is never downgraded.
+     * A group is only filled in when there isn't one, so an admin's choice is never overwritten.
      */
-    async joinClub(clubSlug: string, athleteId: number, approval: Approval = 'member'): Promise<void> {
+    async joinClub(clubSlug: string, athleteId: number, approval: Approval = 'member', groupId: string | null = null): Promise<void> {
         await this.db
             .prepare(
-                `INSERT INTO memberships (club_slug, athlete_id, approval) VALUES (?1, ?2, ?3)
+                `INSERT INTO memberships (club_slug, athlete_id, approval, group_id) VALUES (?1, ?2, ?3, ?4)
                  ON CONFLICT (club_slug, athlete_id) DO UPDATE SET
                     verified_at = datetime('now'),
+                    group_id = COALESCE(memberships.group_id, excluded.group_id),
                     approval = CASE WHEN memberships.approval = 'pending' THEN excluded.approval ELSE memberships.approval END`,
             )
-            .bind(clubSlug, athleteId, approval)
+            .bind(clubSlug, athleteId, approval, groupId)
             .run();
     }
 

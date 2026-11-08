@@ -164,3 +164,35 @@ describe('checking a runner against the Strava club', () => {
         expect((await checkClub(env, CLUB.slug, 1)).status).toBe(502);
     });
 });
+
+describe('group picked from the sex Strava reports on connecting', () => {
+    const as = (sex?: string) => ({ ...outsider, 'GET /athlete/clubs': () => reply([{ id: CLUB.stravaClubId, name: 'Hawley' }]), 'POST /oauth/token': () => reply({ ...tokenResponse(1), athlete: { id: 1, firstname: 'Sarah', lastname: 'Kent', sex } }) });
+    const group = (sqlite: ReturnType<typeof makeEnv>['sqlite']) => sqlite.prepare('SELECT group_id FROM memberships').get();
+
+    it('puts women in the Women group and leaves everyone else ungrouped', async () => {
+        const f = makeEnv();
+        stubStrava(as('F'));
+        await connect(f.env);
+        expect(group(f.sqlite)).toEqual({ group_id: 'women' });
+
+        const m = makeEnv();
+        stubStrava(as('M'));
+        await connect(m.env);
+        expect(group(m.sqlite)).toEqual({ group_id: null });
+
+        const none = makeEnv();
+        stubStrava(as(undefined));
+        await connect(none.env);
+        expect(group(none.sqlite)).toEqual({ group_id: null });
+    });
+
+    it('keeps a group an admin already set when they reconnect, and never stores the sex', async () => {
+        const { env, sqlite } = makeEnv();
+        stubStrava(as('M'));
+        await connect(env);
+        sqlite.exec("UPDATE memberships SET group_id = 'women'"); // admin put them in Women by hand
+        await connect(env); // Strava still says M
+        expect(group(sqlite)).toEqual({ group_id: 'women' });
+        expect(JSON.stringify(sqlite.prepare('SELECT * FROM athletes').all())).not.toMatch(/sex|"M"/i);
+    });
+});

@@ -6,7 +6,7 @@
     "stravaClubId": 298695,
     "approveNonMembers": true,
     "groups": [
-        { "id": "women", "label": "Women", "title": "Women's leaders" }
+        { "id": "women", "label": "Women", "title": "Women's leaders", "stravaSex": "F" }
     ],
     "timezone": "Europe/London",
     "locale": "en-GB",
