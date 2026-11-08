@@ -97,6 +97,8 @@ export interface ActivityRecord {
     best5kS: number | null;
     /** Distances where Strava ranked this run as a new personal best, e.g. ['5K', '10K'] (from the detailed activity). */
     prEfforts?: string[];
+    /** Two-letter country from the activity's time zone ("GB" = UK, "XX" = abroad but unknown), or null if unknown. */
+    country?: string | null;
 }
 
 export interface AthleteRecord {

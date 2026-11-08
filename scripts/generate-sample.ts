@@ -36,6 +36,8 @@ const activities: ActivityRecord[] = fakeActivities(athletes, `${Number(year) - 
     best5kS: a.best_efforts.find((e) => e.distance === 5000)?.elapsed_time ?? null,
     // Fake: a few runs are flagged as PBs so the card has something to show.
     prEfforts: a.id % 11 === 0 ? (a.id % 22 === 0 ? ['5K', '10K'] : ['5K']) : [],
+    // Fake: a handful of runs were abroad, only in the sample week, so the "Gone international" line shows.
+    country: a.start_date_local.slice(0, 10) >= weekStart && a.id % 37 === 0 ? 'ES' : a.start_date_local.slice(0, 10) >= weekStart && a.id % 41 === 0 ? 'PT' : 'GB',
 }));
 
 const summary = buildWeeklySummary({

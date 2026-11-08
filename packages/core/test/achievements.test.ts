@@ -109,3 +109,32 @@ describe('who is included', () => {
         expect(result.prs).toEqual([]);
     });
 });
+
+describe('running abroad', () => {
+    it('totals the week by country, UK first, with no names', () => {
+        const { international } = build([
+            run(1, '2026-10-20', { distanceM: 10000, country: 'GB' }),
+            run(2, '2026-10-21', { distanceM: 6000 }), // unknown country counts as UK
+            run(1, '2026-10-22', { distanceM: 8000, country: 'ES' }),
+            run(2, '2026-10-23', { distanceM: 5000, country: 'ES' }),
+            run(2, '2026-10-24', { distanceM: 5000, country: 'PT' }),
+        ]);
+        expect(international).toEqual({
+            ukM: 16000,
+            abroad: [
+                { country: 'ES', distanceM: 13000 },
+                { country: 'PT', distanceM: 5000 },
+            ],
+        });
+        expect(JSON.stringify(international)).not.toMatch(/Sarah|Tom/);
+    });
+
+    it('ignores treadmill, manual and virtual runs, and anything outside the week', () => {
+        const { international } = build([
+            run(1, '2026-10-20', { country: 'ES', trainer: true }),
+            run(1, '2026-10-21', { country: 'ES', sportType: 'VirtualRun' }),
+            run(1, '2026-10-12', { country: 'ES' }), // the week before
+        ]);
+        expect(international.abroad).toEqual([]);
+    });
+});

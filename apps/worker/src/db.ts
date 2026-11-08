@@ -31,6 +31,7 @@ interface ActivityRow {
     flagged: number;
     best_5k_s: number | null;
     pr_efforts: string | null;
+    country: string | null;
 }
 
 export class Repository {
@@ -377,8 +378,8 @@ export class Repository {
         await this.db
             .prepare(
                 `INSERT INTO activities (id, athlete_id, sport_type, start_date_local, distance_m, moving_time_s,
-                    elevation_gain_m, manual, trainer, flagged, best_5k_s, pr_efforts, detail_fetched_at, updated_at)
-                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12,
+                    elevation_gain_m, manual, trainer, flagged, best_5k_s, pr_efforts, country, detail_fetched_at, updated_at)
+                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?14,
                     CASE WHEN ?13 = 1 THEN datetime('now') END, datetime('now'))
                  ON CONFLICT (id) DO UPDATE SET
                     sport_type = excluded.sport_type,
@@ -389,6 +390,7 @@ export class Repository {
                     manual = excluded.manual,
                     trainer = excluded.trainer,
                     flagged = excluded.flagged,
+                    country = COALESCE(excluded.country, activities.country),
                     best_5k_s = CASE WHEN ?13 = 1 THEN excluded.best_5k_s ELSE activities.best_5k_s END,
                     pr_efforts = CASE WHEN ?13 = 1 THEN excluded.pr_efforts ELSE activities.pr_efforts END,
                     detail_fetched_at = CASE WHEN ?13 = 1 THEN datetime('now') ELSE activities.detail_fetched_at END,
@@ -408,6 +410,7 @@ export class Repository {
                 record.best5kS,
                 (record.prEfforts ?? []).join(',') || null,
                 fromDetail ? 1 : 0,
+                record.country ?? null,
             )
             .run();
     }
@@ -453,6 +456,7 @@ export class Repository {
             flagged: r.flagged === 1,
             best5kS: r.best_5k_s,
             prEfforts: r.pr_efforts ? r.pr_efforts.split(',') : [],
+            country: r.country,
         }));
     }
 

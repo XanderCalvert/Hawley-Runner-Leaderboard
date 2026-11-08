@@ -39,7 +39,20 @@ function renderList(label, lines, empty) {
 const km = (value) => `${value.toLocaleString('en-GB')} km`;
 
 /** Names for a banner line: up to two, then "+N". */
-const names = (list) => (list.length > 2 ? `${list.slice(0, 2).join(', ')} +${list.length - 2}` : list.join(', '));
+const names = (list, max = 2) => (list.length > max ? `${list.slice(0, max).join(', ')} +${list.length - max}` : list.join(', '));
+
+/** A small flag image (bundled, since Windows draws flag emoji as plain letters), or the words "Elsewhere" for an unknown country. */
+const flag = (code) =>
+    code === 'XX' ? '<span class="rc-banner__else">Elsewhere</span>' : `<img class="rc-banner__flag" src="assets/img/flags/${code.toLowerCase()}.svg" alt="${escapeHtml(code)}">`;
+
+/** "Gone international": the UK and each other country's total this week, as club totals with no names. Nothing when it was all UK. */
+function internationalLine(international) {
+    if (!international?.abroad?.length) {
+        return '';
+    }
+    const part = (code, metres) => `<span class="rc-banner__place">${flag(code)} ${Math.round(metres / 1000).toLocaleString('en-GB')} km</span>`;
+    return `<p class="rc-banner__wide"><strong>Gone international</strong>${part('GB', international.ukM)}${international.abroad.slice(0, 4).map((a) => part(a.country, a.distanceM)).join('')}</p>`;
+}
 
 /** The orange strip at the foot of card 2: this week's achievement highlights, or nothing when there are none. */
 export function renderBanner(achievements) {
@@ -50,18 +63,20 @@ export function renderBanner(achievements) {
     if (achievements.milestones.length) {
         // Only the biggest milestone crossed, so the one distance named is true for every name beside it.
         const top = Math.max(...achievements.milestones.map((m) => m.km));
-        lines.push(['Milestone', `${names(achievements.milestones.filter((m) => m.km === top).map((m) => m.name))} passed ${km(top)}`]);
+        lines.push(['Milestone', `${names(achievements.milestones.filter((m) => m.km === top).map((m) => m.name), 1)} passed ${km(top)}`]);
     }
     const streak = achievements.dayStreak.entries[0];
     if (streak) {
         lines.push(['Streak', `${streak.name}, ${streak.display}`]);
     }
-    if (!lines.length) {
+    const abroad = internationalLine(achievements.international);
+    if (!lines.length && !abroad) {
         return '';
     }
     return `
         <section class="rc-banner">
             ${lines.map(([label, text]) => `<p><strong>${escapeHtml(label)}</strong>${escapeHtml(text)}</p>`).join('')}
+            ${abroad}
         </section>`;
 }
 

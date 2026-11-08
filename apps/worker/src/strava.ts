@@ -1,3 +1,4 @@
+import { countryFromTimezone } from '@club-recap/core';
 import type { ActivityRecord } from '@club-recap/core';
 import type { Env } from './env.ts';
 
@@ -46,6 +47,8 @@ export interface StravaActivity {
     trainer?: boolean;
     flagged?: boolean;
     private?: boolean;
+    /** e.g. "(GMT+01:00) Europe/Madrid". Used only to tell which country a run was in. */
+    timezone?: string;
     best_efforts?: Array<{ name: string; distance: number; elapsed_time: number; pr_rank?: number | null }>;
 }
 
@@ -305,6 +308,7 @@ export function toRecord(activity: StravaActivity): ActivityRecord {
         flagged: activity.flagged ?? false,
         best5kS: bestEffort(activity, 5000),
         prEfforts: prEfforts(activity),
+        country: countryFromTimezone(activity.timezone),
     };
 }
 

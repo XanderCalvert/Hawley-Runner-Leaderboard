@@ -19,6 +19,8 @@ export interface Achievements {
     dayStreak: Ranking;
     /** Consecutive weeks with at least one run, up to and including this week. */
     weekStreak: Ranking;
+    /** Where this week's recorded outdoor running happened, as club totals (no names). Only worth showing if `abroad` has anything. */
+    international: { ukM: number; abroad: Array<{ country: string; distanceM: number }> };
 }
 
 export interface AchievementsInput {
@@ -140,6 +142,21 @@ export function buildAchievements({ club, athletes, activities, lifetimeBaseM, w
         }
     }
 
+    // Club totals for the week: outdoor, recorded runs only, since a treadmill or virtual run says nothing about where someone was.
+    const byCountry = new Map<string, number>();
+    for (const runs of eligible.values()) {
+        for (const r of runs) {
+            if (localDateOf(r.startDateLocal) >= weekStart && !r.manual && !r.trainer && (r.sportType === 'Run' || r.sportType === 'TrailRun')) {
+                const country = r.country ?? 'GB';
+                byCountry.set(country, (byCountry.get(country) ?? 0) + r.distanceM);
+            }
+        }
+    }
+    const international = {
+        ukM: byCountry.get('GB') ?? 0,
+        abroad: [...byCountry].filter(([c]) => c !== 'GB').map(([country, distanceM]) => ({ country, distanceM })).sort((a, b) => b.distanceM - a.distanceM),
+    };
+
     prs.sort((a, b) => b.efforts.length - a.efforts.length || a.name.localeCompare(b.name));
     milestones.sort((a, b) => b.km - a.km || a.name.localeCompare(b.name));
     return {
@@ -147,5 +164,6 @@ export function buildAchievements({ club, athletes, activities, lifetimeBaseM, w
         milestones,
         dayStreak: rank('day-streak', 'Day streak', dayScores, 'days'),
         weekStreak: rank('week-streak', 'Weeks in a row', weekScores, 'weeks'),
+        international,
     };
 }

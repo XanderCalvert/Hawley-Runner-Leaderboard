@@ -320,7 +320,7 @@
 .rc-banner {
     display: flex;
     gap: 24px;
-    padding: 12px 24px;
+    padding: 10px 24px;
     border-radius: 20px;
     background: var(--c-primary);
     color: var(--c-bg);
@@ -367,4 +367,35 @@
 
 .rc-trend text.is-left {
     text-anchor: end;
+}
+
+/* "Gone international" sits on its own row at the foot of the banner. */
+.rc-banner {
+    flex-wrap: wrap;
+    gap: 4px 24px;
+}
+
+.rc-banner .rc-banner__wide {
+    flex: 1 1 100%;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.rc-banner__wide strong {
+    display: inline;
+    margin: 0;
+}
+
+.rc-banner__place {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rc-banner__flag {
+    height: 22px;
+    width: auto;
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 25%);
 }
