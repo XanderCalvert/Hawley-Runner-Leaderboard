@@ -1,6 +1,6 @@
 import type { Env } from './env.ts';
 import { error, json, preflight, withCors } from './http.ts';
-import { approveMember, checkClub, isAdmin, listMembers, removeMember, resyncAthlete, status, updateMember } from './routes/admin.ts';
+import { approveMember, checkClub, isAdmin, listMembers, loadAthleteHistory, removeMember, resyncAthlete, status, updateMember } from './routes/admin.ts';
 import { clubInfo, clubSummary, clubWeekRows } from './routes/api.ts';
 import { authCallback, startAuth } from './routes/auth.ts';
 import { receiveWebhook, verifyWebhook } from './routes/webhook.ts';
@@ -64,6 +64,9 @@ async function route(request: Request, env: Env, ctx: ExecutionContext): Promise
         }
         if ((match = pathname.match(/^\/admin\/clubs\/([a-z0-9-]+)\/members\/(\d+)\/check-club$/)) && method === 'POST') {
             return checkClub(env, match[1] as string, Number(match[2]));
+        }
+        if ((match = pathname.match(/^\/admin\/athletes\/(\d+)\/history$/)) && method === 'POST') {
+            return loadAthleteHistory(env, Number(match[1]), new URL(request.url).searchParams.get('since'));
         }
         if ((match = pathname.match(/^\/admin\/athletes\/(\d+)\/resync$/)) && method === 'POST') {
             return resyncAthlete(env, ctx, Number(match[1]));

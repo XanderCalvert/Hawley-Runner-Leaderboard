@@ -71,6 +71,7 @@ export function adminApi(token) {
                 headers,
                 body: JSON.stringify({ status }),
             }),
+        history: (athleteId, since) => getJson(`${config.apiBase}/admin/athletes/${athleteId}/history?since=${since}`, { method: 'POST', headers }),
         resync: (athleteId) => getJson(`${config.apiBase}/admin/athletes/${athleteId}/resync`, { method: 'POST', headers }),
         status: () => getJson(`${config.apiBase}/admin/status`, { headers }),
     };

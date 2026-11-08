@@ -180,6 +180,36 @@ export async function backfillAthlete(env: Env, athleteId: number): Promise<void
     }
 }
 
+/**
+ * Admin-triggered: loads a runner's runs back to `since` and their best efforts, a batch at a time (a single call is capped
+ * by the subrequest budget). Call it again until `missing` is 0. Stops early, and tells the caller to wait, near a rate limit.
+ */
+export async function loadHistory(env: Env, athleteId: number, since: string): Promise<{ missing: number; paused: boolean }> {
+    const repo = new Repository(env);
+    const client = new StravaClient(env);
+    const missing = async () => (await repo.activitiesNeedingDetail(athleteId, since, 100_000)).length;
+    if (await isBackingOff(repo)) {
+        return { missing: await missing(), paused: true };
+    }
+    let paused = false;
+    try {
+        await syncAthlete(env, client, athleteId, { afterEpoch: Date.parse(`${since}T00:00:00Z`) / 1000, detailSince: since, detailLimit: 40, maxPages: 10 });
+    } catch (error) {
+        if (error instanceof RateLimitedError) {
+            await backOff(repo);
+            paused = true;
+        } else if (!(error instanceof BudgetExhaustedError)) {
+            throw error;
+        }
+    }
+    const near = client.nearRateLimit(0.8);
+    if (near) {
+        await backOffUntilReset(repo, near);
+        paused = true;
+    }
+    return { missing: await missing(), paused };
+}
+
 export async function handleWebhookEvent(env: Env, event: StravaWebhookEvent): Promise<void> {
     const repo = new Repository(env);
 

@@ -7,7 +7,7 @@ import type { Env } from '../env.ts';
 import { error, json } from '../http.ts';
 import { disconnectAthlete } from '../disconnect.ts';
 import { StravaClient } from '../strava.ts';
-import { backfillAthlete, isBackingOff } from '../sync.ts';
+import { backfillAthlete, isBackingOff, loadHistory } from '../sync.ts';
 
 export async function isAdmin(request: Request, env: Env): Promise<boolean> {
     const header = request.headers.get('Authorization') ?? '';
@@ -112,6 +112,21 @@ export async function checkClub(env: Env, slug: string, athleteId: number): Prom
 export function resyncAthlete(env: Env, ctx: ExecutionContext, athleteId: number): Response {
     ctx.waitUntil(backfillAthlete(env, athleteId));
     return json({ ok: true, message: 'Resync started' }, { status: 202 });
+}
+
+/**
+ * POST /admin/athletes/:athleteId/history?since=2025-01-01: loads one batch of that runner's older runs and best efforts.
+ * Returns how many runs still need loading; the admin page calls it again until it reaches 0.
+ */
+export async function loadAthleteHistory(env: Env, athleteId: number, since: string | null): Promise<Response> {
+    const from = since ?? '2025-01-01';
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(from) || from < '2015-01-01') {
+        return error(400, 'since must be a date like 2025-01-01');
+    }
+    if (!(await new Repository(env).hasApprovedMembership(athleteId))) {
+        return error(404, 'That runner is not connected');
+    }
+    return json(await loadHistory(env, athleteId, from));
 }
 
 /** GET /admin/status */

@@ -34,6 +34,8 @@ Per runner: Strava athlete ID, first name, **surname initial only**, access and 
 
 Per run: activity ID, athlete ID, local start date and time, `sport_type`, distance, moving time, elevation gain, the manual / treadmill / flagged flags (needed to apply the club's rules), the best 5K effort if Strava provides one, and which standard distances (1K, 1 mile, 5K, 10K, half, marathon) Strava ranked as a new personal best on that run.
 
+A club admin can also load a runner's older runs (back to 1 January 2025) for a year-end review, one runner at a time, with a confirmation that the runner has agreed. These are the same fields as above. They are deleted with everything else when the runner disconnects.
+
 Per runner, in addition: a lifetime run-distance baseline (Strava's lifetime run total minus the runs we hold), refreshed weekly, used only for lifetime milestones such as "passed 5,000 km".
 
 **People outside the club who ask to join** (an admin must approve them): until approved we hold only their Strava ID, first name, surname initial and encrypted token. No runs are fetched, nothing is shown anywhere, and a request not approved within 14 days is deleted automatically and the token revoked. Approved guests are exempt from the weekly club-membership check.
@@ -46,7 +48,7 @@ Per runner, in addition: a lifetime run-distance baseline (Strava's lifetime run
 
 ## What leaves the system
 
-- A public JSON feed per club, per week: each connected runner's weekly totals (distance, runs, longest run, average pace of outdoor runs, fastest 5K effort, climbing, moving time) under **"First L."**, for the week and the four before it, plus an optional group label list (for example the Women's leaders panel). No IDs, no links to profiles. The recap page turns this into two images (leaders lists, and "more from the week" with a club distance trend, an "everyone who ran" list and the achievements banner) that the club posts. An orange banner at the foot of the second image highlights the week's personal bests, lifetime distance milestones crossed, and longest running streak. A separate summary endpoint returns only award podiums and totals.
+- A public JSON feed per club, per week: each connected runner's weekly totals (distance, runs, longest run, average pace of outdoor runs, fastest 5K effort, earliest and latest run start time, climbing, moving time) under **"First L."**, for the week and the four before it, plus an optional group label list (for example the Women's leaders panel). No IDs, no links to profiles. The recap page turns this into two images (leaders lists, and "more from the week" with a club distance trend, an "everyone who ran" list and the achievements banner) that the club posts. An orange banner at the foot of the second image highlights the week's personal bests, lifetime distance milestones crossed, and longest running streak. A separate summary endpoint returns only award podiums and totals.
 - An admin page (behind a secret token held by the club) shows each connected runner's name as "First L.", their Strava ID and a link to their profile, so two runners with the same initials can be told apart. Not exposed publicly.
 
 ## Notifications to the club owner

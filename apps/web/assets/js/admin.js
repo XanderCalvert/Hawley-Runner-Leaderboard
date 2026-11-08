@@ -140,7 +140,7 @@ function render() {
                 }
                 actions.append(toggle);
                 if (member.connected) {
-                    actions.append(resync, button('Check club', () => checkClub(member)), button('Remove', () => remove(member, false)));
+                    actions.append(resync, button('Load history', () => loadHistory(member)), button('Check club', () => checkClub(member)), button('Remove', () => remove(member, false)));
                 }
                 tr.append(actionsTd);
 
@@ -221,6 +221,31 @@ async function checkClub(member) {
             : `${member.name} is NOT in the club's Strava group. Use Remove if they shouldn't be here (they can ask again and you can approve them as a guest).`;
     } catch (error) {
         statusEl.textContent = `Check failed: ${error.message}`;
+    }
+}
+
+/** Loads this runner's runs and best efforts back to 1 Jan 2025, a batch at a time, until none are left or Strava asks us to slow down. */
+async function loadHistory(member) {
+    if (!confirm(`Load ${member.name}'s runs back to 1 January 2025? Only do this for runners who have agreed to a year-end review. It uses a fair chunk of the Strava rate limit and can take several minutes.`)) {
+        return;
+    }
+    try {
+        for (;;) {
+            statusEl.textContent = `Loading ${member.name}'s history…`;
+            const { missing, paused } = await api.history(member.athleteId, '2025-01-01');
+            if (paused) {
+                statusEl.textContent = `Strava's rate limit is nearly used up. ${missing} runs still to load for ${member.name}: try again in 15 minutes.`;
+                return;
+            }
+            if (missing === 0) {
+                statusEl.textContent = `${member.name}'s history is loaded.`;
+                await loadMembers();
+                return;
+            }
+            statusEl.textContent = `Loading ${member.name}'s history… ${missing} runs to go.`;
+        }
+    } catch (error) {
+        statusEl.textContent = `Load failed: ${error.message}`;
     }
 }
 
