@@ -48,7 +48,7 @@ export function isEligible(activity: ActivityRecord, rules: ClubRules): boolean 
 }
 
 /** A best effort is only trusted if it came from recorded GPS data and is humanly plausible. */
-function trustedEffort(activity: ActivityRecord, seconds: number | null, km: number, rules: ClubRules): number | null {
+export function trustedEffort(activity: ActivityRecord, seconds: number | null, km: number, rules: ClubRules): number | null {
     if (seconds === null || activity.manual) {
         return null;
     }

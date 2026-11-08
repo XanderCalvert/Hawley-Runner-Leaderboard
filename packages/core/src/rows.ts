@@ -1,5 +1,5 @@
 import { addDays, localDateOf } from './dates.ts';
-import { isEligible } from './summary.ts';
+import { isEligible, trustedEffort } from './summary.ts';
 import type { ActivityRecord, AthleteRecord, ClubConfig } from './types.ts';
 
 /** One runner's totals for one week: what the recap cards are built from. */
@@ -11,6 +11,8 @@ export interface WeekRow {
     longestM: number;
     /** Average pace in seconds per km, from outdoor runs only (see below). */
     paceSPerKm: number | null;
+    /** Fastest 5K effort in seconds from a single run (Strava's best efforts, GPS runs only), or null. */
+    best5kS: number | null;
     elevationM: number;
     movingTimeS: number;
 }
@@ -55,6 +57,10 @@ export function buildWeekRows({ club, athletes, activities, weekStart }: WeekRow
             runs: runs.length,
             longestM: Math.max(0, ...only(runs, longestTypes).map((r) => r.distanceM)),
             paceSPerKm: paceDistanceKm > 0 ? sum(paceRuns, (r) => r.movingTimeS) / paceDistanceKm : null,
+            best5kS: paceRuns.reduce<number | null>((best, r) => {
+                const effort = trustedEffort(r, r.best5kS, 5, club.rules);
+                return effort !== null && (best === null || effort < best) ? effort : best;
+            }, null),
             elevationM: sum(runs, (r) => r.elevationGainM),
             movingTimeS: sum(runs, (r) => r.movingTimeS),
         };

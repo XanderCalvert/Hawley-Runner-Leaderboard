@@ -71,6 +71,11 @@ function pace(seconds) {
     return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')} /km`;
 }
 
+function clock(seconds) {
+    const s = Math.round(seconds);
+    return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+}
+
 function duration(seconds) {
     const mins = Math.round(seconds / 60);
     return `${Math.floor(mins / 60)}h ${String(mins % 60).padStart(2, '0')}m`;
@@ -286,19 +291,18 @@ function buildExtras({ visible, previous, minPaceKm, top, moved = [], trend = []
             display: (v) => `${v.toLocaleString('en-GB', { maximumFractionDigits: 1 })} m/km`,
         },
     ];
-    if (minPaceKm > 5) {
-        awards.push({
-            id: 'short-pace',
-            label: `Quickest pace (5–${minPaceKm} km)`,
-            value: (r) => (r.paceSPerKm && r.distanceM >= 5000 && r.distanceM < minPaceKm * 1000 ? r.paceSPerKm : null),
-            display: pace,
-            lowerIsBetter: true,
-        });
-    }
+    // The fastest 5K in a single run (Strava's best efforts), so it doesn't depend on a runner's weekly total.
+    awards.push({
+        id: 'fastest-5k',
+        label: 'Fastest 5K',
+        value: (r) => r.best5kS ?? null,
+        display: clock,
+        lowerIsBetter: true,
+    });
     if (hasHistory) {
         awards.push({
             id: 'step-up',
-            label: 'Biggest step up',
+            label: 'Biggest step up (vs last week)',
             value: (r) => {
                 const before = lastWeek.get(normalise(r.name));
                 return before ? r.distanceM - before.distanceM : null;

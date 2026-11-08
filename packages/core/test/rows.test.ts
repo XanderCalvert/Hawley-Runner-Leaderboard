@@ -68,3 +68,21 @@ describe('buildWeekRows', () => {
         expect(JSON.stringify(rows([run(1, '2026-09-22', 5, 25)]))).not.toMatch(/athleteId|"id"/);
     });
 });
+
+describe('best 5K in the week rows', () => {
+    it("is the runner's fastest trusted 5K effort of the week, and null without one", () => {
+        const [sarah, tom] = rows([
+            run(1, '2026-09-22', 5, 25, { best5kS: 1500 }),
+            run(1, '2026-09-24', 10, 50, { best5kS: 1380 }),
+            run(1, '2026-09-14', 5, 20, { best5kS: 1200 }), // a different week
+            run(2, '2026-09-23', 5, 30),
+        ]);
+        expect(sarah?.best5kS).toBe(1380);
+        expect(tom?.best5kS).toBeNull();
+    });
+
+    it("ignores an effort faster than the club's plausibility limit", () => {
+        const [sarah] = rows([run(1, '2026-09-22', 5, 25, { best5kS: 480 })]);
+        expect(sarah?.best5kS).toBeNull();
+    });
+});
