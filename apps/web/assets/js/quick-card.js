@@ -15,15 +15,23 @@ function renderYtdTrend(trend) {
     const y = (v) => pad.t + (1 - v / (max * 1.05)) * (H - pad.t - pad.b);
     const pts = trend.map((p, i) => ({ ...p, cx: x(i), cy: y(km[i]), km: km[i] }));
     const line = pts.map((p) => `${p.cx.toFixed(1)},${p.cy.toFixed(1)}`).join(' ');
+    // Weeks with no distance (before anyone had connected) would only drag the figures down, so they are left out.
+    const sorted = km.filter((v) => v > 0).sort((a, b) => a - b);
+    const median = sorted.length % 2 ? sorted[(sorted.length - 1) / 2] : (sorted[sorted.length / 2 - 1] + sorted[sorted.length / 2]) / 2;
+    const fmt = (v) => Math.round(v).toLocaleString('en-GB');
     const peak = pts.reduce((best, p) => (p.km > best.km ? p : best));
     const now = pts.find((p) => p.current) ?? pts.at(-1);
     // The peak and this week get a number; the months along the bottom mark where each starts.
     const labelled = peak === now ? [now] : [peak, now];
     return `
         <section class="rc-award rc-span">
-            <h3 class="rc-award__label">Club distance each week (km)</h3>
+            <div class="rc-roll__head">
+                <h3 class="rc-award__label">Club distance each week (km)</h3>
+                <span class="rc-roll__key">Lowest ${fmt(sorted[0])} · Typical ${fmt(median)} · Highest ${fmt(sorted.at(-1))}</span>
+            </div>
             <svg class="rc-trend" viewBox="0 0 ${W} ${H}" role="img" aria-label="Club distance by week this year">
                 <polygon class="rc-trend__area" points="${pad.l},${H - pad.b} ${line} ${W - pad.r},${H - pad.b}"/>
+                <line class="rc-trend__median" x1="${pad.l}" x2="${W - pad.r}" y1="${y(median).toFixed(1)}" y2="${y(median).toFixed(1)}"/>
                 <polyline class="rc-trend__line" points="${line}"/>
                 ${labelled
                     .map(

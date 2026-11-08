@@ -354,3 +354,9 @@
 .rc-trend__week {
     text-anchor: middle;
 }
+
+.rc-trend__median {
+    stroke: var(--c-muted);
+    stroke-width: 2;
+    stroke-dasharray: 8 8;
+}
