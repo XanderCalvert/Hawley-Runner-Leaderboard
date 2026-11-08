@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildWeekRows } from '../src/index.ts';
+import { buildWeekRows, buildYtdWeeks } from '../src/index.ts';
 import type { ActivityRecord, ClubConfig } from '../src/index.ts';
 import hawley from '../../../config/clubs/hawley-runners.json' with { type: 'json' };
 
@@ -92,5 +92,17 @@ describe('days run in the week rows', () => {
         const [sarah] = rows([run(1, '2026-09-22', 5, 25), run(1, '2026-09-22', 3, 15), run(1, '2026-09-24', 5, 25)]);
         expect(sarah).toMatchObject({ runs: 3, days: 2 });
         expect(JSON.stringify(sarah)).not.toMatch(/start|T\d\d:/i);
+    });
+});
+
+describe('year-to-date weeks', () => {
+    it('lists each week from the first Monday of the year to this week with the club distance', () => {
+        const all = [run(1, '2026-01-06', 5, 25), run(2, '2026-01-07', 10, 50), run(1, '2026-01-14', 8, 40)];
+        const weeks = buildYtdWeeks((weekStart) => rows(all, weekStart), '2026-01-19');
+        expect(weeks).toEqual([
+            { weekStart: '2026-01-05', distanceM: 15000 },
+            { weekStart: '2026-01-12', distanceM: 8000 },
+            { weekStart: '2026-01-19', distanceM: 0 },
+        ]);
     });
 });

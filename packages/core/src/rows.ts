@@ -1,4 +1,4 @@
-import { addDays, localDateOf } from './dates.ts';
+import { addDays, localDateOf, weekEndOf, weekStartOf } from './dates.ts';
 import { isEligible, trustedEffort } from './summary.ts';
 import type { ActivityRecord, AthleteRecord, ClubConfig } from './types.ts';
 
@@ -25,6 +25,19 @@ export interface WeekRowsInput {
     athletes: AthleteRecord[];
     activities: ActivityRecord[];
     weekStart: string;
+}
+
+/**
+ * Club distance for each week of the year so far (from the first Monday of the year up to and including `weekStart`),
+ * given a function that builds one week's rows. Used for the year-to-date chart.
+ */
+export function buildYtdWeeks(rowsFor: (weekStart: string) => WeekRow[], weekStart: string): Array<{ weekStart: string; distanceM: number }> {
+    const yearStart = `${weekEndOf(weekStart).slice(0, 4)}-01-01`;
+    const weeks: Array<{ weekStart: string; distanceM: number }> = [];
+    for (let w = weekStartOf(yearStart) < yearStart ? addDays(weekStartOf(yearStart), 7) : yearStart; w <= weekStart; w = addDays(w, 7)) {
+        weeks.push({ weekStart: w, distanceM: rowsFor(w).reduce((total, r) => total + r.distanceM, 0) });
+    }
+    return weeks;
 }
 
 /**

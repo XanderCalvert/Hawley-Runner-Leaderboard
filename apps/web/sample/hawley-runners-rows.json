@@ -1874,6 +1874,180 @@
             ]
         }
     ],
+    "ytd": [
+        {
+            "weekStart": "2026-01-05",
+            "distanceM": 687100
+        },
+        {
+            "weekStart": "2026-01-12",
+            "distanceM": 688320
+        },
+        {
+            "weekStart": "2026-01-19",
+            "distanceM": 765210
+        },
+        {
+            "weekStart": "2026-01-26",
+            "distanceM": 726730
+        },
+        {
+            "weekStart": "2026-02-02",
+            "distanceM": 712250
+        },
+        {
+            "weekStart": "2026-02-09",
+            "distanceM": 647290
+        },
+        {
+            "weekStart": "2026-02-16",
+            "distanceM": 661120
+        },
+        {
+            "weekStart": "2026-02-23",
+            "distanceM": 709890
+        },
+        {
+            "weekStart": "2026-03-02",
+            "distanceM": 764680
+        },
+        {
+            "weekStart": "2026-03-09",
+            "distanceM": 515710
+        },
+        {
+            "weekStart": "2026-03-16",
+            "distanceM": 722170
+        },
+        {
+            "weekStart": "2026-03-23",
+            "distanceM": 631110
+        },
+        {
+            "weekStart": "2026-03-30",
+            "distanceM": 793550
+        },
+        {
+            "weekStart": "2026-04-06",
+            "distanceM": 659870
+        },
+        {
+            "weekStart": "2026-04-13",
+            "distanceM": 723760
+        },
+        {
+            "weekStart": "2026-04-20",
+            "distanceM": 635040
+        },
+        {
+            "weekStart": "2026-04-27",
+            "distanceM": 629230
+        },
+        {
+            "weekStart": "2026-05-04",
+            "distanceM": 666380
+        },
+        {
+            "weekStart": "2026-05-11",
+            "distanceM": 695020
+        },
+        {
+            "weekStart": "2026-05-18",
+            "distanceM": 614080
+        },
+        {
+            "weekStart": "2026-05-25",
+            "distanceM": 675720
+        },
+        {
+            "weekStart": "2026-06-01",
+            "distanceM": 703290
+        },
+        {
+            "weekStart": "2026-06-08",
+            "distanceM": 652490
+        },
+        {
+            "weekStart": "2026-06-15",
+            "distanceM": 635180
+        },
+        {
+            "weekStart": "2026-06-22",
+            "distanceM": 739230
+        },
+        {
+            "weekStart": "2026-06-29",
+            "distanceM": 615770
+        },
+        {
+            "weekStart": "2026-07-06",
+            "distanceM": 671020
+        },
+        {
+            "weekStart": "2026-07-13",
+            "distanceM": 761150
+        },
+        {
+            "weekStart": "2026-07-20",
+            "distanceM": 703340
+        },
+        {
+            "weekStart": "2026-07-27",
+            "distanceM": 682820
+        },
+        {
+            "weekStart": "2026-08-03",
+            "distanceM": 648260
+        },
+        {
+            "weekStart": "2026-08-10",
+            "distanceM": 791580
+        },
+        {
+            "weekStart": "2026-08-17",
+            "distanceM": 676740
+        },
+        {
+            "weekStart": "2026-08-24",
+            "distanceM": 691420
+        },
+        {
+            "weekStart": "2026-08-31",
+            "distanceM": 663460
+        },
+        {
+            "weekStart": "2026-09-07",
+            "distanceM": 642550
+        },
+        {
+            "weekStart": "2026-09-14",
+            "distanceM": 764100
+        },
+        {
+            "weekStart": "2026-09-21",
+            "distanceM": 794630
+        },
+        {
+            "weekStart": "2026-09-28",
+            "distanceM": 728660
+        },
+        {
+            "weekStart": "2026-10-05",
+            "distanceM": 761630
+        },
+        {
+            "weekStart": "2026-10-12",
+            "distanceM": 741170
+        },
+        {
+            "weekStart": "2026-10-19",
+            "distanceM": 685240
+        },
+        {
+            "weekStart": "2026-10-26",
+            "distanceM": 748500
+        }
+    ],
     "groups": [
         {
             "id": "women",

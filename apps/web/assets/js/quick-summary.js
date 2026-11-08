@@ -226,7 +226,7 @@ function buildSpotlight(visible, groups, minPaceKm, top) {
  * e.g. { id: 'women', label: 'Women', members: ['Full Name', …] }.
  * `groups` (optional) adds a top-3 panel for the first group with runners this week to the second card.
  */
-export function buildQuickSummary({ club, rows, previousRows = [], history = [], weekStart, hiddenNames = [], minPaceKm = 10, top = 5, group = null, groups = [] }) {
+export function buildQuickSummary({ club, rows, previousRows = [], history = [], ytd = [], weekStart, hiddenNames = [], minPaceKm = 10, top = 5, group = null, groups = [] }) {
     const visible = prepareRows(inGroup(rows, group), hiddenNames);
     const previous = prepareRows(inGroup(previousRows, group), hiddenNames);
     const { spotlight, rest } = group ? { spotlight: null, rest: null } : buildSpotlight(visible, groups, minPaceKm, PANEL_TOP);
@@ -255,12 +255,22 @@ export function buildQuickSummary({ club, rows, previousRows = [], history = [],
         milestones: [],
         spotlight,
         rest,
-        extras: buildExtras({ visible, previous, minPaceKm, top, moved, trend: buildTrend(history, visible, weekStart, group, hiddenNames) }),
+        extras: buildExtras({ visible, previous, minPaceKm, top, moved, trend: buildTrend(history, visible, weekStart, group, hiddenNames, ytd) }),
     };
 }
 
 /** Club distance for the weeks before this one (those with data) and this week, oldest first. */
-function buildTrend(history, visible, weekStart, group, hiddenNames) {
+function buildTrend(history, visible, weekStart, group, hiddenNames, ytd = []) {
+    // Year to date (a whole-club figure, so not when the page is showing one group): one point per week, labelled at the first week of each month.
+    if (!group && !hiddenNames.length && ytd.length >= 4) {
+        let lastMonth = '';
+        return ytd.map((w) => {
+            const month = new Date(`${w.weekStart}T00:00:00Z`).toLocaleDateString('en-GB', { month: 'short', timeZone: 'UTC' }).slice(0, 3);
+            const label = month === lastMonth ? '' : month;
+            lastMonth = month;
+            return { label, distanceM: w.distanceM, current: w.weekStart === weekStart, ytd: true };
+        });
+    }
     const past = history
         .map((h) => ({ weekStart: h.weekStart, distanceM: totals(prepareRows(inGroup(h.rows, group), hiddenNames)).distanceM }))
         .filter((w) => w.distanceM > 0);

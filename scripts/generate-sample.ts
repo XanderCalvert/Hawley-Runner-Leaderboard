@@ -5,7 +5,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { addDays, buildAchievements, buildWeekRows, buildWeeklySummary, displayName, lastCompletedWeekStart, weekEndOf, weekStartOf } from '../packages/core/src/index.ts';
+import { addDays, buildAchievements, buildWeekRows, buildWeeklySummary, buildYtdWeeks, displayName, lastCompletedWeekStart, weekEndOf, weekStartOf } from '../packages/core/src/index.ts';
 import type { ActivityRecord } from '../packages/core/src/index.ts';
 import { getClub } from '../config/clubs/index.ts';
 import { fakeActivities, fakeAthletes } from './lib/fake-runners.ts';
@@ -63,6 +63,7 @@ writeFileSync(
             rows: rowsFor(weekStart),
             previousRows: history.at(-1)?.rows ?? [],
             history,
+            ytd: buildYtdWeeks(rowsFor, weekStart),
             // Fake: every third fake runner is "women", just to show the two panels.
             groups: (club.groups ?? []).map((g) => ({ ...g, members: people.filter((_, i) => i % 3 === 0).map((p) => p.displayName) })),
         },

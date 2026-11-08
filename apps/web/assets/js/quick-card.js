@@ -5,7 +5,45 @@
 import { escapeHtml, renderAward, renderHeader } from './card.js';
 
 /** Club distance, this week and up to four before, as a line chart (this week highlighted). */
+function renderYtdTrend(trend) {
+    const W = 940;
+    const H = 150;
+    const pad = { l: 20, r: 20, t: 34, b: 26 };
+    const km = trend.map((p) => p.distanceM / 1000);
+    const max = Math.max(...km) || 1;
+    const x = (i) => pad.l + (i * (W - pad.l - pad.r)) / (trend.length - 1);
+    const y = (v) => pad.t + (1 - v / (max * 1.05)) * (H - pad.t - pad.b);
+    const pts = trend.map((p, i) => ({ ...p, cx: x(i), cy: y(km[i]), km: km[i] }));
+    const line = pts.map((p) => `${p.cx.toFixed(1)},${p.cy.toFixed(1)}`).join(' ');
+    const peak = pts.reduce((best, p) => (p.km > best.km ? p : best));
+    const now = pts.find((p) => p.current) ?? pts.at(-1);
+    // The peak and this week get a number; the months along the bottom mark where each starts.
+    const labelled = peak === now ? [now] : [peak, now];
+    return `
+        <section class="rc-award rc-span">
+            <h3 class="rc-award__label">Club distance each week (km)</h3>
+            <svg class="rc-trend" viewBox="0 0 ${W} ${H}" role="img" aria-label="Club distance by week this year">
+                <polygon class="rc-trend__area" points="${pad.l},${H - pad.b} ${line} ${W - pad.r},${H - pad.b}"/>
+                <polyline class="rc-trend__line" points="${line}"/>
+                ${labelled
+                    .map(
+                        (p) => `
+                <circle class="rc-trend__dot${p === now ? ' is-current' : ''}" cx="${p.cx.toFixed(1)}" cy="${p.cy.toFixed(1)}" r="7"/>
+                <text class="rc-trend__val${p === now ? ' is-current' : ''}" x="${Math.min(W - 24, Math.max(24, p.cx)).toFixed(1)}" y="${(p.cy - 14).toFixed(1)}">${Math.round(p.km).toLocaleString('en-GB')}</text>`,
+                    )
+                    .join('')}
+                ${pts
+                    .filter((p) => p.label)
+                    .map((p) => `<text class="rc-trend__week" x="${Math.min(W - 18, Math.max(18, p.cx)).toFixed(1)}" y="${H - 4}">${escapeHtml(p.label)}</text>`)
+                    .join('')}
+            </svg>
+        </section>`;
+}
+
 function renderTrend(trend) {
+    if (trend[0]?.ytd) {
+        return renderYtdTrend(trend);
+    }
     const W = 420;
     const H = 170;
     const pad = { l: 34, r: 34, t: 38, b: 30 };
@@ -55,10 +93,22 @@ export function fitRoll(cardEl) {
 export function renderExtrasCard(summary, banner = '') {
     const { extras } = summary;
     const branding = summary.club.branding ?? {};
-    const tiles = [...extras.awards.map(renderAward), ...(extras.trend.length ? [renderTrend(extras.trend)] : [])];
+    const tiles = extras.awards.map(renderAward);
     // Keep the grid even: a lone last tile spans both columns.
     if (tiles.length % 2) {
         tiles[tiles.length - 1] = tiles.at(-1).replace('class="rc-award', 'class="rc-award rc-span');
+    }
+    // The year chart sits on its own full-width row; the short five-week chart is a tile like the others.
+    if (extras.trend.length) {
+        const trend = renderTrend(extras.trend);
+        if (extras.trend[0].ytd) {
+            tiles.push(trend);
+        } else {
+            tiles.push(trend);
+            if (tiles.length % 2) {
+                tiles[tiles.length - 1] = tiles.at(-1).replace('class="rc-award', 'class="rc-award rc-span');
+            }
+        }
     }
     const count = extras.rollCall.length;
     const rollSize = count > 70 ? 'is-tiny' : count > 45 ? 'is-small' : '';

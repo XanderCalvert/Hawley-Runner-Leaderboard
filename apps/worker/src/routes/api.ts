@@ -1,4 +1,4 @@
-import { addDays, buildAchievements, buildWeekRows, buildWeeklySummary, isValidDate, lastCompletedWeekStart, weekEndOf, weekStartOf } from '@club-recap/core';
+import { addDays, buildAchievements, buildWeekRows, buildWeeklySummary, buildYtdWeeks, isValidDate, lastCompletedWeekStart, weekEndOf, weekStartOf } from '@club-recap/core';
 import { getClub } from '../../../../config/clubs/index.ts';
 import { Repository } from '../db.ts';
 import type { Env } from '../env.ts';
@@ -68,6 +68,7 @@ export async function clubWeekRows(request: Request, env: Env, slug: string): Pr
             rows: rowsFor(weekStart),
             previousRows: history.at(-1)?.rows ?? [],
             history,
+            ytd: buildYtdWeeks(rowsFor, weekStart),
             groups: (club.groups ?? []).map((g) => ({ ...g, members: members.get(g.id) ?? [] })),
             achievements: buildAchievements({ club, athletes, activities, lifetimeBaseM, weekStart }),
         },

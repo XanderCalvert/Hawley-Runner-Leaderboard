@@ -47,6 +47,7 @@ async function load(weekStart) {
             rows: data.rows,
             previousRows: data.previousRows,
             history: data.history,
+            ytd: data.ytd,
             weekStart: data.weekStart,
             groups: (data.groups ?? []).filter((g) => g.members.length),
             minPaceKm: MIN_PACE_KM,
