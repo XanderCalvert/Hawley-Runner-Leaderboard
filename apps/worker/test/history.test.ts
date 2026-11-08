@@ -33,7 +33,8 @@ describe('loading a runner\'s history', () => {
 it('stores the country worked out from the activity time zone, never a location', async () => {
     const { env, repo, sqlite } = makeEnv();
     await seedAthlete(repo);
-    stubStrava({ 'GET /athlete/activities': () => reply([stravaActivity(7, 'Run', { timezone: '(GMT+01:00) Europe/Madrid', start_latlng: [40.4, -3.7] })]) });
+    const madrid = stravaActivity(7, 'Run', { timezone: '(GMT+01:00) Europe/Madrid', start_latlng: [40.4, -3.7] });
+    stubStrava({ 'GET /athlete/activities': () => reply([madrid]), 'GET /activities/7': () => reply(madrid) });
     await loadAthleteHistory(env, 1, '2025-01-01');
     expect(sqlite.prepare('SELECT country FROM activities WHERE id = 7').get()).toEqual({ country: 'ES' });
     expect(JSON.stringify(sqlite.prepare('SELECT * FROM activities').all())).not.toContain('40.4');

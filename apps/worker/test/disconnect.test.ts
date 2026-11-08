@@ -155,7 +155,7 @@ describe('webhook ingestion and sport_type filtering', () => {
         await handleWebhookEvent(env, event(55));
         const row = sqlite.prepare('SELECT * FROM activities').get() as Record<string, unknown>;
         expect(Object.keys(row).sort()).toEqual(
-            ['athlete_id', 'best_5k_s', 'detail_fetched_at', 'distance_m', 'elevation_gain_m', 'flagged', 'id', 'manual', 'moving_time_s', 'pr_efforts', 'sport_type', 'start_date_local', 'trainer', 'updated_at'].sort(),
+            ['athlete_id', 'best_5k_s', 'country', 'detail_fetched_at', 'distance_m', 'elevation_gain_m', 'flagged', 'id', 'manual', 'moving_time_s', 'pr_efforts', 'sport_type', 'start_date_local', 'trainer', 'updated_at'].sort(),
         );
         expect(row.best_5k_s).toBe(1200);
         expect(JSON.stringify(row)).not.toMatch(/Secret|polyline|heartrate/);
