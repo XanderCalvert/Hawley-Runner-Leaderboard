@@ -2211,12 +2211,8 @@
             "moreTied": 6
         },
         "international": {
-            "ukM": 733800,
             "abroad": [
-                {
-                    "country": "ES",
-                    "distanceM": 14700
-                }
+                "ES"
             ]
         }
     }

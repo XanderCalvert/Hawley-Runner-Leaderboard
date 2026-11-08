@@ -19,8 +19,8 @@ export interface Achievements {
     dayStreak: Ranking;
     /** Consecutive weeks with at least one run, up to and including this week. */
     weekStreak: Ranking;
-    /** Where this week's recorded outdoor running happened, as club totals (no names). Only worth showing if `abroad` has anything. */
-    international: { ukM: number; abroad: Array<{ country: string; distanceM: number }> };
+    /** Countries outside the UK that recorded outdoor runs happened in this week (no names, no distances), most running first. Show nothing if empty. */
+    international: { abroad: string[] };
 }
 
 export interface AchievementsInput {
@@ -152,10 +152,8 @@ export function buildAchievements({ club, athletes, activities, lifetimeBaseM, w
             }
         }
     }
-    const international = {
-        ukM: byCountry.get('GB') ?? 0,
-        abroad: [...byCountry].filter(([c]) => c !== 'GB').map(([country, distanceM]) => ({ country, distanceM })).sort((a, b) => b.distanceM - a.distanceM),
-    };
+    // Only the countries are published: a distance in a place only one person went to would point at them.
+    const international = { abroad: [...byCountry].filter(([c]) => c !== 'GB').sort((a, b) => b[1] - a[1]).map(([country]) => country) };
 
     prs.sort((a, b) => b.efforts.length - a.efforts.length || a.name.localeCompare(b.name));
     milestones.sort((a, b) => b.km - a.km || a.name.localeCompare(b.name));

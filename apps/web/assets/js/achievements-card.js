@@ -45,13 +45,12 @@ const names = (list, max = 2) => (list.length > max ? `${list.slice(0, max).join
 const flag = (code) =>
     code === 'XX' ? '<span class="rc-banner__else">Elsewhere</span>' : `<img class="rc-banner__flag" src="assets/img/flags/${code.toLowerCase()}.svg" alt="${escapeHtml(code)}">`;
 
-/** "Gone international": the UK and each other country's total this week, as club totals with no names. Nothing when it was all UK. */
+/** "Gone international": flags for the UK and each other country the club ran in this week. No names and no distances. Nothing when it was all UK. */
 function internationalLine(international) {
     if (!international?.abroad?.length) {
         return '';
     }
-    const part = (code, metres) => `<span class="rc-banner__place">${flag(code)} ${Math.round(metres / 1000).toLocaleString('en-GB')} km</span>`;
-    return `<p class="rc-banner__wide"><strong>Gone international</strong>${part('GB', international.ukM)}${international.abroad.slice(0, 4).map((a) => part(a.country, a.distanceM)).join('')}</p>`;
+    return `<p class="rc-banner__wide"><strong>Gone international</strong>${['GB', ...international.abroad.slice(0, 5)].map((code) => `<span class="rc-banner__place">${flag(code)}</span>`).join('')}</p>`;
 }
 
 /** The orange strip at the foot of card 2: this week's achievement highlights, or nothing when there are none. */
