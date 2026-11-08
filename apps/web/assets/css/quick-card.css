@@ -340,3 +340,9 @@
     font-size: 17px;
     font-weight: 800;
 }
+
+/* A chart alone on its row would otherwise grow to fill the card and squeeze the roll call. */
+.rc-span .rc-trend {
+    height: 140px;
+    flex: none;
+}

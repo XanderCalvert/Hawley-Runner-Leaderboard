@@ -15,9 +15,8 @@ export interface WeekRow {
     best5kS: number | null;
     elevationM: number;
     movingTimeS: number;
-    /** Earliest and latest run start of the week, in minutes after local midnight. */
-    earliestStartMin: number;
-    latestStartMin: number;
+    /** Different days with at least one run (dates only: no times of day are ever sent). */
+    days: number;
 }
 
 export interface WeekRowsInput {
@@ -27,9 +26,6 @@ export interface WeekRowsInput {
     activities: ActivityRecord[];
     weekStart: string;
 }
-
-/** Minutes after local midnight, from a local start time such as 2026-10-20T07:30:00. */
-const startMinute = (run: ActivityRecord) => Number(run.startDateLocal.slice(11, 13)) * 60 + Number(run.startDateLocal.slice(14, 16));
 
 /**
  * Totals follow the club's rules (e.g. Hawley counts virtual runs). Longest run and pace follow the sport types
@@ -69,8 +65,7 @@ export function buildWeekRows({ club, athletes, activities, weekStart }: WeekRow
             }, null),
             elevationM: sum(runs, (r) => r.elevationGainM),
             movingTimeS: sum(runs, (r) => r.movingTimeS),
-            earliestStartMin: Math.min(...runs.map(startMinute)),
-            latestStartMin: Math.max(...runs.map(startMinute)),
+            days: new Set(runs.map((r) => localDateOf(r.startDateLocal))).size,
         };
     });
 }

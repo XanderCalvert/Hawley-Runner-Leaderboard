@@ -87,13 +87,10 @@ describe('best 5K in the week rows', () => {
     });
 });
 
-describe('start times in the week rows', () => {
-    it('gives the earliest and latest run start of the week in minutes after midnight', () => {
-        const [sarah] = rows([
-            run(1, '2026-09-22', 5, 25, { startDateLocal: '2026-09-22T06:05:00' }),
-            run(1, '2026-09-24', 5, 25, { startDateLocal: '2026-09-24T19:40:00' }),
-            run(1, '2026-09-25', 5, 25, { startDateLocal: '2026-09-25T12:00:00' }),
-        ]);
-        expect(sarah).toMatchObject({ earliestStartMin: 6 * 60 + 5, latestStartMin: 19 * 60 + 40 });
+describe('days run in the week rows', () => {
+    it('counts different days, not runs, and sends no time of day', () => {
+        const [sarah] = rows([run(1, '2026-09-22', 5, 25), run(1, '2026-09-22', 3, 15), run(1, '2026-09-24', 5, 25)]);
+        expect(sarah).toMatchObject({ runs: 3, days: 2 });
+        expect(JSON.stringify(sarah)).not.toMatch(/start|T\d\d:/i);
     });
 });

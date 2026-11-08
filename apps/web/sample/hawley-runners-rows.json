@@ -10,8 +10,7 @@
             "best5kS": 1378,
             "elevationM": 194,
             "movingTimeS": 5357,
-            "earliestStartMin": 386,
-            "latestStartMin": 576
+            "days": 2
         },
         {
             "name": "Grace L.",
@@ -22,8 +21,7 @@
             "best5kS": 1497,
             "elevationM": 364,
             "movingTimeS": 12712,
-            "earliestStartMin": 392,
-            "latestStartMin": 1116
+            "days": 5
         },
         {
             "name": "Megan K.",
@@ -34,8 +32,7 @@
             "best5kS": 1171,
             "elevationM": 290,
             "movingTimeS": 10174,
-            "earliestStartMin": 386,
-            "latestStartMin": 1083
+            "days": 5
         },
         {
             "name": "Will P.",
@@ -46,8 +43,7 @@
             "best5kS": 1944,
             "elevationM": 606,
             "movingTimeS": 27345,
-            "earliestStartMin": 389,
-            "latestStartMin": 1120
+            "days": 6
         },
         {
             "name": "Matt C.",
@@ -58,8 +54,7 @@
             "best5kS": 1522,
             "elevationM": 284,
             "movingTimeS": 12850,
-            "earliestStartMin": 405,
-            "latestStartMin": 1103
+            "days": 5
         },
         {
             "name": "Jack W.",
@@ -70,8 +65,7 @@
             "best5kS": 1333,
             "elevationM": 118,
             "movingTimeS": 3770,
-            "earliestStartMin": 415,
-            "latestStartMin": 1089
+            "days": 2
         },
         {
             "name": "Aisha D.",
@@ -82,8 +76,7 @@
             "best5kS": 1486,
             "elevationM": 191,
             "movingTimeS": 10456,
-            "earliestStartMin": 488,
-            "latestStartMin": 1114
+            "days": 3
         },
         {
             "name": "Zoe Y.",
@@ -94,8 +87,7 @@
             "best5kS": 1995,
             "elevationM": 75,
             "movingTimeS": 3651,
-            "earliestStartMin": 1121,
-            "latestStartMin": 1121
+            "days": 1
         },
         {
             "name": "Sarah K.",
@@ -106,8 +98,7 @@
             "best5kS": 1665,
             "elevationM": 464,
             "movingTimeS": 17602,
-            "earliestStartMin": 407,
-            "latestStartMin": 1128
+            "days": 4
         },
         {
             "name": "Nina W.",
@@ -118,8 +109,7 @@
             "best5kS": 1187,
             "elevationM": 266,
             "movingTimeS": 7947,
-            "earliestStartMin": 364,
-            "latestStartMin": 1137
+            "days": 6
         },
         {
             "name": "Ravi B.",
@@ -130,8 +120,7 @@
             "best5kS": 1240,
             "elevationM": 156,
             "movingTimeS": 4944,
-            "earliestStartMin": 395,
-            "latestStartMin": 497
+            "days": 3
         },
         {
             "name": "Sam H.",
@@ -142,8 +131,7 @@
             "best5kS": 1398,
             "elevationM": 274,
             "movingTimeS": 9032,
-            "earliestStartMin": 368,
-            "latestStartMin": 1132
+            "days": 5
         },
         {
             "name": "Luke R.",
@@ -154,8 +142,7 @@
             "best5kS": 1902,
             "elevationM": 924,
             "movingTimeS": 16080,
-            "earliestStartMin": 552,
-            "latestStartMin": 1103
+            "days": 4
         },
         {
             "name": "Fran W.",
@@ -166,8 +153,7 @@
             "best5kS": 1678,
             "elevationM": 137,
             "movingTimeS": 6919,
-            "earliestStartMin": 361,
-            "latestStartMin": 490
+            "days": 2
         },
         {
             "name": "Chloe S.",
@@ -178,8 +164,7 @@
             "best5kS": null,
             "elevationM": 104,
             "movingTimeS": 968,
-            "earliestStartMin": 364,
-            "latestStartMin": 364
+            "days": 1
         },
         {
             "name": "Chris N.",
@@ -190,8 +175,7 @@
             "best5kS": 1629,
             "elevationM": 1193,
             "movingTimeS": 13301,
-            "earliestStartMin": 373,
-            "latestStartMin": 597
+            "days": 4
         },
         {
             "name": "Ellie S.",
@@ -202,8 +186,7 @@
             "best5kS": 1902,
             "elevationM": 605,
             "movingTimeS": 26576,
-            "earliestStartMin": 399,
-            "latestStartMin": 1107
+            "days": 4
         },
         {
             "name": "Josh M.",
@@ -214,8 +197,7 @@
             "best5kS": 1415,
             "elevationM": 153,
             "movingTimeS": 4319,
-            "earliestStartMin": 516,
-            "latestStartMin": 1108
+            "days": 2
         },
         {
             "name": "Katie F.",
@@ -226,8 +208,7 @@
             "best5kS": 1567,
             "elevationM": 162,
             "movingTimeS": 8103,
-            "earliestStartMin": 554,
-            "latestStartMin": 1135
+            "days": 3
         },
         {
             "name": "Ollie H.",
@@ -238,8 +219,7 @@
             "best5kS": 1700,
             "elevationM": 475,
             "movingTimeS": 5170,
-            "earliestStartMin": 379,
-            "latestStartMin": 559
+            "days": 2
         },
         {
             "name": "Priya R.",
@@ -250,8 +230,7 @@
             "best5kS": 1748,
             "elevationM": 178,
             "movingTimeS": 2004,
-            "earliestStartMin": 417,
-            "latestStartMin": 417
+            "days": 1
         },
         {
             "name": "Dan P.",
@@ -262,8 +241,7 @@
             "best5kS": 1465,
             "elevationM": 169,
             "movingTimeS": 6584,
-            "earliestStartMin": 553,
-            "latestStartMin": 1134
+            "days": 2
         },
         {
             "name": "Beth B.",
@@ -274,8 +252,7 @@
             "best5kS": 1502,
             "elevationM": 118,
             "movingTimeS": 3752,
-            "earliestStartMin": 368,
-            "latestStartMin": 537
+            "days": 2
         },
         {
             "name": "Tom M.",
@@ -286,8 +263,7 @@
             "best5kS": 1954,
             "elevationM": 225,
             "movingTimeS": 10015,
-            "earliestStartMin": 382,
-            "latestStartMin": 547
+            "days": 3
         },
         {
             "name": "Lucy G.",
@@ -298,8 +274,7 @@
             "best5kS": 1297,
             "elevationM": 213,
             "movingTimeS": 9870,
-            "earliestStartMin": 579,
-            "latestStartMin": 1125
+            "days": 3
         },
         {
             "name": "James W.",
@@ -310,8 +285,7 @@
             "best5kS": 1619,
             "elevationM": 66,
             "movingTimeS": 4037,
-            "earliestStartMin": 502,
-            "latestStartMin": 502
+            "days": 1
         },
         {
             "name": "Ben C.",
@@ -322,8 +296,7 @@
             "best5kS": 1710,
             "elevationM": 773,
             "movingTimeS": 9754,
-            "earliestStartMin": 505,
-            "latestStartMin": 517
+            "days": 2
         },
         {
             "name": "Hannah F.",
@@ -334,8 +307,7 @@
             "best5kS": 1542,
             "elevationM": 40,
             "movingTimeS": 1684,
-            "earliestStartMin": 581,
-            "latestStartMin": 581
+            "days": 1
         },
         {
             "name": "Kieran H.",
@@ -346,8 +318,7 @@
             "best5kS": 1544,
             "elevationM": 97,
             "movingTimeS": 3511,
-            "earliestStartMin": 592,
-            "latestStartMin": 592
+            "days": 1
         }
     ],
     "previousRows": [
@@ -360,8 +331,7 @@
             "best5kS": 1271,
             "elevationM": 127,
             "movingTimeS": 4495,
-            "earliestStartMin": 366,
-            "latestStartMin": 580
+            "days": 3
         },
         {
             "name": "Jack W.",
@@ -372,8 +342,7 @@
             "best5kS": 1298,
             "elevationM": 263,
             "movingTimeS": 7418,
-            "earliestStartMin": 397,
-            "latestStartMin": 1126
+            "days": 4
         },
         {
             "name": "Ellie S.",
@@ -384,8 +353,7 @@
             "best5kS": 2000,
             "elevationM": 512,
             "movingTimeS": 25999,
-            "earliestStartMin": 371,
-            "latestStartMin": 1127
+            "days": 7
         },
         {
             "name": "Will P.",
@@ -396,8 +364,7 @@
             "best5kS": 1942,
             "elevationM": 488,
             "movingTimeS": 22030,
-            "earliestStartMin": 372,
-            "latestStartMin": 537
+            "days": 5
         },
         {
             "name": "Chloe S.",
@@ -408,8 +375,7 @@
             "best5kS": 1377,
             "elevationM": 440,
             "movingTimeS": 4840,
-            "earliestStartMin": 408,
-            "latestStartMin": 536
+            "days": 2
         },
         {
             "name": "Lucy G.",
@@ -420,8 +386,7 @@
             "best5kS": 1341,
             "elevationM": 478,
             "movingTimeS": 12983,
-            "earliestStartMin": 367,
-            "latestStartMin": 1136
+            "days": 6
         },
         {
             "name": "Ben C.",
@@ -432,8 +397,7 @@
             "best5kS": 1796,
             "elevationM": 575,
             "movingTimeS": 7664,
-            "earliestStartMin": 381,
-            "latestStartMin": 486
+            "days": 3
         },
         {
             "name": "Sam H.",
@@ -444,8 +408,7 @@
             "best5kS": null,
             "elevationM": 83,
             "movingTimeS": 2622,
-            "earliestStartMin": 397,
-            "latestStartMin": 1120
+            "days": 2
         },
         {
             "name": "Aisha D.",
@@ -456,8 +419,7 @@
             "best5kS": 1469,
             "elevationM": 119,
             "movingTimeS": 5371,
-            "earliestStartMin": 408,
-            "latestStartMin": 1121
+            "days": 2
         },
         {
             "name": "Nina W.",
@@ -468,8 +430,7 @@
             "best5kS": 1209,
             "elevationM": 286,
             "movingTimeS": 9993,
-            "earliestStartMin": 384,
-            "latestStartMin": 1124
+            "days": 6
         },
         {
             "name": "Chris N.",
@@ -480,8 +441,7 @@
             "best5kS": 1628,
             "elevationM": 1226,
             "movingTimeS": 14848,
-            "earliestStartMin": 531,
-            "latestStartMin": 1136
+            "days": 5
         },
         {
             "name": "Megan K.",
@@ -492,8 +452,7 @@
             "best5kS": 1276,
             "elevationM": 177,
             "movingTimeS": 4840,
-            "earliestStartMin": 553,
-            "latestStartMin": 1137
+            "days": 3
         },
         {
             "name": "Matt C.",
@@ -504,8 +463,7 @@
             "best5kS": 1535,
             "elevationM": 173,
             "movingTimeS": 8955,
-            "earliestStartMin": 373,
-            "latestStartMin": 592
+            "days": 3
         },
         {
             "name": "Josh M.",
@@ -516,8 +474,7 @@
             "best5kS": 1473,
             "elevationM": 59,
             "movingTimeS": 1939,
-            "earliestStartMin": 383,
-            "latestStartMin": 383
+            "days": 1
         },
         {
             "name": "Luke R.",
@@ -528,8 +485,7 @@
             "best5kS": 1928,
             "elevationM": 532,
             "movingTimeS": 8746,
-            "earliestStartMin": 389,
-            "latestStartMin": 496
+            "days": 3
         },
         {
             "name": "Grace L.",
@@ -540,8 +496,7 @@
             "best5kS": 1446,
             "elevationM": 233,
             "movingTimeS": 9063,
-            "earliestStartMin": 410,
-            "latestStartMin": 1086
+            "days": 5
         },
         {
             "name": "Ollie H.",
@@ -552,8 +507,7 @@
             "best5kS": 1682,
             "elevationM": 487,
             "movingTimeS": 7175,
-            "earliestStartMin": 385,
-            "latestStartMin": 584
+            "days": 2
         },
         {
             "name": "Tom M.",
@@ -564,8 +518,7 @@
             "best5kS": 2170,
             "elevationM": 326,
             "movingTimeS": 14294,
-            "earliestStartMin": 391,
-            "latestStartMin": 569
+            "days": 3
         },
         {
             "name": "Emma L.",
@@ -576,8 +529,7 @@
             "best5kS": 1382,
             "elevationM": 191,
             "movingTimeS": 9503,
-            "earliestStartMin": 507,
-            "latestStartMin": 1112
+            "days": 3
         },
         {
             "name": "Sarah K.",
@@ -588,8 +540,7 @@
             "best5kS": 1699,
             "elevationM": 369,
             "movingTimeS": 16702,
-            "earliestStartMin": 388,
-            "latestStartMin": 1127
+            "days": 3
         },
         {
             "name": "Kieran H.",
@@ -600,8 +551,7 @@
             "best5kS": 1536,
             "elevationM": 153,
             "movingTimeS": 4829,
-            "earliestStartMin": 502,
-            "latestStartMin": 1129
+            "days": 2
         },
         {
             "name": "Dan P.",
@@ -612,8 +562,7 @@
             "best5kS": 1382,
             "elevationM": 157,
             "movingTimeS": 6718,
-            "earliestStartMin": 369,
-            "latestStartMin": 563
+            "days": 3
         },
         {
             "name": "Fran W.",
@@ -624,8 +573,7 @@
             "best5kS": 1764,
             "elevationM": 95,
             "movingTimeS": 3385,
-            "earliestStartMin": 378,
-            "latestStartMin": 378
+            "days": 1
         },
         {
             "name": "Hannah F.",
@@ -636,8 +584,7 @@
             "best5kS": 1428,
             "elevationM": 92,
             "movingTimeS": 2336,
-            "earliestStartMin": 1095,
-            "latestStartMin": 1095
+            "days": 1
         },
         {
             "name": "Beth B.",
@@ -648,8 +595,7 @@
             "best5kS": 1652,
             "elevationM": 60,
             "movingTimeS": 2549,
-            "earliestStartMin": 488,
-            "latestStartMin": 488
+            "days": 1
         },
         {
             "name": "James W.",
@@ -660,8 +606,7 @@
             "best5kS": 1704,
             "elevationM": 115,
             "movingTimeS": 3632,
-            "earliestStartMin": 524,
-            "latestStartMin": 524
+            "days": 1
         },
         {
             "name": "Alex P.",
@@ -672,8 +617,7 @@
             "best5kS": 2063,
             "elevationM": 83,
             "movingTimeS": 4301,
-            "earliestStartMin": 485,
-            "latestStartMin": 485
+            "days": 1
         },
         {
             "name": "Zoe Y.",
@@ -684,8 +628,7 @@
             "best5kS": 2298,
             "elevationM": 141,
             "movingTimeS": 9868,
-            "earliestStartMin": 524,
-            "latestStartMin": 524
+            "days": 1
         }
     ],
     "history": [
@@ -701,8 +644,7 @@
                     "best5kS": 1696,
                     "elevationM": 1876,
                     "movingTimeS": 25244,
-                    "earliestStartMin": 363,
-                    "latestStartMin": 557
+                    "days": 5
                 },
                 {
                     "name": "Ellie S.",
@@ -713,8 +655,7 @@
                     "best5kS": 1938,
                     "elevationM": 322,
                     "movingTimeS": 18073,
-                    "earliestStartMin": 370,
-                    "latestStartMin": 1139
+                    "days": 5
                 },
                 {
                     "name": "Will P.",
@@ -725,8 +666,7 @@
                     "best5kS": 1917,
                     "elevationM": 401,
                     "movingTimeS": 21513,
-                    "earliestStartMin": 365,
-                    "latestStartMin": 557
+                    "days": 6
                 },
                 {
                     "name": "Ben C.",
@@ -737,8 +677,7 @@
                     "best5kS": 1679,
                     "elevationM": 1145,
                     "movingTimeS": 14858,
-                    "earliestStartMin": 375,
-                    "latestStartMin": 1112
+                    "days": 5
                 },
                 {
                     "name": "Luke R.",
@@ -749,8 +688,7 @@
                     "best5kS": 1897,
                     "elevationM": 880,
                     "movingTimeS": 12671,
-                    "earliestStartMin": 401,
-                    "latestStartMin": 568
+                    "days": 4
                 },
                 {
                     "name": "Matt C.",
@@ -761,8 +699,7 @@
                     "best5kS": 1492,
                     "elevationM": 340,
                     "movingTimeS": 11043,
-                    "earliestStartMin": 387,
-                    "latestStartMin": 1092
+                    "days": 5
                 },
                 {
                     "name": "Grace L.",
@@ -773,8 +710,7 @@
                     "best5kS": 1494,
                     "elevationM": 187,
                     "movingTimeS": 8406,
-                    "earliestStartMin": 516,
-                    "latestStartMin": 1086
+                    "days": 3
                 },
                 {
                     "name": "Sarah K.",
@@ -785,8 +721,7 @@
                     "best5kS": 1703,
                     "elevationM": 363,
                     "movingTimeS": 15095,
-                    "earliestStartMin": 485,
-                    "latestStartMin": 1125
+                    "days": 3
                 },
                 {
                     "name": "Jack W.",
@@ -797,8 +732,7 @@
                     "best5kS": 1381,
                     "elevationM": 257,
                     "movingTimeS": 8072,
-                    "earliestStartMin": 540,
-                    "latestStartMin": 1122
+                    "days": 4
                 },
                 {
                     "name": "Kieran H.",
@@ -809,8 +743,7 @@
                     "best5kS": 1503,
                     "elevationM": 141,
                     "movingTimeS": 5478,
-                    "earliestStartMin": 581,
-                    "latestStartMin": 1125
+                    "days": 2
                 },
                 {
                     "name": "Chris N.",
@@ -821,8 +754,7 @@
                     "best5kS": 1648,
                     "elevationM": 1193,
                     "movingTimeS": 13995,
-                    "earliestStartMin": 371,
-                    "latestStartMin": 1136
+                    "days": 6
                 },
                 {
                     "name": "Nina W.",
@@ -833,8 +765,7 @@
                     "best5kS": 1196,
                     "elevationM": 198,
                     "movingTimeS": 7655,
-                    "earliestStartMin": 513,
-                    "latestStartMin": 1134
+                    "days": 4
                 },
                 {
                     "name": "Katie F.",
@@ -845,8 +776,7 @@
                     "best5kS": 1624,
                     "elevationM": 101,
                     "movingTimeS": 5270,
-                    "earliestStartMin": 366,
-                    "latestStartMin": 495
+                    "days": 2
                 },
                 {
                     "name": "Lucy G.",
@@ -857,8 +787,7 @@
                     "best5kS": 1337,
                     "elevationM": 276,
                     "movingTimeS": 8189,
-                    "earliestStartMin": 375,
-                    "latestStartMin": 530
+                    "days": 3
                 },
                 {
                     "name": "Alex P.",
@@ -869,8 +798,7 @@
                     "best5kS": 1963,
                     "elevationM": 222,
                     "movingTimeS": 11970,
-                    "earliestStartMin": 403,
-                    "latestStartMin": 596
+                    "days": 3
                 },
                 {
                     "name": "Emma L.",
@@ -881,8 +809,7 @@
                     "best5kS": 1328,
                     "elevationM": 306,
                     "movingTimeS": 12344,
-                    "earliestStartMin": 400,
-                    "latestStartMin": 576
+                    "days": 4
                 },
                 {
                     "name": "Chloe S.",
@@ -893,8 +820,7 @@
                     "best5kS": 1377,
                     "elevationM": 255,
                     "movingTimeS": 3191,
-                    "earliestStartMin": 565,
-                    "latestStartMin": 1094
+                    "days": 2
                 },
                 {
                     "name": "Megan K.",
@@ -905,8 +831,7 @@
                     "best5kS": 1242,
                     "elevationM": 187,
                     "movingTimeS": 5710,
-                    "earliestStartMin": 373,
-                    "latestStartMin": 1139
+                    "days": 3
                 },
                 {
                     "name": "Aisha D.",
@@ -917,8 +842,7 @@
                     "best5kS": 1479,
                     "elevationM": 212,
                     "movingTimeS": 7344,
-                    "earliestStartMin": 388,
-                    "latestStartMin": 519
+                    "days": 2
                 },
                 {
                     "name": "Sam H.",
@@ -929,8 +853,7 @@
                     "best5kS": 1541,
                     "elevationM": 83,
                     "movingTimeS": 2966,
-                    "earliestStartMin": 393,
-                    "latestStartMin": 537
+                    "days": 2
                 },
                 {
                     "name": "Dan P.",
@@ -941,8 +864,7 @@
                     "best5kS": 1371,
                     "elevationM": 191,
                     "movingTimeS": 5670,
-                    "earliestStartMin": 396,
-                    "latestStartMin": 503
+                    "days": 2
                 },
                 {
                     "name": "Tom M.",
@@ -953,8 +875,7 @@
                     "best5kS": 1930,
                     "elevationM": 72,
                     "movingTimeS": 3509,
-                    "earliestStartMin": 505,
-                    "latestStartMin": 505
+                    "days": 1
                 },
                 {
                     "name": "Beth B.",
@@ -965,8 +886,7 @@
                     "best5kS": 1549,
                     "elevationM": 102,
                     "movingTimeS": 3453,
-                    "earliestStartMin": 500,
-                    "latestStartMin": 514
+                    "days": 2
                 },
                 {
                     "name": "Fran W.",
@@ -977,8 +897,7 @@
                     "best5kS": 1894,
                     "elevationM": 228,
                     "movingTimeS": 10234,
-                    "earliestStartMin": 526,
-                    "latestStartMin": 556
+                    "days": 2
                 },
                 {
                     "name": "James W.",
@@ -989,8 +908,7 @@
                     "best5kS": 1802,
                     "elevationM": 43,
                     "movingTimeS": 3081,
-                    "earliestStartMin": 580,
-                    "latestStartMin": 580
+                    "days": 1
                 },
                 {
                     "name": "Josh M.",
@@ -1001,8 +919,7 @@
                     "best5kS": 1498,
                     "elevationM": 47,
                     "movingTimeS": 1642,
-                    "earliestStartMin": 504,
-                    "latestStartMin": 504
+                    "days": 1
                 },
                 {
                     "name": "Ravi B.",
@@ -1013,8 +930,7 @@
                     "best5kS": 1365,
                     "elevationM": 49,
                     "movingTimeS": 2963,
-                    "earliestStartMin": 508,
-                    "latestStartMin": 508
+                    "days": 1
                 },
                 {
                     "name": "Zoe Y.",
@@ -1025,8 +941,7 @@
                     "best5kS": 1944,
                     "elevationM": 73,
                     "movingTimeS": 3063,
-                    "earliestStartMin": 553,
-                    "latestStartMin": 553
+                    "days": 1
                 }
             ]
         },
@@ -1042,8 +957,7 @@
                     "best5kS": 1455,
                     "elevationM": 175,
                     "movingTimeS": 8097,
-                    "earliestStartMin": 376,
-                    "latestStartMin": 574
+                    "days": 3
                 },
                 {
                     "name": "Alex P.",
@@ -1054,8 +968,7 @@
                     "best5kS": 1828,
                     "elevationM": 357,
                     "movingTimeS": 13577,
-                    "earliestStartMin": 403,
-                    "latestStartMin": 1136
+                    "days": 4
                 },
                 {
                     "name": "Emma L.",
@@ -1066,8 +979,7 @@
                     "best5kS": 1291,
                     "elevationM": 409,
                     "movingTimeS": 16912,
-                    "earliestStartMin": 405,
-                    "latestStartMin": 1115
+                    "days": 6
                 },
                 {
                     "name": "Lucy G.",
@@ -1078,8 +990,7 @@
                     "best5kS": 1277,
                     "elevationM": 83,
                     "movingTimeS": 3390,
-                    "earliestStartMin": 416,
-                    "latestStartMin": 1119
+                    "days": 2
                 },
                 {
                     "name": "Fran W.",
@@ -1090,8 +1001,7 @@
                     "best5kS": 1732,
                     "elevationM": 295,
                     "movingTimeS": 10999,
-                    "earliestStartMin": 391,
-                    "latestStartMin": 1100
+                    "days": 3
                 },
                 {
                     "name": "Ellie S.",
@@ -1102,8 +1012,7 @@
                     "best5kS": 2011,
                     "elevationM": 353,
                     "movingTimeS": 19092,
-                    "earliestStartMin": 579,
-                    "latestStartMin": 1120
+                    "days": 5
                 },
                 {
                     "name": "Jack W.",
@@ -1114,8 +1023,7 @@
                     "best5kS": 1303,
                     "elevationM": 199,
                     "movingTimeS": 7476,
-                    "earliestStartMin": 385,
-                    "latestStartMin": 1080
+                    "days": 4
                 },
                 {
                     "name": "Aisha D.",
@@ -1126,8 +1034,7 @@
                     "best5kS": 1472,
                     "elevationM": 130,
                     "movingTimeS": 4730,
-                    "earliestStartMin": 388,
-                    "latestStartMin": 491
+                    "days": 2
                 },
                 {
                     "name": "Tom M.",
@@ -1138,8 +1045,7 @@
                     "best5kS": 2026,
                     "elevationM": 66,
                     "movingTimeS": 4485,
-                    "earliestStartMin": 401,
-                    "latestStartMin": 401
+                    "days": 1
                 },
                 {
                     "name": "Katie F.",
@@ -1150,8 +1056,7 @@
                     "best5kS": 1569,
                     "elevationM": 132,
                     "movingTimeS": 5690,
-                    "earliestStartMin": 403,
-                    "latestStartMin": 1124
+                    "days": 2
                 },
                 {
                     "name": "Grace L.",
@@ -1162,8 +1067,7 @@
                     "best5kS": 1584,
                     "elevationM": 221,
                     "movingTimeS": 9340,
-                    "earliestStartMin": 409,
-                    "latestStartMin": 1085
+                    "days": 4
                 },
                 {
                     "name": "Matt C.",
@@ -1174,8 +1078,7 @@
                     "best5kS": 1472,
                     "elevationM": 407,
                     "movingTimeS": 14433,
-                    "earliestStartMin": 378,
-                    "latestStartMin": 590
+                    "days": 6
                 },
                 {
                     "name": "Sam H.",
@@ -1186,8 +1089,7 @@
                     "best5kS": 1410,
                     "elevationM": 203,
                     "movingTimeS": 7987,
-                    "earliestStartMin": 389,
-                    "latestStartMin": 1115
+                    "days": 5
                 },
                 {
                     "name": "Ollie H.",
@@ -1198,8 +1100,7 @@
                     "best5kS": 1707,
                     "elevationM": 758,
                     "movingTimeS": 11569,
-                    "earliestStartMin": 369,
-                    "latestStartMin": 1112
+                    "days": 3
                 },
                 {
                     "name": "Nina W.",
@@ -1210,8 +1111,7 @@
                     "best5kS": 1220,
                     "elevationM": 122,
                     "movingTimeS": 4772,
-                    "earliestStartMin": 362,
-                    "latestStartMin": 1114
+                    "days": 4
                 },
                 {
                     "name": "Sarah K.",
@@ -1222,8 +1122,7 @@
                     "best5kS": 1581,
                     "elevationM": 474,
                     "movingTimeS": 18322,
-                    "earliestStartMin": 370,
-                    "latestStartMin": 1135
+                    "days": 4
                 },
                 {
                     "name": "Ben C.",
@@ -1234,8 +1133,7 @@
                     "best5kS": 1752,
                     "elevationM": 171,
                     "movingTimeS": 2929,
-                    "earliestStartMin": 380,
-                    "latestStartMin": 380
+                    "days": 1
                 },
                 {
                     "name": "Chris N.",
@@ -1246,8 +1144,7 @@
                     "best5kS": 1701,
                     "elevationM": 843,
                     "movingTimeS": 12995,
-                    "earliestStartMin": 392,
-                    "latestStartMin": 1106
+                    "days": 4
                 },
                 {
                     "name": "Will P.",
@@ -1258,8 +1155,7 @@
                     "best5kS": 1922,
                     "elevationM": 275,
                     "movingTimeS": 24901,
-                    "earliestStartMin": 360,
-                    "latestStartMin": 571
+                    "days": 4
                 },
                 {
                     "name": "Priya R.",
@@ -1270,8 +1166,7 @@
                     "best5kS": 1604,
                     "elevationM": 173,
                     "movingTimeS": 2636,
-                    "earliestStartMin": 387,
-                    "latestStartMin": 387
+                    "days": 1
                 },
                 {
                     "name": "Hannah F.",
@@ -1282,8 +1177,7 @@
                     "best5kS": 1458,
                     "elevationM": 120,
                     "movingTimeS": 5190,
-                    "earliestStartMin": 564,
-                    "latestStartMin": 1093
+                    "days": 2
                 },
                 {
                     "name": "Megan K.",
@@ -1294,8 +1188,7 @@
                     "best5kS": 1210,
                     "elevationM": 369,
                     "movingTimeS": 12349,
-                    "earliestStartMin": 381,
-                    "latestStartMin": 1102
+                    "days": 4
                 },
                 {
                     "name": "Ravi B.",
@@ -1306,8 +1199,7 @@
                     "best5kS": 1327,
                     "elevationM": 127,
                     "movingTimeS": 5913,
-                    "earliestStartMin": 580,
-                    "latestStartMin": 1091
+                    "days": 2
                 },
                 {
                     "name": "James W.",
@@ -1318,8 +1210,7 @@
                     "best5kS": 1725,
                     "elevationM": 132,
                     "movingTimeS": 7742,
-                    "earliestStartMin": 541,
-                    "latestStartMin": 1128
+                    "days": 2
                 },
                 {
                     "name": "Luke R.",
@@ -1330,8 +1221,7 @@
                     "best5kS": 1975,
                     "elevationM": 288,
                     "movingTimeS": 3746,
-                    "earliestStartMin": 566,
-                    "latestStartMin": 566
+                    "days": 1
                 },
                 {
                     "name": "Beth B.",
@@ -1342,8 +1232,7 @@
                     "best5kS": 1609,
                     "elevationM": 118,
                     "movingTimeS": 4155,
-                    "earliestStartMin": 504,
-                    "latestStartMin": 584
+                    "days": 2
                 },
                 {
                     "name": "Zoe Y.",
@@ -1354,8 +1243,7 @@
                     "best5kS": 2042,
                     "elevationM": 178,
                     "movingTimeS": 9025,
-                    "earliestStartMin": 494,
-                    "latestStartMin": 494
+                    "days": 1
                 },
                 {
                     "name": "Kieran H.",
@@ -1366,8 +1254,7 @@
                     "best5kS": 1689,
                     "elevationM": 124,
                     "movingTimeS": 7492,
-                    "earliestStartMin": 521,
-                    "latestStartMin": 521
+                    "days": 1
                 }
             ]
         },
@@ -1383,8 +1270,7 @@
                     "best5kS": 1233,
                     "elevationM": 222,
                     "movingTimeS": 8407,
-                    "earliestStartMin": 366,
-                    "latestStartMin": 1081
+                    "days": 6
                 },
                 {
                     "name": "Ellie S.",
@@ -1395,8 +1281,7 @@
                     "best5kS": 1909,
                     "elevationM": 587,
                     "movingTimeS": 30498,
-                    "earliestStartMin": 385,
-                    "latestStartMin": 1121
+                    "days": 6
                 },
                 {
                     "name": "Dan P.",
@@ -1407,8 +1292,7 @@
                     "best5kS": 1355,
                     "elevationM": 164,
                     "movingTimeS": 4476,
-                    "earliestStartMin": 391,
-                    "latestStartMin": 549
+                    "days": 2
                 },
                 {
                     "name": "Megan K.",
@@ -1419,8 +1303,7 @@
                     "best5kS": 1220,
                     "elevationM": 228,
                     "movingTimeS": 6682,
-                    "earliestStartMin": 391,
-                    "latestStartMin": 561
+                    "days": 2
                 },
                 {
                     "name": "Luke R.",
@@ -1431,8 +1314,7 @@
                     "best5kS": 1925,
                     "elevationM": 1446,
                     "movingTimeS": 21591,
-                    "earliestStartMin": 381,
-                    "latestStartMin": 1129
+                    "days": 5
                 },
                 {
                     "name": "Chris N.",
@@ -1443,8 +1325,7 @@
                     "best5kS": 1610,
                     "elevationM": 810,
                     "movingTimeS": 8174,
-                    "earliestStartMin": 369,
-                    "latestStartMin": 553
+                    "days": 4
                 },
                 {
                     "name": "Ravi B.",
@@ -1455,8 +1336,7 @@
                     "best5kS": 1234,
                     "elevationM": 212,
                     "movingTimeS": 7993,
-                    "earliestStartMin": 392,
-                    "latestStartMin": 1086
+                    "days": 5
                 },
                 {
                     "name": "Jack W.",
@@ -1467,8 +1347,7 @@
                     "best5kS": 1335,
                     "elevationM": 278,
                     "movingTimeS": 8950,
-                    "earliestStartMin": 367,
-                    "latestStartMin": 1086
+                    "days": 4
                 },
                 {
                     "name": "Grace L.",
@@ -1479,8 +1358,7 @@
                     "best5kS": 1506,
                     "elevationM": 312,
                     "movingTimeS": 14240,
-                    "earliestStartMin": 513,
-                    "latestStartMin": 1109
+                    "days": 6
                 },
                 {
                     "name": "Matt C.",
@@ -1491,8 +1369,7 @@
                     "best5kS": 1481,
                     "elevationM": 177,
                     "movingTimeS": 7255,
-                    "earliestStartMin": 385,
-                    "latestStartMin": 1131
+                    "days": 4
                 },
                 {
                     "name": "Aisha D.",
@@ -1503,8 +1380,7 @@
                     "best5kS": 1380,
                     "elevationM": 219,
                     "movingTimeS": 12012,
-                    "earliestStartMin": 363,
-                    "latestStartMin": 1100
+                    "days": 5
                 },
                 {
                     "name": "Kieran H.",
@@ -1515,8 +1391,7 @@
                     "best5kS": 1531,
                     "elevationM": 117,
                     "movingTimeS": 3613,
-                    "earliestStartMin": 402,
-                    "latestStartMin": 402
+                    "days": 1
                 },
                 {
                     "name": "Sarah K.",
@@ -1527,8 +1402,7 @@
                     "best5kS": 1668,
                     "elevationM": 266,
                     "movingTimeS": 12935,
-                    "earliestStartMin": 369,
-                    "latestStartMin": 559
+                    "days": 4
                 },
                 {
                     "name": "Priya R.",
@@ -1539,8 +1413,7 @@
                     "best5kS": 1799,
                     "elevationM": 158,
                     "movingTimeS": 2623,
-                    "earliestStartMin": 1084,
-                    "latestStartMin": 1084
+                    "days": 1
                 },
                 {
                     "name": "Ben C.",
@@ -1551,8 +1424,7 @@
                     "best5kS": 1730,
                     "elevationM": 1291,
                     "movingTimeS": 15187,
-                    "earliestStartMin": 403,
-                    "latestStartMin": 1110
+                    "days": 5
                 },
                 {
                     "name": "Emma L.",
@@ -1563,8 +1435,7 @@
                     "best5kS": 1297,
                     "elevationM": 348,
                     "movingTimeS": 10810,
-                    "earliestStartMin": 387,
-                    "latestStartMin": 1124
+                    "days": 5
                 },
                 {
                     "name": "Beth B.",
@@ -1575,8 +1446,7 @@
                     "best5kS": 1557,
                     "elevationM": 124,
                     "movingTimeS": 5883,
-                    "earliestStartMin": 380,
-                    "latestStartMin": 1105
+                    "days": 3
                 },
                 {
                     "name": "Ollie H.",
@@ -1587,8 +1457,7 @@
                     "best5kS": 1660,
                     "elevationM": 1053,
                     "movingTimeS": 14202,
-                    "earliestStartMin": 404,
-                    "latestStartMin": 1123
+                    "days": 4
                 },
                 {
                     "name": "Lucy G.",
@@ -1599,8 +1468,7 @@
                     "best5kS": 1300,
                     "elevationM": 239,
                     "movingTimeS": 9933,
-                    "earliestStartMin": 382,
-                    "latestStartMin": 1118
+                    "days": 4
                 },
                 {
                     "name": "Alex P.",
@@ -1611,8 +1479,7 @@
                     "best5kS": 2010,
                     "elevationM": 56,
                     "movingTimeS": 3315,
-                    "earliestStartMin": 398,
-                    "latestStartMin": 398
+                    "days": 1
                 },
                 {
                     "name": "Tom M.",
@@ -1623,8 +1490,7 @@
                     "best5kS": 1949,
                     "elevationM": 193,
                     "movingTimeS": 13000,
-                    "earliestStartMin": 408,
-                    "latestStartMin": 551
+                    "days": 3
                 },
                 {
                     "name": "Will P.",
@@ -1635,8 +1501,7 @@
                     "best5kS": 2012,
                     "elevationM": 119,
                     "movingTimeS": 9517,
-                    "earliestStartMin": 490,
-                    "latestStartMin": 1132
+                    "days": 3
                 },
                 {
                     "name": "Josh M.",
@@ -1647,8 +1512,7 @@
                     "best5kS": 1385,
                     "elevationM": 63,
                     "movingTimeS": 1832,
-                    "earliestStartMin": 394,
-                    "latestStartMin": 394
+                    "days": 1
                 },
                 {
                     "name": "Hannah F.",
@@ -1659,8 +1523,7 @@
                     "best5kS": 1530,
                     "elevationM": 76,
                     "movingTimeS": 1973,
-                    "earliestStartMin": 1130,
-                    "latestStartMin": 1130
+                    "days": 1
                 },
                 {
                     "name": "James W.",
@@ -1671,8 +1534,7 @@
                     "best5kS": 1796,
                     "elevationM": 221,
                     "movingTimeS": 12020,
-                    "earliestStartMin": 550,
-                    "latestStartMin": 598
+                    "days": 2
                 },
                 {
                     "name": "Zoe Y.",
@@ -1683,8 +1545,7 @@
                     "best5kS": 2078,
                     "elevationM": 115,
                     "movingTimeS": 4210,
-                    "earliestStartMin": 527,
-                    "latestStartMin": 527
+                    "days": 1
                 },
                 {
                     "name": "Sam H.",
@@ -1695,8 +1556,7 @@
                     "best5kS": 1498,
                     "elevationM": 106,
                     "movingTimeS": 4265,
-                    "earliestStartMin": 562,
-                    "latestStartMin": 562
+                    "days": 1
                 }
             ]
         },
@@ -1712,8 +1572,7 @@
                     "best5kS": 1271,
                     "elevationM": 127,
                     "movingTimeS": 4495,
-                    "earliestStartMin": 366,
-                    "latestStartMin": 580
+                    "days": 3
                 },
                 {
                     "name": "Jack W.",
@@ -1724,8 +1583,7 @@
                     "best5kS": 1298,
                     "elevationM": 263,
                     "movingTimeS": 7418,
-                    "earliestStartMin": 397,
-                    "latestStartMin": 1126
+                    "days": 4
                 },
                 {
                     "name": "Ellie S.",
@@ -1736,8 +1594,7 @@
                     "best5kS": 2000,
                     "elevationM": 512,
                     "movingTimeS": 25999,
-                    "earliestStartMin": 371,
-                    "latestStartMin": 1127
+                    "days": 7
                 },
                 {
                     "name": "Will P.",
@@ -1748,8 +1605,7 @@
                     "best5kS": 1942,
                     "elevationM": 488,
                     "movingTimeS": 22030,
-                    "earliestStartMin": 372,
-                    "latestStartMin": 537
+                    "days": 5
                 },
                 {
                     "name": "Chloe S.",
@@ -1760,8 +1616,7 @@
                     "best5kS": 1377,
                     "elevationM": 440,
                     "movingTimeS": 4840,
-                    "earliestStartMin": 408,
-                    "latestStartMin": 536
+                    "days": 2
                 },
                 {
                     "name": "Lucy G.",
@@ -1772,8 +1627,7 @@
                     "best5kS": 1341,
                     "elevationM": 478,
                     "movingTimeS": 12983,
-                    "earliestStartMin": 367,
-                    "latestStartMin": 1136
+                    "days": 6
                 },
                 {
                     "name": "Ben C.",
@@ -1784,8 +1638,7 @@
                     "best5kS": 1796,
                     "elevationM": 575,
                     "movingTimeS": 7664,
-                    "earliestStartMin": 381,
-                    "latestStartMin": 486
+                    "days": 3
                 },
                 {
                     "name": "Sam H.",
@@ -1796,8 +1649,7 @@
                     "best5kS": null,
                     "elevationM": 83,
                     "movingTimeS": 2622,
-                    "earliestStartMin": 397,
-                    "latestStartMin": 1120
+                    "days": 2
                 },
                 {
                     "name": "Aisha D.",
@@ -1808,8 +1660,7 @@
                     "best5kS": 1469,
                     "elevationM": 119,
                     "movingTimeS": 5371,
-                    "earliestStartMin": 408,
-                    "latestStartMin": 1121
+                    "days": 2
                 },
                 {
                     "name": "Nina W.",
@@ -1820,8 +1671,7 @@
                     "best5kS": 1209,
                     "elevationM": 286,
                     "movingTimeS": 9993,
-                    "earliestStartMin": 384,
-                    "latestStartMin": 1124
+                    "days": 6
                 },
                 {
                     "name": "Chris N.",
@@ -1832,8 +1682,7 @@
                     "best5kS": 1628,
                     "elevationM": 1226,
                     "movingTimeS": 14848,
-                    "earliestStartMin": 531,
-                    "latestStartMin": 1136
+                    "days": 5
                 },
                 {
                     "name": "Megan K.",
@@ -1844,8 +1693,7 @@
                     "best5kS": 1276,
                     "elevationM": 177,
                     "movingTimeS": 4840,
-                    "earliestStartMin": 553,
-                    "latestStartMin": 1137
+                    "days": 3
                 },
                 {
                     "name": "Matt C.",
@@ -1856,8 +1704,7 @@
                     "best5kS": 1535,
                     "elevationM": 173,
                     "movingTimeS": 8955,
-                    "earliestStartMin": 373,
-                    "latestStartMin": 592
+                    "days": 3
                 },
                 {
                     "name": "Josh M.",
@@ -1868,8 +1715,7 @@
                     "best5kS": 1473,
                     "elevationM": 59,
                     "movingTimeS": 1939,
-                    "earliestStartMin": 383,
-                    "latestStartMin": 383
+                    "days": 1
                 },
                 {
                     "name": "Luke R.",
@@ -1880,8 +1726,7 @@
                     "best5kS": 1928,
                     "elevationM": 532,
                     "movingTimeS": 8746,
-                    "earliestStartMin": 389,
-                    "latestStartMin": 496
+                    "days": 3
                 },
                 {
                     "name": "Grace L.",
@@ -1892,8 +1737,7 @@
                     "best5kS": 1446,
                     "elevationM": 233,
                     "movingTimeS": 9063,
-                    "earliestStartMin": 410,
-                    "latestStartMin": 1086
+                    "days": 5
                 },
                 {
                     "name": "Ollie H.",
@@ -1904,8 +1748,7 @@
                     "best5kS": 1682,
                     "elevationM": 487,
                     "movingTimeS": 7175,
-                    "earliestStartMin": 385,
-                    "latestStartMin": 584
+                    "days": 2
                 },
                 {
                     "name": "Tom M.",
@@ -1916,8 +1759,7 @@
                     "best5kS": 2170,
                     "elevationM": 326,
                     "movingTimeS": 14294,
-                    "earliestStartMin": 391,
-                    "latestStartMin": 569
+                    "days": 3
                 },
                 {
                     "name": "Emma L.",
@@ -1928,8 +1770,7 @@
                     "best5kS": 1382,
                     "elevationM": 191,
                     "movingTimeS": 9503,
-                    "earliestStartMin": 507,
-                    "latestStartMin": 1112
+                    "days": 3
                 },
                 {
                     "name": "Sarah K.",
@@ -1940,8 +1781,7 @@
                     "best5kS": 1699,
                     "elevationM": 369,
                     "movingTimeS": 16702,
-                    "earliestStartMin": 388,
-                    "latestStartMin": 1127
+                    "days": 3
                 },
                 {
                     "name": "Kieran H.",
@@ -1952,8 +1792,7 @@
                     "best5kS": 1536,
                     "elevationM": 153,
                     "movingTimeS": 4829,
-                    "earliestStartMin": 502,
-                    "latestStartMin": 1129
+                    "days": 2
                 },
                 {
                     "name": "Dan P.",
@@ -1964,8 +1803,7 @@
                     "best5kS": 1382,
                     "elevationM": 157,
                     "movingTimeS": 6718,
-                    "earliestStartMin": 369,
-                    "latestStartMin": 563
+                    "days": 3
                 },
                 {
                     "name": "Fran W.",
@@ -1976,8 +1814,7 @@
                     "best5kS": 1764,
                     "elevationM": 95,
                     "movingTimeS": 3385,
-                    "earliestStartMin": 378,
-                    "latestStartMin": 378
+                    "days": 1
                 },
                 {
                     "name": "Hannah F.",
@@ -1988,8 +1825,7 @@
                     "best5kS": 1428,
                     "elevationM": 92,
                     "movingTimeS": 2336,
-                    "earliestStartMin": 1095,
-                    "latestStartMin": 1095
+                    "days": 1
                 },
                 {
                     "name": "Beth B.",
@@ -2000,8 +1836,7 @@
                     "best5kS": 1652,
                     "elevationM": 60,
                     "movingTimeS": 2549,
-                    "earliestStartMin": 488,
-                    "latestStartMin": 488
+                    "days": 1
                 },
                 {
                     "name": "James W.",
@@ -2012,8 +1847,7 @@
                     "best5kS": 1704,
                     "elevationM": 115,
                     "movingTimeS": 3632,
-                    "earliestStartMin": 524,
-                    "latestStartMin": 524
+                    "days": 1
                 },
                 {
                     "name": "Alex P.",
@@ -2024,8 +1858,7 @@
                     "best5kS": 2063,
                     "elevationM": 83,
                     "movingTimeS": 4301,
-                    "earliestStartMin": 485,
-                    "latestStartMin": 485
+                    "days": 1
                 },
                 {
                     "name": "Zoe Y.",
@@ -2036,8 +1869,7 @@
                     "best5kS": 2298,
                     "elevationM": 141,
                     "movingTimeS": 9868,
-                    "earliestStartMin": 524,
-                    "latestStartMin": 524
+                    "days": 1
                 }
             ]
         }

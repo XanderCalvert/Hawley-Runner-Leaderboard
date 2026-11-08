@@ -76,10 +76,6 @@ function clock(seconds) {
     return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 }
 
-function timeOfDay(minutes) {
-    return `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
-}
-
 function duration(seconds) {
     const mins = Math.round(seconds / 60);
     return `${Math.floor(mins / 60)}h ${String(mins % 60).padStart(2, '0')}m`;
@@ -282,19 +278,11 @@ function buildExtras({ visible, previous, minPaceKm, top, moved = [], trend = []
 
     const awards = [
         ...moved,
-        // Start times: the earliest and latest run of the week (a run that started after midnight counts as early).
         {
-            id: 'early-bird',
-            label: 'Early bird',
-            value: (r) => (r.earliestStartMin > 0 ? r.earliestStartMin : null),
-            display: timeOfDay,
-            lowerIsBetter: true,
-        },
-        {
-            id: 'night-owl',
-            label: 'Night owl',
-            value: (r) => r.latestStartMin ?? null,
-            display: timeOfDay,
+            id: 'most-days',
+            label: 'Most days run',
+            value: (r) => r.days ?? null,
+            display: (n) => `${n} day${n === 1 ? '' : 's'}`,
         },
     ];
     // The fastest 5K in a single run (Strava's best efforts), so it doesn't depend on a runner's weekly total.
