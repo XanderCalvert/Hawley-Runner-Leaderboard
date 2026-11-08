@@ -10,14 +10,18 @@ function renderYtdTrend(trend) {
     const H = 150;
     const pad = { l: 20, r: 20, t: 34, b: 26 };
     const km = trend.map((p) => p.distanceM / 1000);
-    const max = Math.max(...km) || 1;
     const x = (i) => pad.l + (i * (W - pad.l - pad.r)) / (trend.length - 1);
-    const y = (v) => pad.t + (1 - v / (max * 1.05)) * (H - pad.t - pad.b);
-    const pts = trend.map((p, i) => ({ ...p, cx: x(i), cy: y(km[i]), km: km[i] }));
-    const line = pts.map((p) => `${p.cx.toFixed(1)},${p.cy.toFixed(1)}`).join(' ');
+    const pts = trend.map((p, i) => ({ ...p, cx: x(i), cy: 0, km: km[i] }));
     // Weeks with no distance (before anyone had connected) would only drag the figures down, so they are left out.
     const sorted = km.filter((v) => v > 0).sort((a, b) => a - b);
     const median = sorted.length % 2 ? sorted[(sorted.length - 1) / 2] : (sorted[sorted.length / 2 - 1] + sorted[sorted.length / 2]) / 2;
+    // Not drawn from zero: the lowest week sits on the baseline and the highest at the top, so the shape fills the chart.
+    // (Weeks with no distance are clamped to the baseline.)
+    const lo = sorted[0];
+    const span = sorted.at(-1) - lo || 1;
+    const y = (v) => pad.t + (1 - Math.max(0, (v - lo) / span)) * (H - pad.t - pad.b);
+    pts.forEach((p) => (p.cy = y(p.km)));
+    const line = pts.map((p) => `${p.cx.toFixed(1)},${p.cy.toFixed(1)}`).join(' ');
     const fmt = (v) => Math.round(v).toLocaleString('en-GB');
     const peak = pts.reduce((best, p) => (p.km > best.km ? p : best));
     const now = pts.find((p) => p.current) ?? pts.at(-1);
