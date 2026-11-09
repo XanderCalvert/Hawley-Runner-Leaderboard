@@ -182,6 +182,29 @@ select:focus-visible {
     margin-bottom: 8px;
 }
 
+/* Strava's brand rules: the orange logo on light backgrounds, the white one on dark. */
+.powered-by-strava.on-dark {
+    display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) .powered-by-strava.on-light {
+        display: none;
+    }
+
+    :root:not([data-theme='light']) .powered-by-strava.on-dark {
+        display: block;
+    }
+}
+
+:root[data-theme='dark'] .powered-by-strava.on-light {
+    display: none;
+}
+
+:root[data-theme='dark'] .powered-by-strava.on-dark {
+    display: block;
+}
+
 .button--ghost {
     background: transparent;
     color: var(--text);
