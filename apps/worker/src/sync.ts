@@ -158,8 +158,18 @@ export async function syncAthlete(env: Env, client: StravaClient, athleteId: num
     await repo.markSynced(athleteId);
 }
 
-/** Run right after someone connects: loads this year's runs so YTD totals are complete. */
-export async function backfillAthlete(env: Env, athleteId: number): Promise<void> {
+/** Notes why a sync failed against the runner (shown on the admin page) and returns the message. */
+async function recordFailure(repo: Repository, athleteId: number, error: unknown): Promise<string> {
+    const message = error instanceof Error ? error.message : String(error);
+    await repo.setSyncError(athleteId, message).catch((e) => console.error('Could not record sync error', e));
+    return message;
+}
+
+/**
+ * Run right after someone connects: loads this year's runs so YTD totals are complete.
+ * Returns why it failed, or null if it worked (or the runner is pending approval and nothing was due).
+ */
+export async function backfillAthlete(env: Env, athleteId: number): Promise<string | null> {
     const client = new StravaClient(env);
     const repo = new Repository(env);
     const now = Math.floor(Date.now() / 1000);
@@ -172,11 +182,13 @@ export async function backfillAthlete(env: Env, athleteId: number): Promise<void
             detailLimit: 10,
             maxPages: 5,
         });
+        return null;
     } catch (error) {
         if (error instanceof RateLimitedError) {
             await backOff(repo);
         }
         console.error('Backfill failed', athleteId, error);
+        return recordFailure(repo, athleteId, error);
     }
 }
 
@@ -296,8 +308,9 @@ export async function runScheduledSync(env: Env): Promise<void> {
                 return;
             }
             console.error('Scheduled sync failed for athlete', athleteId, error);
-            // Don't let one broken athlete block the queue.
+            // Don't let one broken athlete block the queue (markSynced clears the error, so note it afterwards).
             await repo.markSynced(athleteId);
+            await recordFailure(repo, athleteId, error);
         }
     }
 

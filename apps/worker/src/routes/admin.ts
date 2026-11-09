@@ -109,9 +109,16 @@ export async function checkClub(env: Env, slug: string, athleteId: number): Prom
 }
 
 /** POST /admin/athletes/:athleteId/resync — re-pulls the athlete's whole year. */
-export function resyncAthlete(env: Env, ctx: ExecutionContext, athleteId: number): Response {
-    ctx.waitUntil(backfillAthlete(env, athleteId));
-    return json({ ok: true, message: 'Resync started' }, { status: 202 });
+export async function resyncAthlete(env: Env, athleteId: number): Promise<Response> {
+    const repo = new Repository(env);
+    if (!(await repo.hasApprovedMembership(athleteId))) {
+        return error(404, 'That runner is not connected, or is still waiting for approval');
+    }
+    if (await isBackingOff(repo)) {
+        return json({ ok: false, error: 'Paused after a Strava rate limit. Try again in a few minutes.' });
+    }
+    const failure = await backfillAthlete(env, athleteId);
+    return json({ ok: failure === null, error: failure });
 }
 
 /**

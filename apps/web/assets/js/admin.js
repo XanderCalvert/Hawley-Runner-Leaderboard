@@ -99,7 +99,19 @@ function render() {
 
                 tr.append(cell(String(member.runsThisYear), 'num'));
                 tr.append(cell(formatDate(member.joinedAt)));
-                tr.append(cell(member.connected ? formatLastRun(member.lastRun) : '—'));
+                const lastRunCell = cell(member.connected ? formatLastRun(member.lastRun) : '—');
+                if (member.syncError) {
+                    const warn = document.createElement('div');
+                    warn.className = 'small';
+                    warn.textContent = `⚠ Sync problem: ${member.syncError}`;
+                    lastRunCell.append(warn);
+                } else if (member.approval !== 'pending' && member.connected && !member.lastSyncedAt) {
+                    const warn = document.createElement('div');
+                    warn.className = 'small';
+                    warn.textContent = '⚠ Not synced yet';
+                    lastRunCell.append(warn);
+                }
+                tr.append(lastRunCell);
 
                 // The buttons live in a collapsed "Manage" section so the row stays short enough to scan for who has stopped running.
                 const actionsTd = document.createElement('td');
@@ -111,7 +123,7 @@ function render() {
                 actions.className = 'row-actions';
                 const synced = document.createElement('p');
                 synced.className = 'small';
-                synced.textContent = `Last synced: ${formatDate(member.lastSyncedAt)}`;
+                synced.textContent = `Last synced: ${formatDate(member.lastSyncedAt)}${member.syncError ? `. Last problem (${formatDate(member.syncErrorAt)}): ${member.syncError}` : ''}`;
                 manage.append(summary, synced, actions);
                 actionsTd.append(manage);
                 const toggle = document.createElement('button');
@@ -250,9 +262,11 @@ async function loadHistory(member) {
 }
 
 async function resyncMember(member) {
+    statusEl.textContent = `Syncing ${member.name ?? member.athleteId}…`;
     try {
-        await api.resync(member.athleteId);
-        statusEl.textContent = `Resync started for ${member.name ?? member.athleteId}. It can take a minute.`;
+        const { ok, error } = await api.resync(member.athleteId);
+        await loadMembers(); // redraws the status line, so say the result after it
+        statusEl.textContent = ok ? `${member.name ?? member.athleteId} is synced.` : `Sync problem for ${member.name ?? member.athleteId}: ${error}`;
     } catch (error) {
         statusEl.textContent = `Resync failed: ${error.message}`;
     }

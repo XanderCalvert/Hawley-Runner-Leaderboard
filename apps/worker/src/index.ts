@@ -69,7 +69,7 @@ async function route(request: Request, env: Env, ctx: ExecutionContext): Promise
             return loadAthleteHistory(env, Number(match[1]), new URL(request.url).searchParams.get('since'));
         }
         if ((match = pathname.match(/^\/admin\/athletes\/(\d+)\/resync$/)) && method === 'POST') {
-            return resyncAthlete(env, ctx, Number(match[1]));
+            return resyncAthlete(env, Number(match[1]));
         }
     }
 
